@@ -1,0 +1,15 @@
+****** PSID DATA CENTER ************************* 
+****** Variable labels for JobID = 272945 ******* 
+
+Variable    Labels
+
+ER21001    RELEASE NUMBER                          
+ER21002    2003 FAMILY INTERVIEW (ID) NUMBER       
+ER23702D3  WEEKS EMPLOYED IN 2001 (HD)             
+ER23702E8  BC14EE HOURS/WK WORKED IN 2001 (HD)     
+ER23702F1  R26 LABOR INCOME 2001 (HD)              
+ER23702J6  WEEKS EMPLOYED IN 2001 (WF)             
+ER23702L2  DE14EE HOURS/WK WORKED IN 2001 (WF)     
+ER23702L4  R26 LABOR INCOME 2001 (WF)              
+
+*** End of labels ******************************* 

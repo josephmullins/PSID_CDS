@@ -1,0 +1,53 @@
+****** PSID DATA CENTER ************************* 
+****** Variable labels for JobID = 272771 ******* 
+
+Variable    Labels
+
+ER30001    1968 INTERVIEW NUMBER                   
+ER30002    PERSON NUMBER                         68
+ER33401    1997 INTERVIEW NUMBER                   
+ER33402    SEQUENCE NUMBER                       97
+ER33403    RELATION TO HEAD                      97
+CHREL97    PCG CHILD FILE RELEASE NUMBER 97        
+BPI_E97    BPI-EXTERNALIZING SCORE 97              
+BPI_N97    BPI-INTERNALIZING SCORE 97              
+CHLREL97   CHILD FILE RELEASE NUMBER 97            
+Q3LWRAW    LW RAW SCORE 97                         
+Q3LW_SS    LW STND SCORE 97                        
+Q3PCRAW    PC RAW SCORE 97                         
+Q3PC_SS    PC STND SCORE 97                        
+Q3CALRAW   CAL RAW SCORE 97                        
+Q3CAL_SS   CAL STND SCORE 97                       
+Q3APRAW    APPLIED PROB RAW SCORE 97               
+Q3AP_SS    APPLIED PROB STND SCORE 97              
+Q3DSTOT    DIGIT SPAN TOTAL RAW SCORE 97           
+ER33601    2001 INTERVIEW NUMBER                   
+ER33602    SEQUENCE NUMBER                       01
+ER33603    RELATION TO HEAD                      01
+CHREL      PCG CHILD FILE RELEASE NUMBER 02        
+BPI_E02    BPI - EXTERNALIZING SCORE 02            
+BPI_N02    BPI - INTERNALIZING SCORE 02            
+ASMREL     ASSESSMENT FILE RELEASE NUMBER 02       
+Q24LWRAW   LW RAW SCORE 02                         
+Q24LWSS    LW STD SCORE 02                         
+Q24PCRAW   PC RAW SCORE 02                         
+Q24PCSS    PC STND SCORE 02                        
+Q24APRAW   APPLIED PROB RAW SCORE 02               
+Q24APSS    APPLIED PROB STD SCORE 02               
+Q24DSTO    Digit Span Total Raw Score 02           
+ER33901    2007 INTERVIEW NUMBER                   
+ER33902    SEQUENCE NUMBER                       07
+ER33903    RELATION TO HEAD                      07
+PCHREL07   PCG CHILD FILE RELEASE NUMBER 07        
+BPI_E07    BPI - EXTERNALIZING SCORE 07            
+BPI_N07    BPI - INTERNALIZING SCORE 07            
+ASMREL07   ASSESSMENT FILE RELEASE NUMBER 07       
+Q34LWRAW   LW RAW SCORE 07                         
+Q34LWSS    LW STD SCORE 07                         
+Q34PCRAW   PC RAW SCORE 07                         
+Q34PCSS    PC STND SCORE 07                        
+Q34APRAW   APPLIED PROB RAW SCORE 07               
+Q34APSS    APPLIED PROB STD SCORE 07               
+Q34DSTO    DIGIT SPAN TOTAL RAW SCORE 07           
+
+*** End of labels ******************************* 

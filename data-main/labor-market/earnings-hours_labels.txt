@@ -1,0 +1,268 @@
+****** PSID DATA CENTER ************************* 
+****** Variable labels for JobID = 312516 ******* 
+
+Variable    Labels
+
+V1         RELEASE NUMBER                          
+V3         FAMILY NUMBER                           
+V47        YRLY HEADS HRS                          
+V53        YRLY WIFE HRS                           
+V74        HDS LABOR INCOME                        
+V75        WIFE LBR INCOME                         
+V441       RELEASE NUMBER                          
+V442       1969 INT NUMBER                         
+V465       HRS HEAD WORKED                         
+V475       HRS WIFE WORKED                         
+V514       LABOR INC HEAD                          
+V516       LABOR INC WIFE                          
+V1101      RELEASE NUMBER                          
+V1102      1970 INT #                              
+V1138      HRS HEAD WORKED                         
+V1148      HRS WIFE WORKED                         
+V1196      LABOR INC HEAD                          
+V1198      LABOR INC WIFE                          
+V1801      RELEASE NUMBER                          
+V1802      71 ID NO.                               
+V1839      HRS HEAD WORKED                         
+V1849      HRS WIFE WORKED                         
+V1897      LABOR INC HEAD                          
+V1899      LABOR INC WIFE                          
+V2401      RELEASE NUMBER                          
+V2402      1972 INT #                              
+V2439      HRS HEAD WORKED                         
+V2449      HRS WIFE WORKED                         
+V2498      LABOR INC HEAD                          
+V2500      LABOR INC WIFE                          
+V3001      RELEASE NUMBER                          
+V3002      1973 INT #                              
+V3027      HDS ANN WORK HRS                        
+V3035      WF WORK HRS                             
+V3051      HDS TOT LABOR Y                         
+V3053      WFS LABOR INC                           
+V3401      RELEASE NUMBER                          
+V3402      1974 ID NUMBER                          
+V3423      ANN WRK HRS-HD                          
+V3431      ANN WRK HRS-WIFE                        
+V3463      TOT LABOR INC-HD                        
+V3465      TOT LABOR INC-WF                        
+V3801      RELEASE NUMBER                          
+V3802      1975 INT #                              
+V3823      HRS HD WORKED                           
+V3831      HRS WIFE WORKED                         
+V3863      HEAD LABOR Y                            
+V3865      WIFE LABOR Y                            
+V4301      RELEASE NUMBER                          
+V4302      1976 ID NUMBER                          
+V4332      ANN WORK HOURS                          
+V4344      WIFE ANN WORK HRS   G5G6                
+V4379      WIFES ANNUAL WAGE    H25                
+V5031      HEAD TOTAL LABOR Y                      
+V5201      RELEASE NUMBER                          
+V5202      1977 ID                                 
+V5232      HD ANN WRK HRS IN 76                    
+V5244      WIFE ANN WORK HOURS 1976                
+V5289      WIFE 1976 WAGES                         
+V5627      TOT 1976 LABOR INCM HEAD                
+V5701      RELEASE NUMBER                          
+V5702      1978 ID                                 
+V5731      HD ANN WRK HRS IN 77                    
+V5743      WF ANN WRK HRS 1977                     
+V5788      WIFE 1977 WAGE                          
+V6174      TOT 1977 HEAD LABOR Y                   
+V6301      RELEASE NUMBER                          
+V6302      1979 ID                                 
+V6336      HD ANN WRK HRS IN 78                    
+V6348      WF ANN WRK HRS IN 78                    
+V6398      WIFE 1978 LABOR/WAGE                    
+V6767      TOT 1978 HEAD LABOR Y                   
+V6901      RELEASE NUMBER                          
+V6902      1980 INTERVIEW NUMBER                   
+V6934      HD ANN WRK HRS IN 79                    
+V6946      WF ANN WRK HRS IN 79                    
+V6988      WIFE 1979 LABOR/WAGE                    
+V7413      TOT HD LABOR $ Y 79                     
+V7501      RELEASE NUMBER                          
+V7502      1981 INTERVIEW NUMBER                   
+V7530      HD ANN WRK HRS IN 1980                  
+V7540      WF ANN WRK HRS IN 1980                  
+V7580      WIFE 1980 LABOR/WAGE                    
+V8066      TOT HD LABOR $ $  Y 80                  
+V8201      RELEASE NUMBER                          
+V8202      1982 INTERVIEW NUMBER                   
+V8228      HD ANN WRK HRS IN 1981                  
+V8238      WF ANN WRK HRS IN 1981                  
+V8273      WIFE 1981 LABOR/WAGE                    
+V8690      TOT HD LABOR $ $  Y 81                  
+V8801      RELEASE NUMBER                          
+V8802      1983 INTERVIEW NUMBER                   
+V8830      HD ANN WRK HRS IN 1982                  
+V8840      WF ANN WRK HRS IN 1982                  
+V8881      WIFE 1982 LABOR/WAGE                    
+V9376      TOTAL HEAD LABOR Y 82                   
+V10001     RELEASE NUMBER                          
+V10002     1984 INTERVIEW NUMBER                   
+V10037     HD ANN WRK HRS-1983                     
+V10131     WF ANN WRK HRS-1983                     
+V10263     WIFE 1983 LABOR/Y                       
+V11023     TOTAL HEAD LABOR Y 83                   
+V11101     RELEASE NUMBER                          
+V11102     1985 INTERVIEW NUMBER                   
+V11146     HD ANN WRK HRS IN 84                    
+V11258     WF ANN WRK HRS IN 84                    
+V11404     WIFE 84 LABOR/WAGE                      
+V12372     TOTAL HEAD LABOR Y 84                   
+V12501     RELEASE NUMBER                          
+V12502     1986 INTERVIEW NUMBER                   
+V12545     HD ANN WRK HRS IN 85                    
+V12657     WF ANN WRK HRS IN 85                    
+V12803     WIFE 85 LABOR/WAGE                      
+V13624     TOTAL HEAD LABOR Y 85                   
+V13701     RELEASE NUMBER                          
+V13702     1987 INTERVIEW NUMBER                   
+V13745     HD ANN WRK HRS IN 86                    
+V13809     WF ANN WRK HRS IN 86                    
+V13905     WIFE 86 LABOR/WAGE                      
+V14671     TOTAL HEAD LABOR Y 86                   
+V14801     RELEASE NUMBER                          
+V14802     1988 INTERVIEW NUMBER                   
+V14835     HD ANN WRK HRS IN 87                    
+V14865     WF ANN WRK HRS IN 87                    
+V14920     WIFE 87 LABOR/WAGE                      
+V16145     TOTAL HEAD LABOR Y 87                   
+V16301     RELEASE NUMBER                          
+V16302     1989 INTERVIEW NUMBER                   
+V16335     HD ANN WRK HRS IN 88                    
+V16365     WF ANN WRK HRS IN 88                    
+V16420     WIFE 88 LABOR/WAGE                      
+V17534     TOTAL HEAD LABOR Y 88                   
+V17701     RELEASE NUMBER                          
+V17702     1990 INTERVEW NUMBER                    
+V17744     HD ANN WRK HRS IN 89                    
+V17774     WF ANN WRK HRS IN 89                    
+V17836     WIFE 89 LABOR/WAGE                      
+V18878     TOTAL HEAD LABOR Y 89                   
+V19001     RELEASE NUMBER                          
+V19002     1991 INTERVIEW NUMBER                   
+V19044     HD ANN WRK HRS IN 90                    
+V19074     WF ANN WRK HRS IN 90                    
+V19136     WIFE 90 LABOR/WAGE                      
+V20178     TOTAL HEAD LABOR Y 90                   
+V20301     RELEASE NUMBER                          
+V20302     1992 INTERVIEW NUMBER                   
+V20344     HD ANN WRK HRS IN 91                    
+V20374     WF ANN WRK HRS IN 91                    
+V20436     WIFE 91 LABOR/WAGE                      
+V21484     TOTAL HEAD LABOR Y 91                   
+V21601     RELEASE NUMBER                          
+V21602     1993 INTERVIEW NUMBER                   
+V21634     HD 1992 TOTAL WORK HOURS                
+V21670     WF 1992 TOTAL WORK HOURS                
+V23323     HD 1992 TOTAL LABOR INCOME              
+V23324     WF 1992 TOTAL LABOR INCOME              
+ER2001     RELEASE NUMBER                          
+ER2002     1994 INTERVIEW #                        
+ER4096     HEAD TOTAL HOURS OF WORK-1993           
+ER4107     WIFE TOTAL HOURS OF WORK-1993           
+ER4140     LABOR INCOME OF HEAD-1993               
+ER4141     WF LABOR INCOME FROM BUSINESS-1993      
+ER4144     LABOR INCOME OF WIFE-1993               
+ER5001     RELEASE NUMBER                          
+ER5002     1995 INTERVIEW #                        
+ER6936     HEAD TOTAL HOURS OF WORK-1994           
+ER6947     WIFE TOTAL HOURS OF WORK-1994           
+ER6980     LABOR INCOME OF HEAD-1994               
+ER6981     WF LABOR INCOME FROM BUSINESS-1994      
+ER6984     LABOR INCOME OF WIFE-1994               
+ER7001     RELEASE NUMBER                          
+ER7002     1996 INTERVIEW #                        
+ER9187     HEAD TOTAL HOURS OF WORK-1995           
+ER9198     WIFE TOTAL HOURS OF WORK-1995           
+ER9231     LABOR INCOME OF HEAD-1995               
+ER9232     WF LABOR INCOME FROM BUSINESS-1995      
+ER9235     LABOR INCOME OF WIFE-1995               
+ER10001    RELEASE NUMBER                          
+ER10002    1997 INTERVIEW #                        
+ER12080    LABOR INCOME-HEAD                       
+ER12082    LABOR INCOME-WIFE                       
+ER12174    HEAD TOTAL HOURS OF WORK-1996           
+ER12185    WIFE TOTAL HOURS OF WORK-1996           
+ER12214    WF LABOR INCOME FROM BUSINESS-1996      
+ER13001    RELEASE NUMBER                          
+ER13002    1999 FAMILY INTERVIEW (ID) NUMBER       
+ER16463    LABOR INCOME-HEAD                       
+ER16465    LABOR INCOME-WIFE                       
+ER16471    HEAD TOTAL HOURS OF WORK-1998           
+ER16482    WIFE TOTAL HOURS OF WORK-1998           
+ER16511    WF LABOR INCOME FROM BUSINESS-1998      
+ER17001    RELEASE NUMBER                          
+ER17002    2001 FAMILY INTERVIEW (ID) NUMBER       
+ER20399    HEAD TOTAL HOURS OF WORK-2000           
+ER20410    WIFE TOTAL HOURS OF WORK-2000           
+ER20443    LABOR INCOME OF HEAD-2000               
+ER20444    WF LABOR INCOME FROM BUSINESS-2000      
+ER20447    LABOR INCOME OF WIFE-2000               
+ER21001    RELEASE NUMBER                          
+ER21002    2003 FAMILY INTERVIEW (ID) NUMBER       
+ER24080    HEAD TOTAL HOURS OF WORK LAST YEAR      
+ER24091    WIFE TOTAL HOURS OF WORK LAST YEAR      
+ER24111    WF LABOR INCOME FROM BUSINESS LAST YEAR 
+ER24116    LABOR INCOME OF HEAD LAST YEAR          
+ER24135    LABOR INCOME OF WIFE LAST YEAR          
+ER25001    RELEASE NUMBER                          
+ER25002    2005 FAMILY INTERVIEW (ID) NUMBER       
+ER27886    HEAD TOTAL HOURS OF WORK-2004           
+ER27897    WIFE TOTAL HOURS OF WORK-2004           
+ER27931    LABOR INCOME OF HEAD-2004               
+ER27940    WF LABOR INCOME FROM BUSINESS-2004      
+ER27943    LABOR INCOME OF WIFE-2004               
+ER36001    RELEASE NUMBER                          
+ER36002    2007 FAMILY INTERVIEW (ID) NUMBER       
+ER40876    HEAD TOTAL HOURS OF WORK-2006           
+ER40887    WIFE TOTAL HOURS OF WORK-2006           
+ER40921    LABOR INCOME OF HEAD-2006               
+ER40930    WF LABOR INCOME FROM BUSINESS-2006      
+ER40933    LABOR INCOME OF WIFE-2006               
+ER42001    RELEASE NUMBER                          
+ER42002    2009 FAMILY INTERVIEW (ID) NUMBER       
+ER46767    HEAD TOTAL HOURS OF WORK-2008           
+ER46788    WIFE TOTAL HOURS OF WORK-2008           
+ER46829    LABOR INCOME OF HEAD-2008               
+ER46838    WF LABOR INCOME FROM BUSINESS-2008      
+ER46841    LABOR INCOME OF WIFE-2008               
+ER47301    RELEASE NUMBER                          
+ER47302    2011 FAMILY INTERVIEW (ID) NUMBER       
+ER52175    HEAD TOTAL HOURS OF WORK-2010           
+ER52196    WIFE TOTAL HOURS OF WORK-2010           
+ER52237    LABOR INCOME OF HEAD-2010               
+ER52246    WF LABOR INCOME FROM BUSINESS-2010      
+ER52249    LABOR INCOME OF WIFE-2010               
+ER53001    RELEASE NUMBER                          
+ER53002    2013 FAMILY INTERVIEW (ID) NUMBER       
+ER57976    HEAD TOTAL HOURS OF WORK-2012           
+ER57997    WIFE TOTAL HOURS OF WORK-2012           
+ER58038    LABOR INCOME OF HEAD-2012               
+ER58047    WF LABOR INCOME FROM BUSINESS-2012      
+ER58050    LABOR INCOME OF WIFE-2012               
+ER60001    RELEASE NUMBER                          
+ER60002    2015 FAMILY INTERVIEW (ID) NUMBER       
+ER65156    HEAD TOTAL HOURS OF WORK-2014           
+ER65177    SPOUSE TOTAL HOURS OF WORK-2014         
+ER65216    LABOR INCOME OF HEAD-2014               
+ER65225    SP LABOR INCOME FROM BUSINESS-2014      
+ER65244    LABOR INCOME OF SPOUSE-2014             
+ER66001    RELEASE NUMBER                          
+ER66002    2017 FAMILY INTERVIEW (ID) NUMBER       
+ER71233    REF PERSON TOTAL HOURS OF WORK-2016     
+ER71254    SPOUSE TOTAL HOURS OF WORK-2016         
+ER71293    LABOR INCOME OF REF PERSON-2016         
+ER71302    SP LABOR INCOME FROM BUSINESS-2016      
+ER71321    LABOR INCOME OF SPOUSE-2016             
+ER72001    RELEASE NUMBER                          
+ER72002    2019 FAMILY INTERVIEW (ID) NUMBER       
+ER77255    REF PERSON TOTAL HOURS OF WORK-2018     
+ER77276    SPOUSE TOTAL HOURS OF WORK-2018         
+ER77315    LABOR INCOME OF REF PERSON-2018         
+ER77324    SP LABOR INCOME FROM BUSINESS-2018      
+ER77343    LABOR INCOME OF SPOUSE-2018             
+
+*** End of labels ******************************* 
