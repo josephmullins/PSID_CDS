@@ -1,8 +1,6 @@
+G <- readxl::read_excel("../../../data-main/labor-market/earnings-hours.xlsx")
 
-
-G <- read.csv("~/Desktop/earnings-hours.csv")
-
-index1 <- read.csv("~/Desktop/Book2.csv",header=FALSE)
+index1 <- read.csv("../../../data-main/labor-market/earnings_labels_clean.csv",header=FALSE)
 index1 <- index1 %>%  filter(!row_number() %in% c(262,263,264,265)) ##removing empty rows at the end of the csv
 names(index1) <- c("variable","label","year")
 index1$label <- str_c(index1$label,'_',index1$year) 
@@ -41,3 +39,7 @@ names(G) <- c("year","intnum","hours_head","hours_spouse",
               "earn_head","earn_spouse","earn_spouseBusiness")
 
 G <- G[,c(2,1,5,6,3,4,7)]
+
+write.csv(G,"../../../data-main/labor-market/earnings-panel.csv")
+
+
