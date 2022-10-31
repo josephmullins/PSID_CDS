@@ -1,3 +1,5 @@
+library(tidyverse)
+
 G <- readxl::read_excel("../../../data-main/labor-market/earnings-hours.xlsx")
 
 index1 <- read.csv("../../../data-main/labor-market/earnings_labels_clean.csv",header=FALSE)
@@ -12,6 +14,12 @@ for (i in 1:length(G)){
 }
 
 G <- G %>% select(-contains("relnum")) #dropping the relnum columns
+
+#*** Alternative lines of code for Maddi that I think will do the same thing **** #
+G %>%
+  pivot_longer(cols=everything(),names_to = c(".value","year"),names_sep = "_") %>%
+  filter(!is.na(intnum))
+
 
 G <- G %>% pivot_longer(
   cols=everything(),
@@ -41,5 +49,23 @@ names(G) <- c("year","intnum","hours_head","hours_spouse",
 G <- G[,c(2,1,5,6,3,4,7)]
 
 write.csv(G,"../../../data-main/labor-market/earnings-panel.csv")
+
+
+# A line of code here for Maddi to show missing variable codes in each year
+G %>%
+  group_by(year) %>%
+  summarize(h = max(earn_head,na.rm = TRUE),s=max(earn_spouse,na.rm = TRUE)) %>%
+  print.AsIs()
+
+# A line of code here to show some differences with the old file for Maddi to look into:
+D <- read.csv("../../../PSID_RAW/LaborFile.csv") %>%
+  merge(G) %>%
+  filter(earn_spouse!=w_earn)
+
+unique(D$year) #<- specific to 1997 and 1999
+D %>%
+  select(intnum,year,h_earn,earn_head,w_earn,earn_spouse)# seem to be some big differences in earnings for 1997 and 1999
+
+# TASK: look over the old data cleaning file to try and find discrepancies here
 
 
