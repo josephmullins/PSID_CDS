@@ -1,0 +1,136 @@
+---
+title: "CDS Child Expenditures"
+output: html_notebook
+---
+
+# Child-Specific Expenditures
+
+This script selects the relevant variables on child-specific expenditures from the CDS.
+
+## First Round of Expenditures
+We're just looking at 2002 data for now. 2007 is also available. All of these expenditure variables come from the *Primary Caregiver Interview*. For convenience here is a summary of the variables.
+
+Vname      Variable Description
+---------- ------------------------------------------
+ER30001    1968 INTERVIEW NUMBER                   
+ER30002    PERSON NUMBER                         68
+ER33601    2001 INTERVIEW NUMBER                   
+ER33602    SEQUENCE NUMBER                       01
+ER33603    RELATION TO HEAD                      01
+CHREL      PCG CHILD FILE RELEASE NUMBER 02        
+Q21H23A    SPEND ON TOYS 02                        
+Q21H23A1   AMT SPENT ON TOYS 02                    
+Q21H23B    SPEND ON VACATION 02                    
+Q21H23B1   AMT SPENT OF VACATION 02                
+Q21H23C    SPEND ON SCH SUPPLIES 02                
+Q21H23C1   AMT SPENT OF SCH SUPPLIES 02            
+Q21H23D    SPEND ON CLOTHES 02                     
+Q21H23D1   AMT SPENT ON CLOTHES 02                 
+Q21H23H    SPEND ON FOOD 02                        
+Q21H23H1   AMT SPENT ON FOOD 02                    
+
+These questions can be found together in the PCG interview. Other questions are asked later on about private lessons and so on, we have those in a separate file so we will clean them separately.
+
+First we read in the data, create the child identifier, and replace some of the missing values for each category. 
+```{r}
+E = read.csv("../../../data-cds/expenditures/Exp2002.csv") 
+E[E>=99998] <- NA
+E <- E %>%
+  mutate(KID = ER30001*1000 + ER30002)
+```
+
+Now we need to drop the zeros from expenditure variables that correspond to the PCG not knowing whether money was spent or not. We then convert our measures to weekly.
+
+```{r}
+E[(E$Q21H23A>=8),"Q21H23A1"]<-NA
+E[E$Q21H23B>=8,"Q21H23B1"]<-NA
+E[(E$Q21H23C>=8) | (E$Q21H23C1>=9998),"Q21H23C1"]<-NA
+E[(E$Q21H23D>=8) | (E$Q21H23D1>=9998),"Q21H23D1"]<-NA
+E[E$Q21H23H>=8,"Q21H23H1"]<-NA
+
+E <- E %>%
+  rename(Toys = Q21H23A1, Vacation = Q21H23B1, SchSupplies = Q21H23C1, Clothing = Q21H23D1, Food = Q21H23H1) %>%
+  mutate(Toys = Toys/52, Vacation = Vacation/52, SchSupplies = SchSupplies/52, Clothing = Clothing/52, Food = Food/52)
+
+
+```
+
+## Second Round of Expenditures
+The PCG interview also contains questions on expenditures in 2002 on lessons, private school tuition, tutoring, sports, and community groups. The variables of interest are:
+
+Vname      Variable Description
+---------- -----------------------------------------
+Q21B12_2   PRIV SCH PREV YR 02                     
+Q21B12A1   SCH COSTS PREV YR - AMT 02              
+Q21B12A2   SCH COSTS PREV YR - PER 02              
+Q21G5      IN TUTORING PROGRAM 6-9 YRS 02          
+Q21G5D     COST OF TUTORING 6-9 YRS 02             
+Q21G7A     TAKE LESSONS 6-9 YRS 02                 
+Q21G7C     COST OF LESSONS 6-9 YRS 02              
+Q21G8F     INVOLVD IN SPORTS LAST SCH YR 6-9 YRS 02
+Q21G8I     COST OF SPORTS PAST 12 MTHS 6-9 YRS 02  
+Q21G10     MEMBER OF COMMUNITY GRPS 6-9 YRS 02     
+Q21G10C    COST OF COMMUNITY GRPS 6-9 YRS 02       
+Q21H5      IN TUTORING PROGRAM 10+ YRS 02          
+Q21H5C     COST OF TUTORING 10+ YRS 02             
+Q21H6      TAKE LESSONS 10+ YRS 02                 
+Q21H6B     COST OF LESSONS 10+ YRS 02              
+Q21H7B     INVOLVD IN SPORTS LAST SUMMER 10+ YRS 02
+Q21H7F     COST OF SPORTS PAST 12 MTHS 10+ YRS 02  
+Q21H8      MEMBER OF COMMUNITY GRPS 10+ YRS 02     
+Q21H8B     COST OF COMMUNITY GRPS 10+ YRS 02     
+
+We first read the data and replace missing values.
+
+```{r}
+E2 <- read.csv("../../../data-cds/expenditures/Exp2002v2.csv")
+E2[E2==9998] <- NA
+E2[E2==9999] <- NA
+E2[E2==99998] <- NA
+E2[E2==99999] <- NA
+
+```
+
+Next we rename the variables, convert each of them to a weekly measure, and merge with the first round of questions. Finally, we create a total that sums school supplies, toys, sports, tutoring, lessons, and community groups.
+```{r}
+E <- E2 %>%
+  mutate(KID = ER30001*1000 + ER30002,tutoring = Q21G5D + Q21H5C) %>%
+  mutate(comm_grps = (Q21G10C + Q21H8B)/52) %>%
+  mutate(sports = (Q21G8I + Q21H7F)/52) %>%
+  mutate(tutoring = (Q21G5D + Q21H5C)/52) %>%
+  mutate(lessons = (Q21G7C + Q21H6B)/52) %>%
+  mutate(tuition = Q21B12A1) %>%
+  mutate(tuition = case_when(Q21B12A2==3 ~ 50*tuition,Q21B12A2==5 ~ 12*tuition, TRUE ~ tuition)/52) %>%
+  select(KID,sports,lessons,comm_grps,tutoring,tuition) %>%
+  merge(E) %>%
+  mutate(Exp = SchSupplies+Toys+sports+lessons+tutoring+lessons+comm_grps)
+
+```
+
+
+""
+
+Finally, let's relate this to 2002, and write to file.
+
+```{r}
+E$year <- 2002
+cols <- c("KID","year","Toys","Vacation","SchSupplies","Clothing","Food","sports","lessons","comm_grps","tutoring","tuition")
+write.csv(E[,cols],"../../../data-cds/expenditures/Expenditures.csv")
+
+```
+
+# Per Pupil Expenditure for the Child's School
+
+When possible, as part of the CDS supplement, the PSID conducted interviews with the Middle and Elementary School administrators. The data below cleans all available data on reported per pupil expenditure for the school.
+
+```{r}
+PPE <- readxl::read_excel("../../../data-cds/expenditures/CDS_PPE.xlsx") %>%
+  mutate(KID = ER30001*1000 + ER30002) %>%
+  rename(PPE = Q12A27) %>%
+  mutate(PPE = case_when(PPE<99998 ~ PPE)) %>% #<- code in missing values
+  select(KID,PPE) %>%
+  mutate(year = 1997) #<- add the year for merging into a panel.
+
+write.csv(PPE,"../../../data-cds/expenditures/PPE.csv")
+```
+

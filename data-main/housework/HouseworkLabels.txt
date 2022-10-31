@@ -1,0 +1,127 @@
+****** PSID DATA CENTER ************************* 
+****** Variable labels for JobID = 239257 ******* 
+
+Variable    Labels
+
+V4301      RELEASE NUMBER                          
+V4302      1976 ID NUMBER                          
+V4609      HSEWRK HRS/WK HEAD    G7                
+V4768      HR/WK HSWRK-WF        B1                
+V5201      RELEASE NUMBER                          
+V5202      1977 ID                                 
+V5534      HR/WK WF HSWK        G32                
+V5535      HR/WK HD HSWK        G33                
+V5701      RELEASE NUMBER                          
+V5702      1978 ID                                 
+V6072      G39 # HRS HSWRK-WF                      
+V6073      G40 # HRS HSWRK-HD                      
+V6301      RELEASE NUMBER                          
+V6302      1979 ID                                 
+V6663      J5 # HRS HSWRK-WF                       
+V6664      J6 # HRS HOWRK-HD                       
+V6901      RELEASE NUMBER                          
+V6902      1980 INTERVIEW NUMBER                   
+V7265      J5 #HRS/WK HSEWRK-WF                    
+V7266      J6 #HRS/WK HSEWRK-HD                    
+V7501      RELEASE NUMBER                          
+V7502      1981 INTERVIEW NUMBER                   
+V7956      J5 HR/WK HOUSEWORK - WF                 
+V7957      J6 HR/WK HOUSEWORK - HD                 
+V8801      RELEASE NUMBER                          
+V8802      1983 INTERVIEW NUMBER                   
+V9280      J5 WIFE WKLY HSEWRK                     
+V9281      J6 HEAD WKLY HSEWRK                     
+V10001     RELEASE NUMBER                          
+V10002     1984 INTERVIEW NUMBER                   
+V10866     J2 WIFE WKLY HOUSEWORK                  
+V10867     J3 HEAD WKLY HOUSEWORK                  
+V11101     RELEASE NUMBER                          
+V11102     1985 INTERVIEW NUMBER                   
+V11982     H1 HOUSEWORK HOURS-HEAD                 
+V12337     P1 HOUSEWORK HOURS-WIFE                 
+V12501     RELEASE NUMBER                          
+V12502     1986 INTERVIEW NUMBER                   
+V13393     F2 HOUSEWORK HRS-WIFE                   
+V13394     F3 HOUSEWORK HOURS-HEAD                 
+V13701     RELEASE NUMBER                          
+V13702     1987 INTERVIEW NUMBER                   
+V14485     F2 HOUSEWORK HRS-WIFE                   
+V14486     F3 HOUSEWORK HOURS-HEAD                 
+V14801     RELEASE NUMBER                          
+V14802     1988 INTERVIEW NUMBER                   
+V15758     F2 HOUSEWORK HRS-WIFE                   
+V15759     F3 HOUSEWORK HOURS-HEAD                 
+V16301     RELEASE NUMBER                          
+V16302     1989 INTERVIEW NUMBER                   
+V17293     F2 HOUSEWORK HRS-WIFE                   
+V17294     F3 HOUSEWORK HOURS-HEAD                 
+V17701     RELEASE NUMBER                          
+V17702     1990 INTERVEW NUMBER                    
+V18697     F2 HOUSEWORK HRS-WIFE                   
+V18698     F3 HOUSEWORK HOURS-HEAD                 
+V19001     RELEASE NUMBER                          
+V19002     1991 INTERVIEW NUMBER                   
+V19997     F2 HOUSEWORK HRS-WIFE                   
+V19998     F3 HOUSEWORK HOURS-HEAD                 
+V20301     RELEASE NUMBER                          
+V20302     1992 INTERVIEW NUMBER                   
+V21297     F2 HOUSEWORK HRS-WIFE                   
+V21298     F3 HOUSEWORK HOURS-HEAD                 
+V21601     RELEASE NUMBER                          
+V21602     1993 INTERVIEW NUMBER                   
+V23154     F2 WF WEEKLY HOUSEWORK HRS              
+V23156     F3 HD WEEKLY HOUSEWORK HOURS            
+ER2001     RELEASE NUMBER                          
+ER2002     1994 INTERVIEW #                        
+ER3055     F2 HOUSEWORK HRS-WIFE                   
+ER3056     F3 HOUSEWORK HOURS-HEAD                 
+ER5001     RELEASE NUMBER                          
+ER5002     1995 INTERVIEW #                        
+ER6054     F2 HOUSEWORK HRS-WIFE                   
+ER6055     F3 HOUSEWORK HOURS-HEAD                 
+ER7001     RELEASE NUMBER                          
+ER7002     1996 INTERVIEW #                        
+ER8151     F2 HOUSEWORK HRS-WIFE                   
+ER8152     F3 HOUSEWORK HOURS-HEAD                 
+ER10001    RELEASE NUMBER                          
+ER10002    1997 INTERVIEW #                        
+ER11045    F2 HOUSEWORK HRS-WIFE                   
+ER11046    F3 HOUSEWORK HOURS-HEAD                 
+ER13001    RELEASE NUMBER                          
+ER13002    1999 FAMILY INTERVIEW (ID) NUMBER       
+ER14229    F2 HOUSEWORK HRS-WIFE                   
+ER14230    F3 HOUSEWORK HOURS-HEAD                 
+ER17001    RELEASE NUMBER                          
+ER17002    2001 FAMILY INTERVIEW (ID) NUMBER       
+ER18357    F2 HOUSEWORK HRS-WIFE                   
+ER18359    F3 HOUSEWORK HOURS-HEAD                 
+ER21001    RELEASE NUMBER                          
+ER21002    2003 FAMILY INTERVIEW (ID) NUMBER       
+ER21623    F2 HOUSEWORK HRS-WIFE                   
+ER21625    F3 HOUSEWORK HOURS-HEAD                 
+ER25001    RELEASE NUMBER                          
+ER25002    2005 FAMILY INTERVIEW (ID) NUMBER       
+ER25620    F2 HOUSEWORK HRS-WIFE                   
+ER25622    F3 HOUSEWORK HOURS-HEAD                 
+ER36001    RELEASE NUMBER                          
+ER36002    2007 FAMILY INTERVIEW (ID) NUMBER       
+ER36625    F2 HOUSEWORK HRS-WIFE                   
+ER36627    F3 HOUSEWORK HOURS-HEAD                 
+ER42001    RELEASE NUMBER                          
+ER42002    2009 FAMILY INTERVIEW (ID) NUMBER       
+ER42644    F2 HOUSEWORK HRS-WIFE                   
+ER42646    F3 HOUSEWORK HOURS-HEAD                 
+ER47301    RELEASE NUMBER                          
+ER47302    2011 FAMILY INTERVIEW (ID) NUMBER       
+ER47962    F2 HOUSEWORK HRS-WIFE                   
+ER47964    F3 HOUSEWORK HOURS-HEAD                 
+ER53001    RELEASE NUMBER                          
+ER53002    2013 FAMILY INTERVIEW (ID) NUMBER       
+ER53674    F2 HOUSEWORK HRS-WIFE                   
+ER53676    F3 HOUSEWORK HOURS-HEAD                 
+ER60001    RELEASE NUMBER                          
+ER60002    2015 FAMILY INTERVIEW (ID) NUMBER       
+ER60689    F2 HOUSEWORK HRS-SPOUSE                 
+ER60691    F3 HOUSEWORK HOURS-HEAD                 
+
+*** End of labels ******************************* 

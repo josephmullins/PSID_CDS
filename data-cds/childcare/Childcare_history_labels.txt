@@ -1,0 +1,140 @@
+****** PSID DATA CENTER ************************* 
+****** Variable labels for JobID = 268877 ******* 
+
+Variable    Labels
+
+ER30001    1968 INTERVIEW NUMBER                   
+ER30002    PERSON NUMBER                         68
+ER33401    1997 INTERVIEW NUMBER                   
+ER33402    SEQUENCE NUMBER                       97
+ER33403    RELATION TO HEAD                      97
+CHREL97    PCG CHILD FILE RELEASE NUMBER 97        
+Q1H1Y      AGE 1ST CARED BY SOMEONE ELSE (YRS) 97  
+Q1H1M      AGE 1ST CARED BY SOMEONE ELSE (MTHS) 97 
+Q1H1A      BEFORE/AFTER K'GARTEN 97                
+Q1H2_1     ARRNGMNT #1-REASON 97                   
+Q1H3_1Y    ARRNGMNT #1-AGE START (YRS) 97          
+Q1H3_1M    ARRNGMNT #1-AGE START (MTHS) 97         
+Q1H4_1     ARRNGMNT #1-TYPE 97                     
+Q1H5_1     ARRNGMNT #1-DAYS PER WEEK 97            
+Q1H6_1     ARRNGMNT #1-HRS PER WEEK 97             
+Q1H7_1     ARRNGMNT #1-COST 97                     
+Q1H7A_1    ARRNGMNT #1- PAYMENT RATE 97            
+Q1H7B_1    ARRNGMNT #1-OTHER CHILDREN 97           
+Q1H7C_1    ARRNGMNT #1-# OF OTHER CHILDREN 97      
+Q1H8_1Y    ARRNGMNT #1-AGE STOP (YRS) 97           
+Q1H8_1M    ARRNGMNT #1-AGE STOP (MTHS) 97          
+Q1H9_1     ARRNGMNT #1-REASON STOP 97              
+Q1H10_1    ARRNGMNT #1-OTHER ARRNGMNTS 97          
+Q1H2_2     ARRNGMNT #2-REASON 97                   
+Q1H3_2Y    ARRNGMNT #2-AGE START (YRS) 97          
+Q1H3_2M    ARRNGMNT #2-AGE START (MTHS) 97         
+Q1H4_2     ARRNGMNT #2-TYPE 97                     
+Q1H5_2     ARRNGMNT #2-DAYS PER WEEK 97            
+Q1H6_2     ARRNGMNT #2-HRS PER WEEK 97             
+Q1H7_2     ARRNGMNT #2-COST 97                     
+Q1H7A_2    ARRNGMNT #2-PAYMENT RATE 97             
+Q1H7B_2    ARRNGMNT #2-OTHER CHILDREN 97           
+Q1H7C_2    ARRNGMNT #2-# OF OTHER CHILDREN 97      
+Q1H8_2Y    ARRNGMNT #2-AGE STOP (YRS) 97           
+Q1H8_2M    ARRNGMNT #2-AGE STOP (MTHS) 97          
+Q1H9_2     ARRNGMNT #2-REASON STOP 97              
+Q1H10_2    ARRNGMNT #2-OTHER ARRNGMNTS 97          
+Q1H2_3     ARRNGMNT #3-REASON 97                   
+Q1H3_3Y    ARRNGMNT #3-AGE START (YRS) 97          
+Q1H3_3M    ARRNGMNT #3-AGE START (MTHS) 97         
+Q1H4_3     ARRNGMNT #3-TYPE 97                     
+Q1H5_3     ARRNGMNT #3-DAYS PER WEEK 97            
+Q1H6_3     ARRNGMNT #3-HRS PER WEEK 97             
+Q1H7_3     ARRNGMNT #3-COST 97                     
+Q1H7A_3    ARRNGMNT #3-PAYMENT RATE 97             
+Q1H7B_3    ARRNGMNT #3-OTHER CHILDREN 97           
+Q1H7C_3    ARRNGMNT #3-# OF OTHER CHILDREN 97      
+Q1H8_3Y    ARRNGMNT #3-AGE STOP (YRS) 97           
+Q1H8_3M    ARRNGMNT #3-AGE STOP (MTHS) 97          
+Q1H9_3     ARRNGMNT #3-REASON STOP 97              
+Q1H10_3    ARRNGMNT #3-OTHER ARRNGMNTS 97          
+Q1H2_4     ARRNGMNT #4-REASON 97                   
+Q1H3_4Y    ARRNGMNT #4-AGE START (YRS) 97          
+Q1H3_4M    ARRNGMNT #4-AGE START (MTHS) 97         
+Q1H4_4     ARRNGMNT #4-TYPE 97                     
+Q1H5_4     ARRNGMNT #4-DAYS PER WEEK 97            
+Q1H6_4     ARRNGMNT #4-HRS PER WEEK 97             
+Q1H7_4     ARRNGMNT #4-COST 97                     
+Q1H7A_4    ARRNGMNT #4-PAYMENT RATE 97             
+Q1H7B_4    ARRNGMNT #4-OTHER CHILDREN 97           
+Q1H7C_4    ARRNGMNT #4-# OF OTHER CHILDREN 97      
+Q1H8_4Y    ARRNGMNT #4-AGE STOP (YRS) 97           
+Q1H8_4M    ARRNGMNT #4-AGE STOP (MTHS) 97          
+Q1H9_4     ARRNGMNT #4-REASON STOP 97              
+Q1H10_4    ARRNGMNT #4-OTHER ARRNGMNTS 97          
+Q1H2_5     ARRNGMNT #5-REASON 97                   
+Q1H3_5Y    ARRNGMNT #5-AGE START (YRS) 97          
+Q1H3_5M    ARRNGMNT #5-AGE START (MTHS) 97         
+Q1H4_5     ARRNGMNT #5-TYPE 97                     
+Q1H5_5     ARRNGMNT #5-DAYS PER WEEK 97            
+Q1H6_5     ARRNGMNT #5-HRS PER WEEK 97             
+Q1H7_5     ARRNGMNT #5-COST 97                     
+Q1H7A_5    ARRNGMNT #5-PAYMENT RATE 97             
+Q1H7B_5    ARRNGMNT #5-OTHER CHILDREN 97           
+Q1H7C_5    ARRNGMNT #5-#OF OTHER CHILDREN 97       
+Q1H8_5Y    ARRNGMNT #5-AGE STOP (YRS) 97           
+Q1H8_5M    ARRNGMNT #5-AGE STOP (MTHS) 97          
+Q1H9_5     ARRNGMNT #5-REASON STOP 97              
+Q1H10_5    ARRNGMNT #5-OTHER ARRNGMNTS 97          
+Q1H2_6     ARRNGMNT #6-REASON 97                   
+Q1H3_6Y    ARRNGMNT #6-AGE START (YRS) 97          
+Q1H3_6M    ARRNGMNT #6-AGE START (MTHS) 97         
+Q1H4_6     ARRNGMNT #6-TYPE 97                     
+Q1H5_6     ARRNGMNT #6-DAYS PER WEEK 97            
+Q1H6_6     ARRNGMNT #6-HRS PER WEEK 97             
+Q1H7_6     ARRNGMNT #6-COST 97                     
+Q1H7A_6    ARRNGMNT #6-PAYMENT RATE 97             
+Q1H7B_6    ARRNGMNT #6-OTHER CHILDREN 97           
+Q1H7C_6    ARRNGMNT #6-# OF OTHER CHILDREN 97      
+Q1H8_6Y    ARRNGMNT #6-AGE STOP (YRS) 97           
+Q1H8_6M    ARRNGMNT #6-AGE STOP (MTHS) 97          
+Q1H9_6     ARRNGMNT #6-REASON STOP 97              
+Q1H10_6    ARRNGMNT #6-OTHER ARRNGMNTS 97          
+Q1H2_7     ARRNGMNT #7-REASON 97                   
+Q1H3_7Y    ARRNGMNT #7-AGE START (YRS) 97          
+Q1H3_7M    ARRNGMNT #7-AGE START (MTHS) 97         
+Q1H4_7     TYPE OF ARRANGEMENT #7 97               
+Q1H5_7     ARRNGMNT #7-DAYS PER WEEK 97            
+Q1H6_7     ARRNGMNT #7-HRS PER WEEK 97             
+Q1H7_7     ARRNGMNT #7-COST 97                     
+Q1H7A_7    ARRNGMNT #7-PAYMENT RATE 97             
+Q1H7B_7    ARRNGMNT #7-OTHER CHILDREN 97           
+Q1H7C_7    ARRNGMNT #7-# OF OTHER CHILDREN 97      
+Q1H8_7Y    ARRNGMNT #7-AGE STOP (YRS) 97           
+Q1H8_7M    ARRNGMNT #7-AGE STOP (MTHS) 97          
+Q1H9_7     ARRNGMNT #7-REASON STOP 97              
+Q1H10_7    ARRNGMNT #7-OTHER ARRNGMNTS 97          
+Q1H2_8     ARRNGMNT #8-REASON 97                   
+Q1H3_8Y    ARRNGMNT #8-AGE START (YRS) 97          
+Q1H3_8M    ARRNGMNT #8-AGE START (MTHS) 97         
+Q1H4_8     ARRNGMNT #8-TYPE 97                     
+Q1H5_8     ARRNGMNT #8-DAYS PER WEEK 97            
+Q1H6_8     ARRNGMNT #8-HRS PER WEEK 97             
+Q1H7_8     ARRNGMNT #8-COST 97                     
+Q1H7A_8    ARRNGMNT #8-PAYMENT RATE 97             
+Q1H7B_8    ARRNGMNT #8-OTHER CHILDREN 97           
+Q1H8_8Y    ARRNGMNT #8-AGE STOP (YRS) 97           
+Q1H8_8M    ARRNGMNT #8-AGE STOP (MTHS) 97          
+Q1H9_8     ARRNGMNT #8-REASON STOP 97              
+Q1H10_8    ARRNGMNT #8-OTHER ARRNGMNTS 97          
+Q1H2_9     ARRNGMNT #9-REASON 97                   
+Q1H3_9Y    ARRNGMNT #9-AGE START (YRS) 97          
+Q1H3_9M    ARRNGMNT #9-AGE START (MTHS) 97         
+Q1H4_9     ARRNGMNT #9-TYPE 97                     
+Q1H5_9     ARRNGMNT #9-DAYS PER WEEK 97            
+Q1H6_9     ARRNGMNT #9-HRS PER WEEK 97             
+Q1H7_9     ARRNGMNT #9-COST 97                     
+Q1H7A_9    ARRNGMNT #9-PAYMENT RATE 97             
+Q1H7B_9    ARRNGMNT #9-OTHER CHILDREN 97           
+Q1H8_9Y    ARRNGMNT #9-AGE STOP (YRS) 97           
+Q1H8_9M    ARRNGMNT #9-AGE STOP (MTHS) 97          
+Q1H9_9     ARRNGMNT #9-REASON STOP 97              
+Q1H10_9    ARRNGMNT #9-OTHER ARRNGMNTS 97          
+
+*** End of labels ******************************* 
