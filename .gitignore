@@ -6,3 +6,8 @@ data-cds/assessments/AssessmentPanel.csv
 data-cds/childcare/ChildCarePanel.csv
 
 data-cds/childcare/ChildcarePreK97.csv
+
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
