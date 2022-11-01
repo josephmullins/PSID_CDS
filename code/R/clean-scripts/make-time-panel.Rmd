@@ -1,0 +1,143 @@
+---
+title: "Aggregating Time Use Data"
+output: html_notebook
+---
+
+# Time Use From Time Diaries
+
+First load the 1997 and 2002 time diaries, clean them, and rename the files so they are consistent across those years. The coding manual for time use activities are [here](../../../docs/codingman.pdf) and [here.](../../../docs/2003codebook.pdf). Inspecting these you will see that the code categories are slightly more fine in the 2002 wave (one extra digit). So for example a category coded as 919 in 1997 becomes 9190 in 2002 or potentially 919$x$ for some $x\in\{1,...,9\}$ depending on the sub-category.
+
+For a consistent sent of categories, we use the 1997 activity codes and round down to the nearest multiple of 10 for 2002 categories. Here is a summary of the variables:
+
+Variable      Description
+------------  -------------------------------------- 
+COLA          Activity Code
+DURATION      Duration of activity in seconds
+COLG_B        Mother participating in activity
+COLG_C        Father participating in activity
+COLH_B        Mother around but not participating
+COLH_C        Father around but not participating
+COLG_I        Grandparent or great-grandparent participating in activity
+COLG_J        Other relative participating in activity
+COLG_K        Other non-relative participating in activity
+COLH_I        Grandparent or great-grandparent around but not participating
+COLH_J        Other relative around but not participating
+COLH_K        Other non-relative around but not participating
+COLF          Where was Child? (40 = babysitter,home-based care,neighbors, 89 = center based care)
+WDAYWEND      Indicates weekday or weekend
+
+The chunk below imports the data, appends both waves into one dataset (after renaming), and fills in some missing values.
+
+```{r}
+# 300-399 is obtaining goods/services (remove?)
+# 919 tv
+T0 <- read.csv("../../../data-cds/time-diary/TD97full.csv") %>%
+  mutate(KID=ER30001*1000 + ER30002,year = 1997) %>%
+  select(KID,year,COLA,COLG_B,COLG_C,COLG_I,COLG_J,COLG_K,COLH_B,COLH_C,COLH_I,COLH_J,COLH_K,COLF,WDAYWEND,DURATION)
+
+
+
+T1 <- read.csv("../../../data-cds/time-diary/TD02full.csv") %>%
+  mutate(KID=ER30001*1000 + ER30002,year = 2002) %>%
+  rename(COLG_B = COLGB_02, COLG_C = COLGC_02 , COLG_I = COLGI_02,COLG_J = COLGJ_02,COLG_K = COLGK_02, COLH_B = COLGH_02, COLH_C = COLHC_02, COLH_I = COLHI_02,COLH_J = COLHJ_02,COLH_K = COLHK_02, WDAYWEND = DIARY_02, DURATION = DUR_02, COLA = COLA_02,COLF = COLF_02) %>%
+  select(KID,year,COLA,COLG_B,COLG_C,COLG_I,COLG_J,COLG_K,COLH_B,COLH_C,COLH_I,COLH_J,COLH_K,COLF,WDAYWEND,DURATION) %>%
+  mutate(COLA = floor(COLA/10)) #<- have to round down
+
+TD <- rbind(T0,T1) %>%
+  mutate(time2ind = COLA!=919) %>% #<-
+  mutate(COLG_B = na_if(COLG_B,9),COLG_C = na_if(COLG_C,9),COLH_B = na_if(COLH_B,9), COLH_C = na_if(COLH_C,9),COLG_I = na_if(COLG_I,9),COLG_J = na_if(COLG_J,9),COLH_K = na_if(COLH_K,9),COLH_I = na_if(COLH_I,9),COLH_J = na_if(COLH_J,9),COLH_K = na_if(COLH_K,9)) #<- code in missing categories
+
+
+
+```
+
+Next, we define a few categories of time use that we will add up for each individual. The comments below describe what each defined variable captures.
+
+```{r}
+
+#create a dummy variable equal to 1 if parents are engaged into the "investment" activity
+
+TD$investment=ifelse(TD$COLA==258|TD$COLA==222|TD$COLA==249|TD$COLA==259|TD$COLA==238|
+                       TD$COLA==339|TD$COLA==411|TD$COLA==488|TD$COLA==501|TD$COLA==504|
+                       TD$COLA==511|TD$COLA==519|TD$COLA==549|TD$COLA==569|
+                       (TD$COLA>=709&TD$COLA<=749)|(TD$COLA>=801&TD$COLA<=889)|
+                       TD$COLA==939|TD$COLA==941|TD$COLA==959|TD$COLA==942|
+                       TD$COLA==943|TD$COLA==962|TD$COLA==967|TD$COLA==979|TD$COLA==963,1,0)
+
+#create an dummy variable equal to 1 if parents are engaged into the "socializing" activity
+TD$social=ifelse(TD$COLA==439|TD$COLA==448|TD$COLA==449|(TD$COLA>=601&TD$COLA<=689)|
+                   TD$COLA==752|TD$COLA==769|TD$COLA==771|TD$COLA==772|TD$COLA==789,1,0)
+
+#create expanded investment and social dummy variables
+
+
+TD$ex_soc=ifelse(TD$COLA==108|TD$COLA==109|TD$COLA==118|TD$COLA==119|TD$COLA==698|TD$COLA==699|TD$COLA==799|TD$social==1,1,0)
+
+
+TD$ex_inv=ifelse(TD$investment==1|
+                   TD$COLA==248|TD$COLA==221|TD$COLA==239|TD$COLA==377|
+                   TD$COLA==484|TD$COLA==510|TD$COLA==512|TD$COLA==599|
+                   TD$COLA==597|TD$COLA==598|TD$COLA==899,1,0)
+
+# a dummy if no parent is around 
+TD$no_parent = (TD$COLG_B==0) & (TD$COLG_C==0) & (TD$COLH_B==0) & (TD$COLH_C==0)
+
+
+# create a formal, non-relative care variable
+TD$formal = TD$no_parent & (TD$COLF==84)
+
+# create a relative care variable
+TD$relative = TD$no_parent & (TD$COLG_I==1 | TD$COLG_J==1 | TD$COLH_I==1 | TD$COLH_J==1)
+
+# create an informal non-relative care variable. Defined as time in non-relative care that does not occur in a formal center and does not occur at school
+
+TD$informal = TD$no_parent & !TD$relative & (TD$COLF!=84) & (TD$COLF!=80) & (TD$COLG_K==1 | TD$COLH_K==1)
+
+```
+
+
+We want a file that for each year and child, contains the total active time for mothers and fathers. Eventually, we also want to look at this disaggregated. We also want to look at total time invested.
+
+When aggregating to a weekly estimate, we'll add a weight of 5 to weekdays, and 2 to weekends.
+
+```{r}
+TD$wght = 2 + 3*TD$WDAYWEND
+```
+
+Now we create the means of active time, measured in hours per week. Our main measures, *tau_m* and *tau_f*, sum up all activity times with parents actively participating. The alternatives *tau_m2* and *tau_f2* do the same thing but exclude TV watching from the list of categories. The other investment categories are defined in the code chunk above.
+
+```{r}
+TD_agg <- TD %>% 
+  group_by(KID,year) %>% 
+  summarise(tau_m = sum(DURATION*wght*COLG_B,na.rm = TRUE)/3600, tau_f = sum(DURATION*wght*COLG_C,na.rm=TRUE)/3600, tau_both = sum(DURATION*wght*(COLG_B + (1-COLG_B)*COLG_C),na.rm=TRUE)/3600, tau_m2 = sum(time2ind*DURATION*wght*COLG_B,na.rm = TRUE)/3600, tau_f2 = sum(time2ind*DURATION*wght*COLG_C,na.rm=TRUE)/3600,
+            tau_m_investment = sum(DURATION*wght*COLG_B*investment,na.rm = TRUE)/3600,  tau_m_social = sum(DURATION*wght*COLG_B*social,na.rm = TRUE)/3600, tau_m_ex_inv = sum(DURATION*wght*COLG_B*ex_inv,na.rm = TRUE)/3600,  tau_m_ex_soc = sum(DURATION*wght*COLG_B*ex_soc,na.rm = TRUE)/3600, 
+            tau_f_investment = sum(DURATION*wght*COLG_C*investment,na.rm = TRUE)/3600,  tau_f_social = sum(DURATION*wght*COLG_C*social,na.rm = TRUE)/3600, tau_f_ex_inv = sum(DURATION*wght*COLG_C*ex_inv,na.rm = TRUE)/3600, tau_f_ex_soc = sum(DURATION*wght*COLG_C*ex_soc,na.rm = TRUE)/3600,
+            tau_both_investment = sum(DURATION*wght*(COLG_B + (1-COLG_B)*COLG_C)*investment,na.rm = TRUE)/3600,  tau_both_social = sum(DURATION*wght*(COLG_B + (1-COLG_B)*COLG_C)*social,na.rm = TRUE)/3600, tau_both_ex_inv = sum(DURATION*wght*(COLG_B + (1-COLG_B)*COLG_C)*ex_inv,na.rm = TRUE)/3600, tau_both_ex_soc = sum(DURATION*wght*(COLG_B + (1-COLG_B)*COLG_C)*ex_soc,na.rm = TRUE)/3600,
+            formal = sum(DURATION*wght*formal,na.rm = TRUE)/3600,informal = sum(DURATION*wght*informal,na.rm = TRUE)/3600,relative = sum(DURATION*wght*relative,na.rm = TRUE)/3600,)
+
+```
+
+Now let's write this file. 
+
+```{r}
+write.csv(TD_agg,"../../../data-cds/time-diary/ActiveTimePanel.csv")
+```
+
+Below is a graph to show the relationship between the types of care use.
+
+```{r}
+
+g <- TD_agg %>%
+  ungroup() %>%
+  mutate(rel_cut = cut(relative,breaks = c(-1,0,5,10,15,20,Inf))) %>%
+  select(rel_cut,formal,informal) %>%
+  pivot_longer(-rel_cut) %>%
+  group_by(rel_cut,name) %>%
+  summarize(m = mean(value),se = sqrt(var(value)/n())) %>%
+  ggplot(aes(x=rel_cut,y=m,ymin=m-1.96*se,ymax=m+1.96*se)) + geom_point() + geom_errorbar(width=0.2) + facet_grid(. ~ name) + xlab("Hours of Relative Care") + ylab("Hours of Care") + theme_minimal()
+
+ggsave("../../../figures/relative-care_vs_formal-informal.png",g)
+
+print(g)
+```
+

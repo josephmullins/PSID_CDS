@@ -1,0 +1,160 @@
+****** PSID DATA CENTER ************************* 
+****** Variable labels for JobID = 279468 ******* 
+
+Variable    Labels
+
+V1         RELEASE NUMBER                          
+V3         FAMILY NUMBER                           
+V37        YRLY FOOD BILL                          
+V441       RELEASE NUMBER                          
+V442       1969 INT NUMBER                         
+V500       $  FOOD USD HOME                        
+V1101      RELEASE NUMBER                          
+V1102      1970 INT #                              
+V1175      $  FOOD USED HOME                       
+V1801      RELEASE NUMBER                          
+V1802      71 ID NO.                               
+V1876      $  FOOD USED HOME                       
+V2401      RELEASE NUMBER                          
+V2402      1972 INT #                              
+V2476      $  FOOD USED HOME                       
+V3401      RELEASE NUMBER                          
+V3402      1974 ID NUMBER                          
+V3441      ANN FOOD AT HOME                        
+V3801      RELEASE NUMBER                          
+V3802      1975 INT #                              
+V3841      $  FOOD USED HOME                       
+V4301      RELEASE NUMBER                          
+V4302      1976 ID NUMBER                          
+V4354      ANN FOOD EXPENDITRG13G15                
+V5201      RELEASE NUMBER                          
+V5202      1977 ID                                 
+V5271      ANNUAL FOOD$  EXCL FDSTMP               
+V5701      RELEASE NUMBER                          
+V5702      1978 ID                                 
+V5770      ANN FD $  EXCL FDSTMP                   
+V6301      RELEASE NUMBER                          
+V6302      1979 ID                                 
+V6376      ANN FD $  EXCL FDSTMP                   
+V6901      RELEASE NUMBER                          
+V6902      1980 INTERVIEW NUMBER                   
+V6972      ANN FD $  EXCL FD STMP                  
+V7501      RELEASE NUMBER                          
+V7502      1981 INTERVIEW NUMBER                   
+V7564      ANN FD $ $  EXC FD STMP                 
+V8201      RELEASE NUMBER                          
+V8202      1982 INTERVIEW NUMBER                   
+V8256      ANN FOOD COST EXC FD ST                 
+V8801      RELEASE NUMBER                          
+V8802      1983 INTERVIEW NUMBER                   
+V8864      ANN FOOD COST EXC FD ST                 
+V10001     RELEASE NUMBER                          
+V10002     1984 INTERVIEW NUMBER                   
+V10235     ANN FOOD COST EXC FD ST                 
+V11101     RELEASE NUMBER                          
+V11102     1985 INTERVIEW NUMBER                   
+V11375     ANN FOOD COST EXC FD ST                 
+V12501     RELEASE NUMBER                          
+V12502     1986 INTERVIEW NUMBER                   
+V12774     ANN FOOD COST EXC FD ST                 
+V13701     RELEASE NUMBER                          
+V13702     1987 INTERVIEW NUMBER                   
+V13876     ANN FOOD COST EXC FD ST                 
+V17701     RELEASE NUMBER                          
+V17702     1990 INTERVEW NUMBER                    
+V17807     ANN FD COST-EXC FD ST                   
+V19001     RELEASE NUMBER                          
+V19002     1991 INTERVIEW NUMBER                   
+V19107     ANN FD COST-HOME                        
+V20301     RELEASE NUMBER                          
+V20302     1992 INTERVIEW NUMBER                   
+V20407     ANN FD COST-HOME                        
+V21601     RELEASE NUMBER                          
+V21602     1993 INTERVIEW NUMBER                   
+V21707     ANNUAL COST FOOD-HOME (F15/F17/F19/F21) 
+ER2001     RELEASE NUMBER                          
+ER2002     1994 INTERVIEW #                        
+ER3077     F14 BUY FOOD NOT FD STMP                
+ER3078     F15 $SPENT NOT FDSTMP AMT               
+ER3085     F19 AMT SPENT ON FOOD                   
+ER3086     F19 $ SPENT ON FOOD PER                 
+ER5001     RELEASE NUMBER                          
+ER5002     1995 INTERVIEW #                        
+ER6076     F14 BUY FOOD NOT FD STMP                
+ER6077     F15 $SPENT NOT FDSTMP AMT               
+ER6084     F19 AMT SPENT ON FOOD                   
+ER6085     F19 $ SPENT ON FOOD PER                 
+ER7001     RELEASE NUMBER                          
+ER7002     1996 INTERVIEW #                        
+ER8173     F14 BUY FOOD NOT FD STMP                
+ER8174     F15 $SPENT NOT FDSTMP AMT               
+ER8181     F19 AMT SPENT ON FOOD                   
+ER8182     F19 $ SPENT ON FOOD PER                 
+ER10001    RELEASE NUMBER                          
+ER10002    1997 INTERVIEW #                        
+ER11067    F14 BUY FOOD NOT FD STMP                
+ER11068    F15 $SPENT NOT FDSTMP AMT               
+ER11076    F19 AMT SPENT ON FOOD                   
+ER11077    F19 $ SPENT ON FOOD PER                 
+ER13001    RELEASE NUMBER                          
+ER13002    1999 FAMILY INTERVIEW (ID) NUMBER       
+ER14287    F17 WTR BUY FOOD TO USE AT HOME         
+ER14288    F18 REPORTED COST OF FOOD AT HOME       
+ER14295    F22 REPORTED COST OF FOOD AT HOME       
+ER14296    F22 COST OF FOOD AT HOME PER            
+ER17001    RELEASE NUMBER                          
+ER17002    2001 FAMILY INTERVIEW (ID) NUMBER       
+ER18420    F17 WTR BUY FOOD TO USE AT HOME         
+ER18421    F18 REPORTED COST OF FOOD AT HOME       
+ER18431    F22 REPORTED COST OF FOOD AT HOME       
+ER18432    F22 COST OF FOOD AT HOME PER            
+ER21001    RELEASE NUMBER                          
+ER21002    2003 FAMILY INTERVIEW (ID) NUMBER       
+ER21685    F17 WTR BUY FOOD TO USE AT HOME         
+ER21686    F18 REPORTED COST OF FOOD AT HOME       
+ER21696    F22 REPORTED COST OF FOOD AT HOME       
+ER21697    F22 COST OF FOOD AT HOME PER            
+ER25001    RELEASE NUMBER                          
+ER25002    2005 FAMILY INTERVIEW (ID) NUMBER       
+ER25687    F17 WTR BUY FOOD TO USE AT HOME         
+ER25688    F18 REPORTED COST OF FOOD AT HOME       
+ER25698    F22 REPORTED COST OF FOOD AT HOME       
+ER25699    F22 COST OF FOOD AT HOME PER            
+ER36001    RELEASE NUMBER                          
+ER36002    2007 FAMILY INTERVIEW (ID) NUMBER       
+ER36705    F17 WTR BUY FOOD TO USE AT HOME         
+ER36706    F18 REPORTED COST OF FOOD AT HOME       
+ER36716    F22 REPORTED COST OF FOOD AT HOME       
+ER36717    F22 COST OF FOOD AT HOME PER            
+ER42001    RELEASE NUMBER                          
+ER42002    2009 FAMILY INTERVIEW (ID) NUMBER       
+ER42711    F17 WTR BUY FOOD TO USE AT HOME         
+ER42712    F18 REPORTED COST OF FOOD AT HOME       
+ER42722    F22 REPORTED COST OF FOOD AT HOME       
+ER42723    F22 COST OF FOOD AT HOME PER            
+ER47301    RELEASE NUMBER                          
+ER47302    2011 FAMILY INTERVIEW (ID) NUMBER       
+ER48027    F17 WTR BUY FOOD TO USE AT HOME         
+ER48028    F18 REPORTED COST OF FOOD AT HOME       
+ER48038    F22 REPORTED COST OF FOOD AT HOME       
+ER48039    F22 COST OF FOOD AT HOME PER            
+ER53001    RELEASE NUMBER                          
+ER53002    2013 FAMILY INTERVIEW (ID) NUMBER       
+ER53724    F17 WTR BUY FOOD TO USE AT HOME         
+ER53725    F18 REPORTED COST OF FOOD AT HOME       
+ER53735    F22 REPORTED COST OF FOOD AT HOME       
+ER53736    F22 COST OF FOOD AT HOME PER            
+ER60001    RELEASE NUMBER                          
+ER60002    2015 FAMILY INTERVIEW (ID) NUMBER       
+ER60739    F17 WTR BUY FOOD TO USE AT HOME         
+ER60740    F18 REPORTED COST OF FOOD AT HOME       
+ER60750    F22 REPORTED COST OF FOOD AT HOME       
+ER60751    F22 COST OF FOOD AT HOME PER            
+ER66001    RELEASE NUMBER                          
+ER66002    2017 FAMILY INTERVIEW (ID) NUMBER       
+ER66786    F17 WTR BUY FOOD TO USE AT HOME         
+ER66787    F18 REPORTED COST OF FOOD AT HOME       
+ER66797    F22 REPORTED COST OF FOOD AT HOME       
+ER66798    F22 COST OF FOOD AT HOME PER            
+
+*** End of labels ******************************* 

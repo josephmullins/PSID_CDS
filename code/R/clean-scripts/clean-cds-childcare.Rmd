@@ -1,0 +1,261 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# CDS: Child Care
+
+This script collects data on childcare expenditures, prices, and types of arrangement from the CDS.
+
+## Child care Expenditures from CDS
+In 2002/2007, the interview distinguishes between weekday and weekend care options (which the 1997 wave does not). Since there were very few responses to the weekend care question, we are just using weekday care. In addition, since there were very few responses given beyond the 1st care option, we are only using those data.
+
+For convenience the 1997 variables are that we use are tabulated below.
+
+Vname      Variable Description
+---------- -----------------------------------------
+ER30001    1968 INTERVIEW NUMBER                   
+ER30002    PERSON NUMBER                         68
+ER33401    1997 INTERVIEW NUMBER                   
+ER33402    SEQUENCE NUMBER                       97
+ER33403    RELATION TO HEAD                      97
+CHREL97    PCG CHILD FILE RELEASE NUMBER 97        
+Q1H14      MOST USED ARRNGMNT 97                   
+Q1H18      USUAL ARRNGMNT-DAYS PER WEEK 97         
+Q1H19      USUAL ARRNGMNT-HRS PER WEEK 97          
+Q1H21      USUAL ARRNGMNT-COST 97                  
+Q1H21A     USUAL ARRNGMNT-PAYMENT RATE 97          
+Q1H22      USUAL ARRNGMNT-OTHER CHILDREN 97        
+Q1H22A     USUAL ARRNGMNT-# OF OTHER CHILDREN 97   
+
+For now, let's just create data on expenditures for each year. In 1997, the cost was reported in one of several units: (1) hourly (2) daily (3) weekly (4) fortnightly (5) monthly (6) annual. We standardize this into a weekly measure. We also derive an hourly price using the weekly cost and hours per week, as well as an indicator for the type of arrangement being used.
+
+```{r}
+Ch <- read.csv("../../../data-cds/childcare/Childcare.csv") %>% #<- read in the data
+  mutate(KID = ER30001*1000 + ER30002) %>%
+  mutate(Q1H21 = case_when(Q1H21<9998 ~ Q1H21),Q1H18 = case_when(Q1H18<8 ~ Q1H18),Q1H19=case_when(Q1H19<998 ~ Q1H19),Q1H21A=case_when(Q1H21A<8 ~ Q1H21A)) %>% #<- fill in missing values 
+  mutate(chcareExp97 = case_when(Q1H21A==1 ~ Q1H21*Q1H19, #, #<- cost reported hourly
+                                 Q1H21A==2 ~ Q1H21*Q1H18,  #<- reported daily
+                                 Q1H21A==4 ~ Q1H21/2, #<- reported fortnightly
+                                 Q1H21A==5 ~ Q1H21/(52/12), #<- reported monthly
+                                 Q1H21A==6 ~ Q1H21/52, #<-reported annually
+                                 TRUE ~ Q1H21)) %>% #<- reported weekly
+  mutate(Price97 = chcareExp97/Q1H19) %>% #<- derive price
+  mutate(Arrange97 = case_when(Q1H14==1 | Q1H14==2 | Q1H14==4 ~ "Relative",
+                               Q1H14==3 ~ "Non Relative",
+                               Q1H14==5 ~ "Family Center",
+                               Q1H14==7 ~ "Care Center",
+                               Q1H14==8 ~ "Before/After School Prog."))
+
+```
+
+The chunk of code below does the same thing for the 2002 PCG interview. For reference, here are the variables.
+
+Vname      Variable Description
+---------- ----------------------------------------
+ER33601    2001 INTERVIEW NUMBER                   
+ER33602    SEQUENCE NUMBER                       01
+ER33603    RELATION TO HEAD                      01
+CHREL      PCG CHILD FILE RELEASE NUMBER 02        
+Q21C12     WKDAY: CARE USED MOST 02                
+Q21C13     WKDAY: HRS PER WK 02                    
+Q21C15A    WKDAY: COST OF CARE - AMT 02            
+Q21C15B    WKDAY: COST OF CARE - UNIT 02           
+ER33901    2007 INTERVIEW NUMBER                   
+ER33902    SEQUENCE NUMBER                       07
+ER33903    RELATION TO HEAD                      07
+PCHREL07   PCG CHILD FILE RELEASE NUMBER 07        
+Q31C12     WKDAY: CARE USED MOST 07                
+Q31C13     WKDAY: HRS PER WK 07                    
+Q31C15A    WKDAY: COST OF CARE - AMT 07            
+Q31C15B    WKDAY: COST OF CARE - UNIT 07           
+
+Unlike in 1997, there is no variable that reports the number of days per week. Therefore, to impute the weekly cost when a daily rate is reported, we use the average number of hours per day reported among those that use an hourly rate, and combine this with the hours per week report to get the number of days.
+
+From 1997, we calculate the average number of hours per day as:
+```{r}
+hours_per_day <- Ch %>% filter(Q1H18>0) %>% summarise(mean(Q1H19/Q1H18,na.rm = TRUE))
+hours_per_day[1,1]
+```
+So we get that childcare is used on average for about 3.1 hours per day. The imputed number of days per week is therefore
+\[Days/Week = (Hours/Week)/(Hours/Day) = (Hours/Week)/3.1\]
+
+
+```{r}
+
+Ch <- Ch %>%
+  mutate(Q21C15A = case_when(Q21C15A<9998 ~ Q21C15A),Q21C13=case_when(Q21C13<998 ~ Q21C13),Q21C15B=case_when(Q21C15B<8 ~ Q21C15B)) %>% #<- fill in missing values 
+  mutate(chcareExp02 = case_when(Q21C15B==1 ~ Q21C15A*Q21C13, #<- cost reported hourly
+                                 Q21C15B==2 ~ Q21C15A*Q21C13/3.1, #<- reported daily?
+                                 Q21C15B==4 ~ Q21C15A/2, #<- reported fortnightly
+                                 Q21C15B==5 ~ Q21C15A/(52/12), #<- reported monthly
+                                 Q21C15B==6 ~ Q21C15A/52,#<-reported annually
+                                 TRUE ~ Q21C15A)) %>% #<- reported weekly
+  mutate(Price02 = chcareExp02/Q21C13) %>% #<- derive hourly price
+  mutate(Arrange02 = case_when(Q21C12==1 | Q21C12==2  ~ "Relative",
+                               Q21C12==3 ~ "Non Relative",
+                               Q21C12==5 ~ "Family Center",
+                               Q21C12==7 ~ "Care Center",
+                               Q21C12==8 ~ "Before/After School Prog."))
+
+```
+
+
+One issue is that in 1997, there is a question about whether the arrangement covers other children, and the number. It seems that often it does. It doesn't appear that the same question is asked in 2002/2007. Currently we are not attempting to normalize by the number of children covered in the arrangement.
+
+### Collecting Data for Younger Children
+In addition, for children younger than 5, the data were collected somewhat differently in 1997. These were done as part of retrospective history of child care use. To use these data we first have to clean the history to find current arrangements. Then we put all the data together. The variables are:
+
+Vname      Variable Description
+---------- ----------------------------------------
+Q1H1Y      AGE 1ST CARED BY SOMEONE ELSE (YRS) 97  
+Q1H1M      AGE 1ST CARED BY SOMEONE ELSE (MTHS) 97 
+Q1H1A      BEFORE/AFTER K'GARTEN 97                
+Q1H2_1     ARRNGMNT #1-REASON 97                   
+Q1H3_1Y    ARRNGMNT #1-AGE START (YRS) 97          
+Q1H3_1M    ARRNGMNT #1-AGE START (MTHS) 97         
+Q1H4_1     ARRNGMNT #1-TYPE 97                     
+Q1H5_1     ARRNGMNT #1-DAYS PER WEEK 97            
+Q1H6_1     ARRNGMNT #1-HRS PER WEEK 97             
+Q1H7_1     ARRNGMNT #1-COST 97                     
+Q1H7A_1    ARRNGMNT #1- PAYMENT RATE 97            
+Q1H7B_1    ARRNGMNT #1-OTHER CHILDREN 97           
+Q1H7C_1    ARRNGMNT #1-# OF OTHER CHILDREN 97      
+Q1H8_1Y    ARRNGMNT #1-AGE STOP (YRS) 97           
+Q1H8_1M    ARRNGMNT #1-AGE STOP (MTHS) 97          
+Q1H9_1     ARRNGMNT #1-REASON STOP 97              
+Q1H10_1    ARRNGMNT #1-OTHER ARRNGMNTS 97     
+
+
+```{r}
+     
+# this function calculates the weekly rate given the data
+CalcRate <- function(varname,rate,cost,days,hours,Ch) {
+  I_miss <- Ch[,cost]>=99998
+  Ch[I_miss,cost] <- NA
+  Ch[,varname] <- Ch[,cost]
+  # Case 0: Weekly
+  Ic = (Ch[,rate]==3)
+  Ch[Ic,varname] = Ch[Ic,cost]
+  # Case 1: Hourly
+  Ic = (Ch[,rate]==1)
+  Ch[Ic,varname] = Ch[Ic,cost]*Ch[Ic,hours]
+  # Case 2: Daily
+  Ic = (Ch[,rate]==2)
+  Ch[Ic,varname] = Ch[Ic,cost]*Ch[Ic,days]
+  # Case 4: Fortnightly
+  Ic = (Ch[,rate]==4)
+  Ch[Ic,varname] = Ch[Ic,cost]/2
+  # Case 5: Monthly
+  Ic = (Ch[,rate]==5)
+  Ch[Ic,varname] = Ch[Ic,cost]/4
+  # Case 6: Annual
+  Ic = (Ch[,rate]==6)
+  Ch[Ic,varname] = Ch[Ic,cost]/52
+  Ch
+}
+
+
+ch_hist <- readxl::read_excel("../../../data-cds/childcare/Childcare_history.xlsx") %>%
+  mutate(KID = ER30001*1000 + ER30002)
+
+
+for (i in seq(1,8)) {
+  vname = paste("exp97_",i,sep="")
+  rate = paste("Q1H7A_",i,sep="")
+  cost = paste("Q1H7_",i,sep="")
+  days = paste("Q1H5_",i,sep="")
+  hours = paste("Q1H6_",i,sep="")
+  # replace missing hours with NA:
+  ch_hist[,hours] = na_if(ch_hist[,hours],998)
+  ch_hist[,hours] = na_if(ch_hist[,hours],999)
+  ch_hist <- CalcRate(vname,rate,cost,days,hours,ch_hist)
+}
+
+ch_hist$Arrange <- -1
+ch_hist$Freq <- 0
+ch_hist$Exp97 <- -1
+ch_hist$Hours97 <- -1
+ch_hist$Exp97Tot <- 0
+ch_hist$Hours97Tot <- 0
+
+for (i in seq(1,nrow(ch_hist))) {
+  if (ch_hist[i,"Q1H1Y"]==0) {
+    ch_hist[i,"Arrange"] = 0
+  }
+  else {
+    for (j in seq(1,8)) {
+      if (ch_hist[i,paste("Q1H8_",j,"Y",sep="")]==96) {
+        freq_var = paste("Q1H5_",j,sep="")
+        ch_hist[i,"Exp97Tot"] = ch_hist[i,"Exp97Tot"] + ch_hist[i,paste("exp97_",j,sep="")]
+        ch_hist[i,"Hours97Tot"] = ch_hist[i,"Hours97Tot"] + ch_hist[i,paste("Q1H6_",j,sep="")]
+        days_per_week = ch_hist[i,freq_var]
+        if (days_per_week>ch_hist[i,"Freq"] & days_per_week<8) {
+          ch_hist[i,"Arrange"] = ch_hist[i,paste("Q1H4_",j,sep="")]
+          ch_hist[i,"Freq"] = ch_hist[i,freq_var]
+          ch_hist[i,"Exp97"] = ch_hist[i,paste("exp97_",j,sep="")]
+          ch_hist[i,"Hours97"] = ch_hist[i,paste("Q1H6_",j,sep="")]
+        }
+      }
+    }
+  }
+}
+
+# now code up arrangements:
+# - Childcare arrangements
+ch_hist$Arrange97 <- NA
+I1 <- ch_hist$Arrange==0
+ch_hist$Arrange97[I1] <- "Never Cared for By Other"
+I1 <- is.na(ch_hist$Arrange)
+ch_hist$Arrange97[I1] <- "No Detectable Arrangement"
+I1 <- ch_hist$Arrange==1 | ch_hist$Arrange==3
+ch_hist$Arrange97[I1] <- "Relative"
+I1 <- ch_hist$Arrange==2 | ch_hist$Arrange==4
+ch_hist$Arrange97[I1] <- "Non Relative"
+I1 <- ch_hist$Arrange==5
+ch_hist$Arrange97[I1] <- "Head Start"
+I1 <- ch_hist$Arrange==6
+ch_hist$Arrange97[I1] <- "Care Center"
+I1 <- ch_hist$Arrange==7
+ch_hist$Arrange97[I1] <- "Before/After School Prog."
+I1 <- ch_hist$Arrange==8
+ch_hist$Arrange97[I1] <- "Self Care"
+I1 <- ch_hist$Arrange>=97
+ch_hist$Arrange97[I1] <- "Unkown Type"
+
+# code a more basic breakdown:
+ch_hist$CaretypeBroad <- "External"
+ch_hist$CaretypeBroad[ch_hist$Arrange==0] <- "Never Care for by Other"
+ch_hist$CaretypeBroad[is.na(ch_hist$Arrange)] <- "No Current Detectable"
+  
+ch_hist %>% select(KID,CaretypeBroad,Arrange97,Exp97Tot,Hours97Tot,Arrange,Hours97,Exp97) %>%
+  mutate(Arrange = na_if(Arrange,-1),Exp97 = na_if(Exp97,-1),Hours97=na_if(Hours97,-1)) %>%
+  write.csv("../../../data-cds/childcare/ChildcarePreK97.csv")
+
+```
+
+Next we merge these data with the rest to create a panel.
+
+```{r}
+C97 <- Ch[,c("KID","chcareExp97","Arrange97","Price97")]
+C97$year <- 1997
+C97 <- rename(C97,chcare = chcareExp97,Arrange = Arrange97, Price = Price97)
+# now load preK data and merge, replacing the child care value with this value when available
+C97 <- ch_hist %>%
+  select(KID,Exp97Tot) %>%
+  mutate(Exp97Tot = na_if(Exp97Tot,9998)) %>%
+  merge(C97) %>%
+  mutate(chcare = case_when(Exp97Tot>0 ~ Exp97Tot,TRUE ~ chcare)) %>%
+  select(-Exp97Tot)
+
+
+C02 <- Ch[,c("KID","chcareExp02","Arrange02","Price02")]
+C02$year <- 2002
+C02 <- rename(C02,chcare = chcareExp02,Arrange = Arrange02, Price = Price02)
+
+Cpanel <- rbind(C97,C02) 
+
+write.csv(Cpanel,"../../../data-cds/childcare/ChildCarePanel.csv")
+
+```
+
