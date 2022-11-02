@@ -1,0 +1,164 @@
+****** PSID DATA CENTER ************************* 
+****** Variable labels for JobID = 278731 ******* 
+
+Variable    Labels
+
+ER30000    RELEASE NUMBER                          
+ER30001    1968 INTERVIEW NUMBER                   
+ER30002    PERSON NUMBER                         68
+ER30003    RELATIONSHIP TO HEAD                  68
+ER30010    YRS SCHL COMPL                        68
+ER30043    1970 INTERVIEW NUMBER                   
+ER30044    SEQUENCE NUMBER                       70
+ER30045    RELATIONSHIP TO HEAD                  70
+ER30052    GRADE FINISHED                        70
+ER30067    1971 INTERVIEW NUMBER                   
+ER30068    SEQUENCE NUMBER                       71
+ER30069    RELATIONSHIP TO HEAD                  71
+ER30076    GRADE FINISHED                        71
+ER30091    1972 INTERVIEW NUMBER                   
+ER30092    SEQUENCE NUMBER                       72
+ER30093    RELATIONSHIP TO HEAD                  72
+ER30100    GRADE FINISHED                        72
+ER30117    1973 INTERVIEW NUMBER                   
+ER30118    SEQUENCE NUMBER                       73
+ER30119    RELATIONSHIP TO HEAD                  73
+ER30126    GRADE FINISHED                        73
+ER30138    1974 INTERVIEW NUMBER                   
+ER30139    SEQUENCE NUMBER                       74
+ER30140    RELATIONSHIP TO HEAD                  74
+ER30147    HIGHEST GRADE                         74
+ER30160    1975 INTERVIEW NUMBER                   
+ER30161    SEQUENCE NUMBER                       75
+ER30162    RELATIONSHIP TO HEAD                  75
+ER30169    HIGHEST GRAD FINISHED                 75
+ER30188    1976 INTERVIEW NUMBER                   
+ER30189    SEQUENCE NUMBER                       76
+ER30190    RELATIONSHIP TO HEAD                  76
+ER30197    HIGHEST GRADE FINISH                  76
+ER30217    1977 INTERVIEW NUMBER                   
+ER30218    SEQUENCE NUMBER                       77
+ER30219    RELATIONSHIP TO HEAD                  77
+ER30226    HIGHEST GRADE FINISH                  77
+ER30246    1978 INTERVIEW NUMBER                   
+ER30247    SEQUENCE NUMBER                       78
+ER30248    RELATIONSHIP TO HEAD                  78
+ER30255    HIGHEST GRADE FINISH                  78
+ER30283    1979 INTERVIEW NUMBER                   
+ER30284    SEQUENCE NUMBER                       79
+ER30285    RELATIONSHIP TO HEAD                  79
+ER30296    K49 EDUCATION                         79
+ER30313    1980 INTERVIEW NUMBER                   
+ER30314    SEQUENCE NUMBER                       80
+ER30315    RELATIONSHIP TO HEAD                  80
+ER30326    EDUCATION ATTAINED                    80
+ER30343    1981 INTERVIEW NUMBER                   
+ER30344    SEQUENCE NUMBER                       81
+ER30345    RELATIONSHIP TO HEAD                  81
+ER30356    COMPLETED EDUC                        81
+ER30373    1982 INTERVIEW NUMBER                   
+ER30374    SEQUENCE NUMBER                       82
+ER30375    RELATIONSHIP TO HEAD                  82
+ER30384    COMPLETED EDUCATION                   82
+ER30399    1983 INTERVIEW NUMBER                   
+ER30400    SEQUENCE NUMBER                       83
+ER30401    RELATIONSHIP TO HEAD                  83
+ER30413    COMPLETED EDUCATION                   83
+ER30429    1984 INTERVIEW NUMBER                   
+ER30430    SEQUENCE NUMBER                       84
+ER30431    RELATIONSHIP TO HEAD                  84
+ER30443    COMPLETED EDUC                        84
+ER30463    1985 INTERVIEW NUMBER                   
+ER30464    SEQUENCE NUMBER                       85
+ER30465    RELATIONSHIP TO HEAD                  85
+ER30478    COMPLETED EDUCATION                   85
+ER30498    1986 INTERVIEW NUMBER                   
+ER30499    SEQUENCE NUMBER                       86
+ER30500    RELATIONSHIP TO HEAD                  86
+ER30513    COMPLETED EDUCATION                   86
+ER30535    1987 INTERVIEW NUMBER                   
+ER30536    SEQUENCE NUMBER                       87
+ER30537    RELATIONSHIP TO HEAD                  87
+ER30549    COMPLETED EDUCATION                   87
+ER30570    1988 INTERVIEW NUMBER                   
+ER30571    SEQUENCE NUMBER                       88
+ER30572    RELATION TO HEAD                      88
+ER30584    COMPLETED EDUC-IND                    88
+ER30606    1989 INTERVIEW NUMBER                   
+ER30607    SEQUENCE NUMBER                       89
+ER30608    RELATION TO HEAD                      89
+ER30620    COMPLETED EDUC-IND                    89
+ER30642    1990 INTERVIEW NUMBER                   
+ER30643    SEQUENCE NUMBER                       90
+ER30644    RELATION TO HEAD                      90
+ER30657    COMPLETED EDUC-IND                    90
+ER30689    1991 INTERVIEW NUMBER                   
+ER30690    SEQUENCE NUMBER                       91
+ER30691    RELATION TO HEAD                      91
+ER30703    COMPLETED EDUC-IND                    91
+ER30733    1992 INTERVIEW NUMBER                   
+ER30734    SEQUENCE NUMBER                       92
+ER30735    RELATION TO HEAD                      92
+ER30748    COMPLETED EDUCATION                   92
+ER30806    1993 INTERVIEW NUMBER                   
+ER30807    SEQUENCE NUMBER                       93
+ER30808    RELATION TO HEAD                      93
+ER30820    YRS COMPLETED EDUCATION               93
+ER33101    1994 INTERVIEW NUMBER                   
+ER33102    SEQUENCE NUMBER                       94
+ER33103    RELATION TO HEAD                      94
+ER33115    YRS COMPLETED EDUC                    94
+ER33201    1995 INTERVIEW NUMBER                   
+ER33202    SEQUENCE NUMBER                       95
+ER33203    RELATION TO HEAD                      95
+ER33215    YEARS COMPLETED EDUCATION             95
+ER33301    1996 INTERVIEW NUMBER                   
+ER33302    SEQUENCE NUMBER                       96
+ER33303    RELATION TO HEAD                      96
+ER33315    YEARS COMPLETED EDUCATION             96
+ER33401    1997 INTERVIEW NUMBER                   
+ER33402    SEQUENCE NUMBER                       97
+ER33403    RELATION TO HEAD                      97
+ER33415    YEARS COMPLETED EDUCATION             97
+ER33501    1999 INTERVIEW NUMBER                   
+ER33502    SEQUENCE NUMBER                       99
+ER33503    RELATION TO HEAD                      99
+ER33516    YEARS COMPLETED EDUCATION             99
+ER33601    2001 INTERVIEW NUMBER                   
+ER33602    SEQUENCE NUMBER                       01
+ER33603    RELATION TO HEAD                      01
+ER33616    YEARS COMPLETED EDUCATION             01
+ER33701    2003 INTERVIEW NUMBER                   
+ER33702    SEQUENCE NUMBER                       03
+ER33703    RELATION TO HEAD                      03
+ER33716    YEARS COMPLETED EDUCATION             03
+ER33801    2005 INTERVIEW NUMBER                   
+ER33802    SEQUENCE NUMBER                       05
+ER33803    RELATION TO HEAD                      05
+ER33817    YEARS COMPLETED EDUCATION             05
+ER33901    2007 INTERVIEW NUMBER                   
+ER33902    SEQUENCE NUMBER                       07
+ER33903    RELATION TO HEAD                      07
+ER33917    YEARS COMPLETED EDUCATION             07
+ER34001    2009 INTERVIEW NUMBER                   
+ER34002    SEQUENCE NUMBER                       09
+ER34003    RELATION TO HEAD                      09
+ER34020    YEARS COMPLETED EDUCATION             09
+ER34101    2011 INTERVIEW NUMBER                   
+ER34102    SEQUENCE NUMBER                       11
+ER34103    RELATION TO HEAD                      11
+ER34119    YEARS COMPLETED EDUCATION             11
+ER34201    2013 INTERVIEW NUMBER                   
+ER34202    SEQUENCE NUMBER                       13
+ER34203    RELATION TO HEAD                      13
+ER34230    YEARS COMPLETED EDUCATION             13
+ER34301    2015 INTERVIEW NUMBER                   
+ER34302    SEQUENCE NUMBER                       15
+ER34303    RELATION TO HEAD                      15
+ER34349    YEARS COMPLETED EDUCATION             15
+ER34501    2017 INTERVIEW NUMBER                   
+ER34502    SEQUENCE NUMBER                       17
+ER34503    RELATION TO REFERENCE PERSON          17
+ER34548    YEARS COMPLETED EDUCATION             17
+
+*** End of labels ******************************* 
