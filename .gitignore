@@ -12,3 +12,5 @@ data-cds/childcare/ChildcarePreK97.csv
 .RData
 .Ruserdata
 data-main/labor-market/earnings-panel.csv
+
+data-cds/time-diary/ActiveTimePanel.csv
