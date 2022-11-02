@@ -57,6 +57,14 @@ G %>%
   summarize(h = max(earn_head,na.rm = TRUE),s=max(earn_spouse,na.rm = TRUE)) %>%
   print.AsIs()
 
+G %>%
+  group_by(year) %>%
+  summarize(h = mean(earn_head,na.rm = TRUE),s=mean(earn_spouse,na.rm = TRUE)) %>%
+  print.AsIs()
+  ggplot(aes(x=as.integer(year),y=s)) + geom_line()
+
+
+
 # A line of code here to show some differences with the old file for Maddi to look into:
 D <- read.csv("../../../PSID_RAW/LaborFile.csv") %>%
   merge(G) %>%
