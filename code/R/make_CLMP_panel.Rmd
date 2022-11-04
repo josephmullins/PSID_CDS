@@ -4,7 +4,7 @@ output: html_notebook
 ---
 
 # Creating a Panel Dataset
-In the previous sections we cleaned the PSID data that we wish to use for the main analysis. In this section we construct a panel of observations built around mothers in the PSID, wherein we apply a number of sample restrictions.
+This script uses the cleaned PSID and CDS data to construct a panel of observations built around mothers in the PSID, wherein we apply a number of sample restrictions.
 
 ## Fertility History Panel
 
@@ -31,21 +31,31 @@ The chunk below loads these data and applies some sample restrictions:
  - Drop women with missing birth year information
  - Drop women with missing information in their childbirth history
  - Keep only women whose children appear in the CDS
- 
-For the last sample restriction, we use a non-local file that indexes each mother and each child of theirs that appears in the CDS called "MotherIndex.csv".
+
+First, we use one of the cleaned CDS files to identify the children in the CDS.
 
 ```{r}
-cds <- read.csv("~/Dropbox/PSID_CDS/PSID_RAW/MotherIndex.csv") %>% select(c("MID")) %>% unique() #<- this file contains all the women whose children end up in the CDS
+KID <- read.csv("../../data-cds/assessments/AssessmentPanel.csv") %>%
+  select(KID) %>%
+  unique()
 
-C = read.csv("~/Dropbox/PSID_CDS/PSID_RAW/Childbirth.csv") %>% mutate(X = NULL) %>% #<- load childbirth file
-  filter(CAH5==2)  %>% #keep only women
-  filter(CAH10!=0) %>% # drop women who have no children according to this file
-  filter(CAH7!=9998) %>% # drop women with missing birth year info
+```
+
+Next, we link them with their mothers using the childbirth and adoption history file, and apply the above sample restrictions.
+
+```{r}
+
+C = read.csv("../../data-main/childbirth/Childbirth.csv") %>% 
+  mutate(X = NULL) %>% #<- load childbirth file
+  #filter(CAH5==2)  %>% #keep only women
+  #filter(CAH10!=0) %>% # drop women who have no children according to this file
+  #filter(CAH7!=9998) %>% # drop women with missing birth year info
   mutate(MID = CAH3*1000 + CAH4, KID = CAH10*1000 + CAH11) %>% #<- create identifier for mother and child
+  select(KID) %>%
+  unique() %>%
+  inner_join(KID) #%>% #<- keep only women whose children are in the CDS
   group_by(MID) %>%
-  filter(!any(CAH10 == 9999)) %>% #<- drop women with unknown adoption or birth record
-  inner_join(cds)
-
+  filter(!any(CAH10 == 9999))
 
 #Link mother's standardized and raw passage comprehension scores from the 1997 PCG interview to mother's. 
 
@@ -63,6 +73,7 @@ for (i in 1:2) {
 }
 m_pc97<-m_pc97 %>% select(KID,m_pc_st,m_pc_raw)
 write.csv(m_pc97,"~/Dropbox/PSID_CDS/PSID_CLEAN/AssessmentMother.csv")
+
 # Merge mother's score with mother's panel
 m_pc97 <- merge(x=C,y=m_pc97,by="KID",all=TRUE)%>% group_by(MID) %>%
 select(MID,m_pc_st,m_pc_raw) %>% drop_na(m_pc_st,m_pc_raw) %>%distinct(MID, .keep_all= TRUE)
@@ -70,7 +81,7 @@ select(MID,m_pc_st,m_pc_raw) %>% drop_na(m_pc_st,m_pc_raw) %>%distinct(MID, .kee
 
 ```
  
-We want a panel dataset that begins when each mother turns 18 and ends in 2017. Each individual-year observation has the number of dependent children, the age of the youngest child, the number of children between 0 and 5, annd the number of children between 6 and 12.
+We want a panel dataset that begins when each mother turns 18 and ends in 2017. Each individual-year observation has the number of dependent children, the age of the youngest child, the number of children between 0 and 5, and the number of children between 6 and 12.
 
 The function below does this assuming that the dataframe $d$ contains the childbirth data for just one mother:
 
@@ -306,105 +317,10 @@ L <- D %>%
 ```
 
 
-Since the PSID went to a biennial format after 1997, the file above does not have data for 1998,2000, and so on. A supplementary set of questions is asked about the family members from the previous year. These are sometimes called the "T2" supplement, which the chunk of code below cleans into a panel dataset for those missing years. These data were collected from the "Individual Data Index" from the PSID's data center tool, so they are linked to individuals already. The code below renames the variables and reshapes them into a panel. The reporting of earnings in these years is slightly different from the main questions, so we keep only observations that are reported in annual terms (the large majority). There is also an abnormally large increase in the number of individuals who report zero hours but positive earnings from 2001 and on. We have to correct for this using the T2 variables from the main interview file.
 
 ```{r}
-# T2 <- readxl::read_xlsx("~/Dropbox/PSID_CDS/PSID_RAW/T2_alt.xlsx") %>%
-#   mutate(MID = ER30001*1000 + ER30002,FID = MID) %>%
-#   rename(earn_1997 = ER33536A,
-# earnunit_1997 = ER33536B,
-# wks_1997 = ER33536C,
-# hrswk_1997 = ER33536Q,
-# earn_1999=ER33627A,
-# earnunit_1999=ER33627B,
-# wks_1999=ER33627C,
-# hrswk_1999=ER33627Q,
-# earn_2001=ER33727A,
-# earnunit_2001=ER33727B,
-# wks_2001=ER33727C,
-# hrswk_2001=ER33727Q ,
-# earn_2003=ER33826A,
-# earnunit_2003=ER33826B,
-# wks_2003=ER33827S,
-# hrswk_2003=ER33827U,
-# earn_2005=ER33926A,
-# earnunit_2005=ER33926B,
-# wks_2005=ER33927A,
-# hrswk_2005=ER33927C) #%>% #<- rename all the variables we want to use
-#   select(FID,MID,starts_with("earn"),starts_with("hrs"),starts_with("wks")) %>%
-#   pivot_longer(-c("MID","FID"),names_to = c(".value","year"),names_sep = "_") %>% #<- reshape into a panel
-#   mutate(year = as.integer(year)) %>% #<- convert from string to integer
-#   filter(earnunit==6) %>% #<- keep only reports of annual earnings 
-#   mutate(hrs = hrswk*wks) #%>%
-#   select(MID,FID,year,hrs,earn) %>%
-#   mutate(earn = na_if(na_if(earn,earn==9999999),earn<0))
+T2 <- read.csv("../../data-main/labor-market/T2clean.csv")
 
-
-
-Dt2 <- read.csv("~/Dropbox/PSID_CDS/PSID_RAW/T2.csv") %>% 
-  mutate(MID = ER30001*1000 + ER30002,FID = MID) %>%
-  rename(earn97 = ER33536A,earn99 = ER33627A,earn01 = ER33727A) %>%
-  rename(earn97u = ER33536B,earn99u = ER33627B,earn01u = ER33727B) %>%
-  rename(wage97 = ER33537O,wage99 = ER33628O,wage01 = ER33728O) %>%
-  rename(ww97 = ER33536C,ww99 = ER33627C,ww01 = ER33727C) %>%
-  rename(hw97 = ER33536Q,hw99 = ER33627Q,hw01 = ER33727Q)
-  
-# let's just do these for now
-D97 <- Dt2 %>% select(MID,FID,earn97,earn97u,wage97,ww97,hw97) %>%
-  rename(earn=earn97,earnu=earn97u,wage=wage97,ww=ww97,hw=hw97) %>%
-  mutate(year=1997)
-
-D99 <- Dt2 %>% select(MID,FID,earn99,earn99u,wage99,ww99,hw99) %>%
-  rename(earn=earn99,earnu=earn99u,wage=wage99,ww=ww99,hw=hw99) %>%
-  mutate(year=1999)
-
-D01 <- Dt2 %>% select(MID,FID,earn01,earn01u,wage01,ww01,hw01) %>%
-  rename(earn=earn01,earnu=earn01u,wage=wage01,ww=ww01,hw=hw01) %>%
-  mutate(year=2001)
-
-#write.csv(T2,"~/Dropbox/PSID_CDS/T2clean.csv")
-
-# --- Now, read in the T-2 in 2001 variables from the family file
-Dt2 <- read.csv("~/Dropbox/PSID_CDS/PSID_RAW/T2_supp.csv") %>% 
-  rename(intnum = ER21002,h_earn = ER23702F1,h_ww = ER23702D3,h_hw = ER23702E8) %>%
-  rename(w_earn = ER23702L4, w_ww = ER23702J6, w_hw = ER23702L2) %>%
-  mutate(year = 2003)
-
-d01 <- read.csv("~/Dropbox/PSID_CDS/PSID_RAW/IndFileVertical.csv") %>% 
-  filter(year==2003) %>% 
-  mutate(X = NULL,MID = intnum68*1000 + pernum) %>%
-  merge(Dt2) %>%
-  mutate(year = 2001)
-
-# D01 <- D01 %>% 
-#   mutate(earn2 = case_when(sn==1 ~ h_earn,sn==2 ~ w_earn)) 
-
-# D01 %>% filter(earn==0 & !is.na(earn2) & earn2>0) %>%
-#   select(MID,FID,year,earn,earn2,sn)
-
-D01 <- merge(D01,d01)
-Ih = D01$sn==1
-D01[Ih,c("earn","hw","ww")] = D01[Ih,c("h_earn","h_hw","h_ww")]
-Iw = D01$sn==2
-D01[Iw,c("earn","hw","ww")] = D01[Iw,c("w_earn","w_hw","w_ww")]
-D01 <- select(D01,c("MID","FID","year","earn","earnu","wage","hw","ww"))
-
-T2 <- rbind(D97,D99,D01) %>%
-  mutate(earn = na_if(na_if(na_if(na_if(earn,-9999999),-999999),99999999),9999999)) %>%
-  #mutate(earn = case_when(earnu==1 ~ earn*hw*ww,earnu==2 ~ earn*365,earnu==3 ~ earn*ww, earnu==4 ~ earn*ww/2,earnu==5 ~ earn*12, earnu==6 ~ earn, TRUE ~ NA_real_)) %>%
-  mutate(ww = na_if(ww,99),hw=na_if(hw,999)) %>%
-  mutate(hrs = ww*hw) %>%
-  #mutate(wage2 = case_when(earn>0 & hrs>0 ~ earn/hrs,TRUE ~ NA_real_),0) %>%
-  mutate(wage = case_when(wage<=0 ~ NA_real_,wage==999 ~ NA_real_,TRUE ~ wage)) %>%
-  mutate(wage = case_when(earn>0 & is.na(wage) ~ earn/hrs, TRUE ~ wage))
-
-write.csv(T2,"~/Dropbox/PSID_CDS/PSID_RAW/T2clean.csv")
-
-```
-This file links an individual to earnings and hours in non-survey years. Since our main panel is arranged in terms of mothers and fathers, we will rearrange the data into that format: 
-
-
-```{r}
 # we link first to mothers:
 T2m <- D %>%
   select(MID) %>%
