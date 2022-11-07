@@ -2,11 +2,6 @@ library(tidyverse)
 
 G <- readxl::read_excel("../../../data-main/labor-market/earnings-hours.xlsx")
 
-G<-G[!(G$ER4096==9999|G$ER4107==9999|G$ER4107==6730|G$ER4140==9999999|
-         G$ER4140==999999|G$ER4144==9999999|G$ER6936==9999|G$ER6947==9999|
-         G$ER6980==9999999|G$ER6981==999999|G$ER6984==9999999|G$ER9187==7800|
-         G$ER12214==999999),] ##this should remove the codes we don't want
-
 index1 <- read.csv("../../../data-main/labor-market/earnings_labels_clean.csv",header=FALSE)
 names(index1) <- c("variable","label","year")
 index1$label <- str_c(index1$label,'_',index1$year) 
@@ -51,6 +46,24 @@ names(G) <- c("year","intnum","hours_head","hours_spouse",
               "earn_head","earn_spouse","earn_spouseBusiness")
 
 G <- G[,c(2,1,5,6,3,4,7)]
+
+##crude way to remove the variables we don't want, I was checking sequentially
+G <- G[!(G$year==1993 & G$hours_head==9999),] 
+G <- G[!(G$year==1993 & G$hours_spouse==6730),]
+G <- G[!(G$year==1993 & G$hours_spouse==9999),] 
+G <- G[!(G$year==1993 & G$earn_head==99999999),] 
+G <- G[!(G$year==1994 & G$hours_head==9999),]
+G <- G[!(G$year==1994 & G$hours_spouse==9999),]
+G <- G[!(G$year==1994 & G$earn_head==9999999),]
+G <- G[!(G$year==1994 & G$earn_spouseBusiness==999999),]
+G <- G[!(G$year==1994 & G$earn_spouse==9999999),]
+G <- G[!(G$year==1995 & G$hours_head==7800),]
+G <- G[!(G$year==1995 & G$earn_head==9999999),]
+G <- G[!(G$year==1995 & G$earn_spouse==9999999),]
+G <- G[!(G$year==1996 & G$hours_spouse==999999),]
+
+
+
 
 write.csv(G,"../../../data-main/labor-market/earnings-panel.csv")
 
