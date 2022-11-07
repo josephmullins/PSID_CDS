@@ -2,8 +2,12 @@ library(tidyverse)
 
 G <- readxl::read_excel("../../../data-main/labor-market/earnings-hours.xlsx")
 
+G<-G[!(G$ER4096==9999|G$ER4107==9999|G$ER4107==6730|G$ER4140==9999999|
+         G$ER4140==999999|G$ER4144==9999999|G$ER6936==9999|G$ER6947==9999|
+         G$ER6980==9999999|G$ER6981==999999|G$ER6984==9999999|G$ER9187==7800|
+         G$ER12214==999999),] ##this should remove the codes we don't want
+
 index1 <- read.csv("../../../data-main/labor-market/earnings_labels_clean.csv",header=FALSE)
-index1 <- index1 %>%  filter(!row_number() %in% c(262,263,264,265)) ##removing empty rows at the end of the csv
 names(index1) <- c("variable","label","year")
 index1$label <- str_c(index1$label,'_',index1$year) 
 index1 <- index1[-3]
