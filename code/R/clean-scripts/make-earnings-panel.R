@@ -77,19 +77,34 @@ G %>%
 G %>%
   group_by(year) %>%
   summarize(h = mean(earn_head,na.rm = TRUE),s=mean(earn_spouse,na.rm = TRUE)) %>%
-  print.AsIs()
-  ggplot(aes(x=as.integer(year),y=s)) + geom_line()
+  ggplot(aes(x=as.integer(year),y=h)) + geom_line()
 
+
+L <- read.csv("../../../PSID_RAW/LaborFile.csv")
+l <- L %>%
+  group_by(year) %>%
+  summarize(h = mean(h_earn,na.rm = TRUE),s=mean(w_earn,na.rm = TRUE)) %>%
+  mutate(case="old file")
+g <- G %>%
+  group_by(year) %>%
+  summarize(h = mean(earn_head,na.rm = TRUE),s=mean(earn_spouse,na.rm = TRUE)) %>%
+  mutate(case="new file")
+
+l %>%
+  rbind(g) %>%
+  ggplot(aes(x=as.integer(year),y=h,color=case)) + geom_line()
 
 
 # A line of code here to show some differences with the old file for Maddi to look into:
-D <- read.csv("../../../PSID_RAW/LaborFile.csv") %>%
+D <- L %>%
   merge(G) %>%
   filter(earn_spouse!=w_earn)
 
-unique(D$year) #<- specific to 1997 and 1999
-D %>%
-  select(intnum,year,h_earn,earn_head,w_earn,earn_spouse)# seem to be some big differences in earnings for 1997 and 1999
+L %>%
+  merge(G) %>%
+  filter(earn_head!=h_earn) %>%
+  select(year) %>%
+  unique()
 
 # TASK: look over the old data cleaning file to try and find discrepancies here
 

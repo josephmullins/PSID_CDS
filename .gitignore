@@ -15,3 +15,8 @@ data-main/labor-market/earnings-panel.csv
 
 data-cds/time-diary/ActiveTimePanel.csv
 data-main/state/state-vertical.csv
+PSID_RAW/Exp0207/Expenditures_clean.Rmd
+PSID_RAW/Exp0207/Exp_labels.txt
+PSID_RAW/Exp0207/Exp_codebook.pdf
+PSID_RAW/Exp0207/Exp.csv
+PSID_CLEAN/Expenditures_0207.csv
