@@ -19,26 +19,6 @@ G %>%
   pivot_longer(cols=everything(),names_to = c(".value","year"),names_sep = "_") %>%
   filter(!is.na(intnum))
 
-
-G <- G %>% pivot_longer(
-  cols=everything(),
-  names_to = c("variable","year"),
-  names_sep = "_",
-  values_to="value")
-
-G <- G %>% 
-  group_by(variable) %>% 
-  mutate(row=row_number()) %>% 
-  pivot_wider(names_from=variable,values_from=value) %>% 
-  select(-row)
-#duplicate values caused some issues with pivoting back to wide
-#to remedy this, I created unique row identifiers
-
-G <- G[!with(G,is.na(intnum) & is.na(hourshead) & is.na(hoursspouse) & 
-               is.na(earnhead) & is.na(earnspouse) &is.na(earnspousebusiness)),]
-#the unique row identifiers/the code itself had a lot of entirely NA rows, with the exception of year variables
-#this block removes empty observations
-
 G[c("earnspousebusiness")][is.na(G[c("earnspousebusiness")])] <- 0
 #replaces NA business earnings with 0
 
