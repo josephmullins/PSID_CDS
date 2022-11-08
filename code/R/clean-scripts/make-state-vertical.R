@@ -1,4 +1,3 @@
-
 H <- read.csv("../../../data-main/state/State.csv")
 
 index2 <- read.csv("../../../data-main/state/state-labels.csv",header=FALSE)
