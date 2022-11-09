@@ -12,10 +12,7 @@ for (i in 1:length(G)){
   names(G)[i] = as.character(index1[["label"]][i])
 }
 
-G <- G %>% select(-contains("relnum")) #dropping the relnum columns
-
-#*** Alternative lines of code for Maddi that I think will do the same thing **** #
-G %>%
+G <- G %>% select(-contains("relnum")) %>% #dropping the relnum columns
   pivot_longer(cols=everything(),names_to = c(".value","year"),names_sep = "_") %>%
   filter(!is.na(intnum))
 
@@ -42,50 +39,7 @@ G <- G[!(G$year==1995 & G$earn_head==9999999),]
 G <- G[!(G$year==1995 & G$earn_spouse==9999999),]
 G <- G[!(G$year==1996 & G$hours_spouse==999999),]
 
-
-
-
 write.csv(G,"../../../data-main/labor-market/earnings-panel.csv")
 
-
-# A line of code here for Maddi to show missing variable codes in each year
-G %>%
-  group_by(year) %>%
-  summarize(h = max(earn_head,na.rm = TRUE),s=max(earn_spouse,na.rm = TRUE)) %>%
-  print.AsIs()
-
-G %>%
-  group_by(year) %>%
-  summarize(h = mean(earn_head,na.rm = TRUE),s=mean(earn_spouse,na.rm = TRUE)) %>%
-  ggplot(aes(x=as.integer(year),y=h)) + geom_line()
-
-
-L <- read.csv("../../../PSID_RAW/LaborFile.csv")
-l <- L %>%
-  group_by(year) %>%
-  summarize(h = mean(h_earn,na.rm = TRUE),s=mean(w_earn,na.rm = TRUE)) %>%
-  mutate(case="old file")
-g <- G %>%
-  group_by(year) %>%
-  summarize(h = mean(earn_head,na.rm = TRUE),s=mean(earn_spouse,na.rm = TRUE)) %>%
-  mutate(case="new file")
-
-l %>%
-  rbind(g) %>%
-  ggplot(aes(x=as.integer(year),y=h,color=case)) + geom_line()
-
-
-# A line of code here to show some differences with the old file for Maddi to look into:
-D <- L %>%
-  merge(G) %>%
-  filter(earn_spouse!=w_earn)
-
-L %>%
-  merge(G) %>%
-  filter(earn_head!=h_earn) %>%
-  select(year) %>%
-  unique()
-
-# TASK: look over the old data cleaning file to try and find discrepancies here
 
 
