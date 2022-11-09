@@ -47,9 +47,9 @@ Next, we link them with their mothers using the childbirth and adoption history 
 
 C = read.csv("../../data-main/childbirth/Childbirth.csv") %>% 
   mutate(X = NULL) %>% #<- load childbirth file
-  #filter(CAH5==2)  %>% #keep only women
-  #filter(CAH10!=0) %>% # drop women who have no children according to this file
-  #filter(CAH7!=9998) %>% # drop women with missing birth year info
+  filter(CAH5==2)  %>% #keep only women
+  filter(CAH10!=0) %>% # drop women who have no children according to this file
+  filter(CAH7!=9998) %>% # drop women with missing birth year info
   mutate(MID = CAH3*1000 + CAH4, KID = CAH10*1000 + CAH11) %>% #<- create identifier for mother and child
   select(KID) %>%
   unique() %>%
