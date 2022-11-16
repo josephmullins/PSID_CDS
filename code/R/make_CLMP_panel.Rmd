@@ -53,7 +53,7 @@ C = read.csv("../../data-main/childbirth/Childbirth.csv") %>%
   mutate(MID = CAH3*1000 + CAH4, KID = CAH10*1000 + CAH11) %>% #<- create identifier for mother and child
   select(KID) %>%
   unique() %>%
-  inner_join(KID) #%>% #<- keep only women whose children are in the CDS
+  inner_join(KID) %>% #<- keep only women whose children are in the CDS (THIS ALSO DROPS NON-CDS CHILDREN. DOESN'T WORK!!!!)
   group_by(MID) %>%
   filter(!any(CAH10 == 9999))
 
@@ -64,17 +64,8 @@ m_pc97 <- read.csv("~/Dropbox/PSID_CDS/PSID_RAW/MotherPC.csv") %>%
   select(KID,Q1PCSS,Q1PCRAW,PCG)%>%
   rename(m_pc_st= Q1PCSS, m_pc_raw= Q1PCRAW)
 
-#Replace missing values to NA and keep only scores reported by mothers of the child
-var <- c("m_pc_st", "m_pc_raw")
-missing <- c(0, 99)
-for (i in 1:2) {
-  m_pc97[,var[i]] = na_if(m_pc97[,var[i]],missing[i])
-  m_pc97[,var[i]] = ifelse(m_pc97$PCG==1,m_pc97[,var[i]],NA)
-}
-m_pc97<-m_pc97 %>% select(KID,m_pc_st,m_pc_raw)
-write.csv(m_pc97,"~/Dropbox/PSID_CDS/PSID_CLEAN/AssessmentMother.csv")
-
 # Merge mother's score with mother's panel
+m_pc97 <- read.csv("~/Dropbox/PSID_CDS/PSID_CLEAN/AssessmentMother.csv") %>% mutate(X=NULL)
 m_pc97 <- merge(x=C,y=m_pc97,by="KID",all=TRUE)%>% group_by(MID) %>%
 select(MID,m_pc_st,m_pc_raw) %>% drop_na(m_pc_st,m_pc_raw) %>%distinct(MID, .keep_all= TRUE)
 

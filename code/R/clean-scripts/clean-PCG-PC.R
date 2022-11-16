@@ -8,19 +8,23 @@ m2 <- readxl::read_excel("../../../data-cds/assessments/PCG-PC.xlsx") %>%
   select(KID,Q1PCSS,Q1PCRAW)%>%
   rename(m_pc_st= Q1PCSS, m_pc_raw= Q1PCRAW)
 
+# load the auxiliary data and create the Kid ID and the PCG ID.
+# then merge by Kid ID with the PCG's test score data
+# then drop missing observations
 cds <- readxl::read_excel("../../../data-cds/CDS-aux-info.xlsx") %>%
-  mutate(KID = CDSCUMID68*1000 + CDSCUMPN,MID = ID68PCG97*1000 + PNPCG97)
-
-cds %>%
+  mutate(KID = CDSCUMID68*1000 + CDSCUMPN,MID = ID68PCG97*1000 + PNPCG97) %>%
   select(KID,MID) %>%
-  merge(m2)
+  merge(m2) %>%
+  filter(m_pc_st>0) %>%
+  select(MID,m_pc_st,m_pc_raw) %>%
+  unique()
 
-#Replace missing values to NA and keep only scores reported by mothers of the child
-var <- c("m_pc_st", "m_pc_raw")
-missing <- c(0, 99)
-for (i in 1:2) {
-  m_pc97[,var[i]] = na_if(m_pc97[,var[i]],missing[i])
-  m_pc97[,var[i]] = ifelse(m_pc97$PCG==1,m_pc97[,var[i]],NA)
-}
-m_pc97<-m_pc97 %>% select(KID,m_pc_st,m_pc_raw)
+# there are a small handful of observations where the raw score is the same but the conversion to standardized score differs slightly, in this case we just keep the first observation
+cds <- cds %>%
+  group_by(MID) %>%
+  filter(row_number()==1)
+
+write.csv(cds,"../../../data-cds/assessments/PCG-PC-clean.csv")
+
+m2 <- read.csv("~/Dropbox/PSID_CDS/PSID_CLEAN/AssessmentMother.csv")
 write.csv(m_pc97,"~/Dropbox/PSID_CDS/PSID_CLEAN/AssessmentMother.csv")
