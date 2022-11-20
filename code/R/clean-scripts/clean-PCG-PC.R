@@ -25,6 +25,4 @@ cds <- cds %>%
   filter(row_number()==1)
 
 write.csv(cds,"../../../data-cds/assessments/PCG-PC-clean.csv")
-
-m2 <- read.csv("~/Dropbox/PSID_CDS/PSID_CLEAN/AssessmentMother.csv")
-write.csv(m_pc97,"~/Dropbox/PSID_CDS/PSID_CLEAN/AssessmentMother.csv")
+# NOTE: different from how we did things previously, since this way only links to the mother if they are indeed the PCG

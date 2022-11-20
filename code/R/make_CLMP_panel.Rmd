@@ -32,46 +32,55 @@ The chunk below loads these data and applies some sample restrictions:
  - Drop women with missing information in their childbirth history
  - Keep only women whose children appear in the CDS
 
-First, we use one of the cleaned CDS files to identify the children in the CDS.
+First, we use one of the cleaned CDS files to get a file with ID numbners of all CDS children.
 
 ```{r}
+# get an index of CDS children
 KID <- read.csv("../../data-cds/assessments/AssessmentPanel.csv") %>%
   select(KID) %>%
   unique()
 
 ```
 
-Next, we link them with their mothers using the childbirth and adoption history file, and apply the above sample restrictions.
+Next, we load the childbirth record for women in the PSID and apply some sample restrictions.
 
 ```{r}
-
-C = read.csv("../../data-main/childbirth/Childbirth.csv") %>% 
+child_record <- read.csv("../../data-main/childbirth/Childbirth.csv") %>% 
   mutate(X = NULL) %>% #<- load childbirth file
   filter(CAH5==2)  %>% #keep only women
   filter(CAH10!=0) %>% # drop women who have no children according to this file
   filter(CAH7!=9998) %>% # drop women with missing birth year info
-  mutate(MID = CAH3*1000 + CAH4, KID = CAH10*1000 + CAH11) %>% #<- create identifier for mother and child
-  select(KID) %>%
-  unique() %>%
-  inner_join(KID) %>% #<- keep only women whose children are in the CDS (THIS ALSO DROPS NON-CDS CHILDREN. DOESN'T WORK!!!!)
+  mutate(MID = CAH3*1000 + CAH4, KID = CAH10*1000 + CAH11) %>%
   group_by(MID) %>%
-  filter(!any(CAH10 == 9999))
-
-#Link mother's standardized and raw passage comprehension scores from the 1997 PCG interview to mother's. 
-
-m_pc97 <- read.csv("~/Dropbox/PSID_CDS/PSID_RAW/MotherPC.csv") %>% 
-  mutate(KID = ER30001*1000 + ER30002) %>% 
-  select(KID,Q1PCSS,Q1PCRAW,PCG)%>%
-  rename(m_pc_st= Q1PCSS, m_pc_raw= Q1PCRAW)
-
-# Merge mother's score with mother's panel
-m_pc97 <- read.csv("~/Dropbox/PSID_CDS/PSID_CLEAN/AssessmentMother.csv") %>% mutate(X=NULL)
-m_pc97 <- merge(x=C,y=m_pc97,by="KID",all=TRUE)%>% group_by(MID) %>%
-select(MID,m_pc_st,m_pc_raw) %>% drop_na(m_pc_st,m_pc_raw) %>%distinct(MID, .keep_all= TRUE)
-
+  filter(!any(CAH10 == 9999)) 
 
 ```
- 
+
+We use this childbirth record to first create a data frame with the IDs of all CDS mothers.
+
+Then, we use that file to produce a full childbirth history file with just CDS mothers.
+
+```{r}
+
+mother_index <- child_record %>%
+  select(MID,KID) %>%
+  inner_join(KID) %>%
+  select(MID) %>%
+  unique()
+
+C <- child_record %>% #<- this matches the sample from before. All good.
+  inner_join(mother_index)
+
+```
+
+
+Finally, in preparation for building the panel dataset, we load the cleaned passage comprehension score which will link to the mother panel if they are identified as the primary caregiver for one of the children in the CDS (and have a valid PC score).
+
+```{r}
+PC <- read.csv("../../data-cds/assessments/PCG-PC-clean.csv") %>% mutate(X=NULL)
+```
+
+
 We want a panel dataset that begins when each mother turns 18 and ends in 2017. Each individual-year observation has the number of dependent children, the age of the youngest child, the number of children between 0 and 5, and the number of children between 6 and 12.
 
 The function below does this assuming that the dataframe $d$ contains the childbirth data for just one mother:
@@ -122,8 +131,11 @@ The chunk below applies the function for each mother (defined by their ID number
 
 ```{r}
 
-D <- C %>% group_by(MID) %>% do(MakePanel(.)) %>% filter(y_first>=1960) %>%
-left_join(m_pc97) # Add mother's cognitive score
+D <- C %>% 
+  group_by(MID) %>% 
+  do(MakePanel(.)) %>% 
+  filter(y_first>=1960) %>%
+  left_join(PC) # Add mother's cognitive score
 ```
 
 ## Merge in State Identifiers and Childcare Expenditures
@@ -132,7 +144,7 @@ We start by merging this panel with the Individual Cross-Year File, which maps a
 
 This chunk loads the individual file and creates the ID number:
 ```{r}
-Ind = read.csv("~/Dropbox/PSID_CDS/PSID_RAW/IndFileVertical.csv") %>% 
+Ind = read.csv("../../data-main/identifiers/identifiers-panel.csv") %>% 
   mutate(X = NULL) %>% 
   mutate(MID = intnum68*1000 + pernum,mar_stat = mpair>0)
 
@@ -160,11 +172,11 @@ Finally, this file is merged with the panel of mothers we just created, using ye
 
 ```{r}
 # state codes measures residence for survey year
-state_codes = read.csv("~/Dropbox/PSID_CDS/StateCodes.csv") %>% mutate(X=NULL,X.1 = NULL) %>% #<- this is a simple crosswalk of state codes
+state_codes = read.csv("../../StateCodes.csv") %>% 
+  mutate(X=NULL,X.1 = NULL) %>% #<- this is a simple crosswalk of state codes
   select(-state) %>% 
   rename(state = PSID, StFIPS = fips) %>% #<- we rename some things in order to do the merge properly
   select(state,StFIPS,SOI)
-
 
 # child care expenditures are for previous year, so we have to be careful how we do the merge!
 # we merge by survey year then subtract one year to make the reference correct
@@ -176,7 +188,7 @@ ch_care <- read.csv("~/Dropbox/PSID_CDS/PSID_CLEAN/Main_childcare.csv") %>%
   select(MID,year,childcare_exp)
 
 
-D <- read.csv("~/Dropbox/PSID_CDS/PSID_RAW/StateVertical.csv") %>% #<- state of residence panel data
+D <- read.csv("../../data-main/state/StateVertical.csv") %>% #<- state of residence panel data
   mutate(X=NULL) %>%
   right_join(Ind) %>% #<- merge with Individual file
   right_join(D) %>% #<- merge with the panel we created (keeping all years)
@@ -215,7 +227,7 @@ First we load the marriage file and create an "ever" married summary variable. W
 
 ```{r}
 # #  ---- load marriage info and create some summary variables
-M <- read.csv("~/Dropbox/PSID_CDS/PSID_RAW/Marriage.csv") %>%
+M <- read.csv("../../data-main/marriage/Marriage.csv") %>%
   mutate(X = NULL) %>%
   rename(MID = ID1) %>% #<- we rename to MID in preparation for a first merge with sample mothers
   rename(ybirth = MH6) %>%
@@ -260,15 +272,12 @@ In the current version we don't use CPI, but we'll put it in anyway. Race and ed
 R <- read.csv("~/Dropbox/PSID_CDS/PSID_RAW/RaceHorizontal.csv") %>% mutate(X = NULL) %>% 
   rename(MID = ID)
 
-educ = read.csv("~/Dropbox/PSID_CDS/PSID_RAW/HGC.csv") %>% 
-  mutate(X = NULL,ID = intnum68*1000 + pnum68) %>%
-  mutate(ed=case_when(hgc>16 ~ 5,hgc == 16 ~ 4, hgc>=13 ~ 3, hgc>=12 ~ 2, hgc<12 ~ 1)) %>%
-  select(ID,ed) %>%
-  mutate(ed = factor(ed,levels = c(1,2,3,4,5),labels=c("<12","12","13-15","16",">16")))
-    
-cpi = read.csv("~/Dropbox/PSID_CDS/CPI-U.csv") %>% 
-  rename(year = YEAR) %>%
-  mutate(CPIU = CPIU/CPIU[53])
+educ <- read.csv("../../data-main/education/education.csv") %>%
+  mutate(X=NULL)
+
+# cpi = read.csv("~/Dropbox/PSID_CDS/CPI-U.csv") %>% 
+#   rename(year = YEAR) %>%
+#   mutate(CPIU = CPIU/CPIU[53])
   
 ```
 
@@ -280,8 +289,7 @@ D <- D %>% #<- drop if mother has missing race or education info
   rename(m_ed = ed) %>%
   left_join(educ,by = c("FID" = "ID")) %>%
   rename(f_ed = ed) %>%
-  inner_join(R) %>%
-  inner_join(cpi)
+  inner_join(R) 
 ```
 
 ## Clean and Prepare Labor Market Data
@@ -289,7 +297,8 @@ D <- D %>% #<- drop if mother has missing race or education info
 Labor market earnings and hours come from the main interview of the PSID, which collects information for the "husband", the "wife" and other family members. Individuals can be matched to these variables via their sequence number in the household (which we will do below). First, let's load a cleaned panel dataset of these household data. 
 
 ```{r}
-L = read.csv("~/Dropbox/PSID_CDS/PSID_RAW/LaborFile.csv") %>% mutate(X = NULL) #<- contains the hours and earnings of the "head" and the "wife" which can be matched to individuals via sequence number
+L <- read.csv("../../data-main/labor-market/earnings-panel.csv") %>% 
+  mutate(X = NULL) #<- contains the hours and earnings of the "head" and the "wife" which can be matched to individuals via sequence number
 
 ```
 

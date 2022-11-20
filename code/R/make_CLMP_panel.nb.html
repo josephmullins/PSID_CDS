@@ -1837,46 +1837,75 @@ restrictions: - Drop women without recorded births - Drop women with
 missing birth year information - Drop women with missing information in
 their childbirth history - Keep only women whose children appear in the
 CDS</p>
-<p>First, we use one of the cleaned CDS files to identify the children
-in the CDS.</p>
+<p>First, we use one of the cleaned CDS files to get a file with ID
+numbners of all CDS children.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIktJRCA8LSByZWFkLmNzdihcIi4uLy4uL2RhdGEtY2RzL2Fzc2Vzc21lbnRzL0Fzc2Vzc21lbnRQYW5lbC5jc3ZcIikgJT4lIiwiICBzZWxlY3QoS0lEKSAlPiUiLCIgIHVuaXF1ZSgpIl19 -->
-<pre class="r"><code>KID &lt;- read.csv(&quot;../../data-cds/assessments/AssessmentPanel.csv&quot;) %&gt;%
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuS0lEIDwtIHJlYWQuY3N2KFxcLi4vLi4vZGF0YS1jZHMvYXNzZXNzbWVudHMvQXNzZXNzbWVudFBhbmVsLmNzdlxcKSAlPiVcbiAgc2VsZWN0KEtJRCkgJT4lXG4gIHVuaXF1ZSgpXG5cbmBgYFxuYGBgIn0= -->
+<pre class="r"><code>```r
+KID &lt;- read.csv(\../../data-cds/assessments/AssessmentPanel.csv\) %&gt;%
   select(KID) %&gt;%
-  unique()</code></pre>
+  unique()
+</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Next, we load the childbirth record for women in the PSID and apply some sample restrictions.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBge3J9XG5cbmBgYCJ9 --&gt;
+
+```r
+```{r}
+</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3I6IGF0dGVtcHQgdG8gdXNlIHplcm8tbGVuZ3RoIHZhcmlhYmxlIG5hbWVcbiJ9 -->
+<pre><code>Error: attempt to use zero-length variable name</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>Next, we link them with their mothers using the childbirth and
-adoption history file, and apply the above sample restrictions.</p>
+<p>We use this childbirth record to first create a data frame with the
+IDs of all CDS mothers.</p>
+<p>Then, we use that file to produce a full childbirth history file with
+just CDS mothers.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIkMgPSByZWFkLmNzdihcIi4uLy4uL2RhdGEtbWFpbi9jaGlsZGJpcnRoL0NoaWxkYmlydGguY3N2XCIpICU+JSAiLCIgIG11dGF0ZShYID0gTlVMTCkgJT4lICM8LSBsb2FkIGNoaWxkYmlydGggZmlsZSIsIiAgZmlsdGVyKENBSDU9PTIpICAlPiUgI2tlZXAgb25seSB3b21lbiIsIiAgZmlsdGVyKENBSDEwIT0wKSAlPiUgIyBkcm9wIHdvbWVuIHdobyBoYXZlIG5vIGNoaWxkcmVuIGFjY29yZGluZyB0byB0aGlzIGZpbGUiLCIgIGZpbHRlcihDQUg3IT05OTk4KSAlPiUgIyBkcm9wIHdvbWVuIHdpdGggbWlzc2luZyBiaXJ0aCB5ZWFyIGluZm8iLCIgIG11dGF0ZShNSUQgPSBDQUgzKjEwMDAgKyBDQUg0LCBLSUQgPSBDQUgxMCoxMDAwICsgQ0FIMTEpICU+JSAjPC0gY3JlYXRlIGlkZW50aWZpZXIgZm9yIG1vdGhlciBhbmQgY2hpbGQiLCIgIHNlbGVjdChLSUQpICU+JSIsIiAgdW5pcXVlKCkgJT4lIiwiICBpbm5lcl9qb2luKEtJRCkgJT4lICM8LSBrZWVwIG9ubHkgd29tZW4gd2hvc2UgY2hpbGRyZW4gYXJlIGluIHRoZSBDRFMgKFRISVMgQUxTTyBEUk9QUyBOT04tQ0RTIENISUxEUkVOLiBET0VTTidUIFdPUkshISEhKSIsIiAgZ3JvdXBfYnkoTUlEKSAlPiUiLCIgIGZpbHRlcighYW55KENBSDEwID09IDk5OTkpKSIsIiIsIiNMaW5rIG1vdGhlcidzIHN0YW5kYXJkaXplZCBhbmQgcmF3IHBhc3NhZ2UgY29tcHJlaGVuc2lvbiBzY29yZXMgZnJvbSB0aGUgMTk5NyBQQ0cgaW50ZXJ2aWV3IHRvIG1vdGhlcidzLiAiLCIiLCJtX3BjOTcgPC0gcmVhZC5jc3YoXCJ+L0Ryb3Bib3gvUFNJRF9DRFMvUFNJRF9SQVcvTW90aGVyUEMuY3N2XCIpICU+JSAiLCIgIG11dGF0ZShLSUQgPSBFUjMwMDAxKjEwMDAgKyBFUjMwMDAyKSAlPiUgIiwiICBzZWxlY3QoS0lELFExUENTUyxRMVBDUkFXLFBDRyklPiUiLCIgIHJlbmFtZShtX3BjX3N0PSBRMVBDU1MsIG1fcGNfcmF3PSBRMVBDUkFXKSIsIiIsIiMgTWVyZ2UgbW90aGVyJ3Mgc2NvcmUgd2l0aCBtb3RoZXIncyBwYW5lbCIsIm1fcGM5NyA8LSByZWFkLmNzdihcIn4vRHJvcGJveC9QU0lEX0NEUy9QU0lEX0NMRUFOL0Fzc2Vzc21lbnRNb3RoZXIuY3N2XCIpICU+JSBtdXRhdGUoWD1OVUxMKSIsIm1fcGM5NyA8LSBtZXJnZSh4PUMseT1tX3BjOTcsYnk9XCJLSURcIixhbGw9VFJVRSklPiUgZ3JvdXBfYnkoTUlEKSAlPiUiLCJzZWxlY3QoTUlELG1fcGNfc3QsbV9wY19yYXcpICU+JSBkcm9wX25hKG1fcGNfc3QsbV9wY19yYXcpICU+JWRpc3RpbmN0KE1JRCwgLmtlZXBfYWxsPSBUUlVFKSJdfQ== -->
-<pre class="r"><code>C = read.csv(&quot;../../data-main/childbirth/Childbirth.csv&quot;) %&gt;% 
-  mutate(X = NULL) %&gt;% #&lt;- load childbirth file
-  filter(CAH5==2)  %&gt;% #keep only women
-  filter(CAH10!=0) %&gt;% # drop women who have no children according to this file
-  filter(CAH7!=9998) %&gt;% # drop women with missing birth year info
-  mutate(MID = CAH3*1000 + CAH4, KID = CAH10*1000 + CAH11) %&gt;% #&lt;- create identifier for mother and child
-  select(KID) %&gt;%
-  unique() %&gt;%
-  inner_join(KID) %&gt;% #&lt;- keep only women whose children are in the CDS (THIS ALSO DROPS NON-CDS CHILDREN. DOESN&#39;T WORK!!!!)
-  group_by(MID) %&gt;%
-  filter(!any(CAH10 == 9999))
-
-#Link mother&#39;s standardized and raw passage comprehension scores from the 1997 PCG interview to mother&#39;s. 
-
-m_pc97 &lt;- read.csv(&quot;~/Dropbox/PSID_CDS/PSID_RAW/MotherPC.csv&quot;) %&gt;% 
-  mutate(KID = ER30001*1000 + ER30002) %&gt;% 
-  select(KID,Q1PCSS,Q1PCRAW,PCG)%&gt;%
-  rename(m_pc_st= Q1PCSS, m_pc_raw= Q1PCRAW)
-
-# Merge mother&#39;s score with mother&#39;s panel
-m_pc97 &lt;- read.csv(&quot;~/Dropbox/PSID_CDS/PSID_CLEAN/AssessmentMother.csv&quot;) %&gt;% mutate(X=NULL)
-m_pc97 &lt;- merge(x=C,y=m_pc97,by=&quot;KID&quot;,all=TRUE)%&gt;% group_by(MID) %&gt;%
-select(MID,m_pc_st,m_pc_raw) %&gt;% drop_na(m_pc_st,m_pc_raw) %&gt;%distinct(MID, .keep_all= TRUE)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuQyA8LSBjaGlsZF9yZWNvcmQgJT4lXG4gIGlubmVyX2pvaW4obW90aGVyX2luZGV4KVxuXG5gYGAifQ== -->
+<pre class="r"><code>C &lt;- child_record %&gt;%
+  inner_join(mother_index)
+</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiSm9pbmluZywgYnkgPSBcIk1JRFwiXG4ifQ== -->
+<pre><code>Joining, by = &quot;MID&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Finally, in preparation for building the panel dataset, we load the
+cleaned passage comprehension score which will link to the mother panel
+if they are identified as the primary caregiver for one of the children
+in the CDS (and have a valid PC score).</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubTIgPC0gcmVhZC5jc3YoXCIuLi8uLi9kYXRhLWNkcy9hc3Nlc3NtZW50cy9QQ0ctUEMtY2xlYW4uY3N2XCIpICU+JSBtdXRhdGUoWD1OVUxMKSAlPiVcbiAgaW5uZXJfam9pbihtb3RoZXJfaW5kZXgpXG5cbmBgYCJ9 -->
+<pre class="r"><code>m2 &lt;- read.csv(&quot;../../data-cds/assessments/PCG-PC-clean.csv&quot;) %&gt;% mutate(X=NULL) %&gt;%
+  inner_join(mother_index)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiSm9pbmluZywgYnkgPSBcIk1JRFwiXG4ifQ== -->
+<pre><code>Joining, by = &quot;MID&quot;</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>We want a panel dataset that begins when each mother turns 18 and
@@ -1888,8 +1917,9 @@ children between 0 and 5, and the number of children between 6 and
 one mother:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIk1ha2VQYW5lbCA8LSBmdW5jdGlvbihkKSB7IiwiICB5ZWFyIDwtIChkJENBSDdbMV0rMTgpOjIwMTciLCIgIE55IDwtIGxlbmd0aCh5ZWFyKSIsIiAga251bSA9IGQkQ0FIMTA4WzFdIiwiICBhZ2VfeW91bmdlc3QgPC0gaW50ZWdlcihOeSkgLTEiLCIgIGFnZV9vbGRlc3QgPC0gaW50ZWdlcihOeSkgKyBJbmYiLCIgIG51bV8wXzUgPC0gaW50ZWdlcihOeSkiLCIgIG51bV82XzEyIDwtIGludGVnZXIoTnkpIiwiICBudW1fY2hpbGQgPC0gaW50ZWdlcihOeSkiLCIgIGFnZV9tb3RoZXIgPSB5ZWFyLWQkQ0FIN1sxXSIsIiAgZm9yIChpIGluIDE6bGVuZ3RoKHllYXIpKSB7IiwiICAgIGF5ID0gSW5mIiwiICAgIGFvID0gLTEiLCIgICAgYTUgPSAwIiwiICAgIGE2ID0gMCIsIiAgICBmb3IgKGsgaW4gMTpucm93KGQpKSB7IiwiICAgICAgYWdlayA9IHllYXJbaV0tZCRDQUgxNVtrXSIsIiAgICAgIGlmIChhZ2VrPj0wICYgYWdlazw9MTgpIHsiLCIgICAgICAgICNwcmludChhZ2VrKSIsIiAgICAgICAgYXkgPSBtaW4oYXksYWdlaykiLCIgICAgICAgIGFvID0gbWF4KGFvLGFnZWspIiwiICAgICAgICBudW1fY2hpbGRbaV0gID0gbnVtX2NoaWxkW2ldICsgMSIsIiAgICAgIH0iLCIgICAgICBpZiAoYWdlaz49MCAmIGFnZWs8PTUpIHsiLCIgICAgICAgIGE1ID0gYTUgKyAxIiwiICAgICAgfSIsIiAgICAgIGlmIChhZ2VrPjUgJiBhZ2VrPD0xMikgeyIsIiAgICAgICAgYTYgPSBhNiArIDEiLCIgICAgICB9IiwiIiwiICAgIH0iLCIgICAgYWdlX3lvdW5nZXN0W2ldID0gYXkiLCIgICAgYWdlX29sZGVzdFtpXSA9IGFvIiwiICAgIG51bV8wXzVbaV0gPSBhNSIsIiAgICBudW1fNl8xMltpXSA9IGE2IiwiICB9IiwiICBkYXRhLmZyYW1lKE1JRCA9IGQkTUlEWzFdLCBhZ2VfbW90aGVyPWFnZV9tb3RoZXIsIHllYXIgPSB5ZWFyLCBrbnVtID0ga251bSwgbnVtX2NoaWxkPW51bV9jaGlsZCxhZ2VfeW91bmdlc3Q9YWdlX3lvdW5nZXN0LGFnZV9vbGRlc3Q9YWdlX29sZGVzdCwgbnVtXzBfNSA9IG51bV8wXzUsIG51bV82XzEyID0gbnVtXzZfMTIsIHlfZmlyc3QgPSBkJENBSDE1WzFdKSIsIn0iXX0= -->
-<pre class="r"><code>MakePanel &lt;- function(d) {
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuTWFrZVBhbmVsIDwtIGZ1bmN0aW9uKGQpIHtcbiAgeWVhciA8LSAoZCRDQUg3WzFdKzE4KToyMDE3XG4gIE55IDwtIGxlbmd0aCh5ZWFyKVxuICBrbnVtID0gZCRDQUgxMDhbMV1cbiAgYWdlX3lvdW5nZXN0IDwtIGludGVnZXIoTnkpIC0xXG4gIGFnZV9vbGRlc3QgPC0gaW50ZWdlcihOeSkgKyBJbmZcbiAgbnVtXzBfNSA8LSBpbnRlZ2VyKE55KVxuICBudW1fNl8xMiA8LSBpbnRlZ2VyKE55KVxuICBudW1fY2hpbGQgPC0gaW50ZWdlcihOeSlcbiAgYWdlX21vdGhlciA9IHllYXItZCRDQUg3WzFdXG4gIGZvciAoaSBpbiAxOmxlbmd0aCh5ZWFyKSkge1xuICAgIGF5ID0gSW5mXG4gICAgYW8gPSAtMVxuICAgIGE1ID0gMFxuICAgIGE2ID0gMFxuICAgIGZvciAoayBpbiAxOm5yb3coZCkpIHtcbiAgICAgIGFnZWsgPSB5ZWFyW2ldLWQkQ0FIMTVba11cbiAgICAgIGlmIChhZ2VrPj0wICYgYWdlazw9MTgpIHtcbiAgICAgICAgI3ByaW50KGFnZWspXG4gICAgICAgIGF5ID0gbWluKGF5LGFnZWspXG4gICAgICAgIGFvID0gbWF4KGFvLGFnZWspXG4gICAgICAgIG51bV9jaGlsZFtpXSAgPSBudW1fY2hpbGRbaV0gKyAxXG4gICAgICB9XG4gICAgICBpZiAoYWdlaz49MCAmIGFnZWs8PTUpIHtcbiAgICAgICAgYTUgPSBhNSArIDFcbiAgICAgIH1cbiAgICAgIGlmIChhZ2VrPjUgJiBhZ2VrPD0xMikge1xuICAgICAgICBhNiA9IGE2ICsgMVxuICAgICAgfVxuXG4gICAgfVxuICAgIGFnZV95b3VuZ2VzdFtpXSA9IGF5XG4gICAgYWdlX29sZGVzdFtpXSA9IGFvXG4gICAgbnVtXzBfNVtpXSA9IGE1XG4gICAgbnVtXzZfMTJbaV0gPSBhNlxuICB9XG4gIGRhdGEuZnJhbWUoTUlEID0gZCRNSURbMV0sIGFnZV9tb3RoZXI9YWdlX21vdGhlciwgeWVhciA9IHllYXIsIGtudW0gPSBrbnVtLCBudW1fY2hpbGQ9bnVtX2NoaWxkLGFnZV95b3VuZ2VzdD1hZ2VfeW91bmdlc3QsYWdlX29sZGVzdD1hZ2Vfb2xkZXN0LCBudW1fMF81ID0gbnVtXzBfNSwgbnVtXzZfMTIgPSBudW1fNl8xMiwgeV9maXJzdCA9IGQkQ0FIMTVbMV0pXG59XG5cbmBgYFxuYGBgIn0= -->
+<pre class="r"><code>```r
+MakePanel &lt;- function(d) {
   year &lt;- (d$CAH7[1]+18):2017
   Ny &lt;- length(year)
   knum = d$CAH108[1]
@@ -1926,79 +1956,138 @@ one mother:</p>
     num_6_12[i] = a6
   }
   data.frame(MID = d$MID[1], age_mother=age_mother, year = year, knum = knum, num_child=num_child,age_youngest=age_youngest,age_oldest=age_oldest, num_0_5 = num_0_5, num_6_12 = num_6_12, y_first = d$CAH15[1])
-}</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>The chunk below applies the function for each mother (defined by
-their ID number <em>MID</em>) which results in a panel dataset. In order
-to speed up analysis, we also drop observations that we know will be too
-early for the CDS (everyone with first births before 1960).</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIkQgPC0gQyAlPiUgZ3JvdXBfYnkoTUlEKSAlPiUgZG8oTWFrZVBhbmVsKC4pKSAlPiUgZmlsdGVyKHlfZmlyc3Q+PTE5NjApICU+JSIsImxlZnRfam9pbihtX3BjOTcpICMgQWRkIG1vdGhlcidzIGNvZ25pdGl2ZSBzY29yZSJdfQ== -->
-<pre class="r"><code>D &lt;- C %&gt;% group_by(MID) %&gt;% do(MakePanel(.)) %&gt;% filter(y_first&gt;=1960) %&gt;%
+}
+</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+The chunk below applies the function for each mother (defined by their ID number *MID*) which results in a panel dataset. In order to speed up analysis, we also drop observations that we know will be too early for the CDS (everyone with first births before 1960).
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuXG5EIDwtIEMgJT4lIGdyb3VwX2J5KE1JRCkgJT4lIGRvKE1ha2VQYW5lbCguKSkgJT4lIGZpbHRlcih5X2ZpcnN0Pj0xOTYwKSAlPiVcbmxlZnRfam9pbihtX3BjOTcpICMgQWRkIG1vdGhlcidzIGNvZ25pdGl2ZSBzY29yZVxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+
+D &lt;- C %&gt;% group_by(MID) %&gt;% do(MakePanel(.)) %&gt;% filter(y_first&gt;=1960) %&gt;%
 left_join(m_pc97) # Add mother&#39;s cognitive score</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-</div>
-<div id="merge-in-state-identifiers-and-childcare-expenditures" class="section level2">
-<h2>Merge in State Identifiers and Childcare Expenditures</h2>
-<p>We start by merging this panel with the Individual Cross-Year File,
-which maps an (ID,year) combination with an interview number and
-sequence number (which allows us to link with state codes and household
-child care expenditures)</p>
-<p>This chunk loads the individual file and creates the ID number:</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIkluZCA9IHJlYWQuY3N2KFwifi9Ecm9wYm94L1BTSURfQ0RTL1BTSURfUkFXL0luZEZpbGVWZXJ0aWNhbC5jc3ZcIikgJT4lICIsIiAgbXV0YXRlKFggPSBOVUxMKSAlPiUgIiwiICBtdXRhdGUoTUlEID0gaW50bnVtNjgqMTAwMCArIHBlcm51bSxtYXJfc3RhdCA9IG1wYWlyPjApIl19 -->
-<pre class="r"><code>Ind = read.csv(&quot;~/Dropbox/PSID_CDS/PSID_RAW/IndFileVertical.csv&quot;) %&gt;% 
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+## Merge in State Identifiers and Childcare Expenditures
+
+We start by merging this panel with the Individual Cross-Year File, which maps an (ID,year) combination with an interview number and sequence number (which allows us to link with state codes and household child care expenditures)
+
+This chunk loads the individual file and creates the ID number:
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuSW5kID0gcmVhZC5jc3YoXFx+L0Ryb3Bib3gvUFNJRF9DRFMvUFNJRF9SQVcvSW5kRmlsZVZlcnRpY2FsLmNzdlxcKSAlPiUgXG4gIG11dGF0ZShYID0gTlVMTCkgJT4lIFxuICBtdXRhdGUoTUlEID0gaW50bnVtNjgqMTAwMCArIHBlcm51bSxtYXJfc3RhdCA9IG1wYWlyPjApXG5cbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+Ind = read.csv(\~/Dropbox/PSID_CDS/PSID_RAW/IndFileVertical.csv\) %&gt;% 
   mutate(X = NULL) %&gt;% 
-  mutate(MID = intnum68*1000 + pernum,mar_stat = mpair&gt;0)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Since we would like to see marital status in some non-interview
-years, we use the following year’s marital status:</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIkluZCA8LSBJbmQgJT4lIGZpbHRlcih5ZWFyPj0xOTk5KSAlPiUgIiwiICBtdXRhdGUoeWVhciA9IHllYXIgLSAxKSAlPiUiLCIgIHJiaW5kKEluZCkiXX0= -->
-<pre class="r"><code>Ind &lt;- Ind %&gt;% filter(year&gt;=1999) %&gt;% 
+  mutate(MID = intnum68*1000 + pernum,mar_stat = mpair&gt;0)
+</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Since we would like to see marital status in some non-interview years, we use the following year&#39;s marital status:
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuSW5kIDwtIEluZCAlPiUgZmlsdGVyKHllYXI+PTE5OTkpICU+JSBcbiAgbXV0YXRlKHllYXIgPSB5ZWFyIC0gMSkgJT4lXG4gIHJiaW5kKEluZClcbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+Ind &lt;- Ind %&gt;% filter(year&gt;=1999) %&gt;% 
   mutate(year = year - 1) %&gt;%
   rbind(Ind)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>This method of imputation ensures that we only fill in missing data
-from non-interview years.</p>
-<p>One thing that will be useful throughout is a panel with the mother’s
-ID linked to their interview and calendar year. Some variables from the
-main interview refer to the previous year and things can get messy, so
-we use this file to keep things consistent.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIiMgdGhpcyB3aWxsIGJlIHVzZWZ1bCB0aHJvdWdob3V0OiBjcmVhdGUgYSBkYXRhZnJhbWUgdGhhdCBtYXBzIG1vdGhlcnMgdG8gdGhlaXIgaW50ZXJ2aWV3IG51bWJlciBhbmQgc2VxdWVuY2UgbnVtYmVyIiwiRF9JbmQgPC0gRCAlPiUiLCIgIGlubmVyX2pvaW4oSW5kKSJdfQ== -->
-<pre class="r"><code># this will be useful throughout: create a dataframe that maps mothers to their interview number and sequence number
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+This method of imputation ensures that we only fill in missing data from non-interview years.
+
+One thing that will be useful throughout is a panel with the mother&#39;s ID linked to their interview and calendar year. Some variables from the main interview refer to the previous year and things can get messy, so we use this file to keep things consistent.
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyB0aGlzIHdpbGwgYmUgdXNlZnVsIHRocm91Z2hvdXQ6IGNyZWF0ZSBhIGRhdGFmcmFtZSB0aGF0IG1hcHMgbW90aGVycyB0byB0aGVpciBpbnRlcnZpZXcgbnVtYmVyIGFuZCBzZXF1ZW5jZSBudW1iZXJcbkRfSW5kIDwtIEQgJT4lXG4gIGlubmVyX2pvaW4oSW5kKVxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+# this will be useful throughout: create a dataframe that maps mothers to their interview number and sequence number
 D_Ind &lt;- D %&gt;%
   inner_join(Ind)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Next we load in a panel of state codes, which we merge with the
-cross-year individual file. We then merge that file with a state code
-cross-walk so that we can link the PSID’s state code with FIPS and SOI.
-We also merge, based on the household interview number and year, annual
-household expenditures on child care (cleaned in a previous
-section).</p>
-<p>Finally, this file is merged with the panel of mothers we just
-created, using years before and after to fill in missing state
-observations.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIiMgc3RhdGUgY29kZXMgbWVhc3VyZXMgcmVzaWRlbmNlIGZvciBzdXJ2ZXkgeWVhciIsInN0YXRlX2NvZGVzID0gcmVhZC5jc3YoXCJ+L0Ryb3Bib3gvUFNJRF9DRFMvU3RhdGVDb2Rlcy5jc3ZcIikgJT4lIG11dGF0ZShYPU5VTEwsWC4xID0gTlVMTCkgJT4lICM8LSB0aGlzIGlzIGEgc2ltcGxlIGNyb3Nzd2FsayBvZiBzdGF0ZSBjb2RlcyIsIiAgc2VsZWN0KC1zdGF0ZSkgJT4lICIsIiAgcmVuYW1lKHN0YXRlID0gUFNJRCwgU3RGSVBTID0gZmlwcykgJT4lICM8LSB3ZSByZW5hbWUgc29tZSB0aGluZ3MgaW4gb3JkZXIgdG8gZG8gdGhlIG1lcmdlIHByb3Blcmx5IiwiICBzZWxlY3Qoc3RhdGUsU3RGSVBTLFNPSSkiLCIiLCIiLCIjIGNoaWxkIGNhcmUgZXhwZW5kaXR1cmVzIGFyZSBmb3IgcHJldmlvdXMgeWVhciwgc28gd2UgaGF2ZSB0byBiZSBjYXJlZnVsIGhvdyB3ZSBkbyB0aGUgbWVyZ2UhIiwiIyB3ZSBtZXJnZSBieSBzdXJ2ZXkgeWVhciB0aGVuIHN1YnRyYWN0IG9uZSB5ZWFyIHRvIG1ha2UgdGhlIHJlZmVyZW5jZSBjb3JyZWN0IiwiIyB0aGVuIHdlIGRyb3AgaW50bnVtLCB1c2luZyBvbmx5IE1JRCBhbmQgeWVhciB0byBsaW5rIHdpdGggdGhlIG1haW4gZmlsZSBpbiB0aGUgbmV4dCBzdGVwIiwiY2hfY2FyZSA8LSByZWFkLmNzdihcIn4vRHJvcGJveC9QU0lEX0NEUy9QU0lEX0NMRUFOL01haW5fY2hpbGRjYXJlLmNzdlwiKSAlPiUgIiwiICBtdXRhdGUoWD1OVUxMKSAlPiUiLCIgIGlubmVyX2pvaW4oRF9JbmQpICU+JSAjPC0gbWVyZ2UgdG8gbW90aGVyJ3MgdGhyb3VnaCB0aGUgcGFuZWwgZmlsZSIsIiAgbXV0YXRlKHllYXIgPSB5ZWFyLTEpICU+JSAjPC0gY29udmVydCBzdXJ2ZXkgeWVhciB0byBsYWcgeWVhciIsIiAgc2VsZWN0KE1JRCx5ZWFyLGNoaWxkY2FyZV9leHApIiwiIiwiIiwiRCA8LSByZWFkLmNzdihcIn4vRHJvcGJveC9QU0lEX0NEUy9QU0lEX1JBVy9TdGF0ZVZlcnRpY2FsLmNzdlwiKSAlPiUgIzwtIHN0YXRlIG9mIHJlc2lkZW5jZSBwYW5lbCBkYXRhIiwiICBtdXRhdGUoWD1OVUxMKSAlPiUiLCIgIHJpZ2h0X2pvaW4oSW5kKSAlPiUgIzwtIG1lcmdlIHdpdGggSW5kaXZpZHVhbCBmaWxlIiwiICByaWdodF9qb2luKEQpICU+JSAjPC0gbWVyZ2Ugd2l0aCB0aGUgcGFuZWwgd2UgY3JlYXRlZCAoa2VlcGluZyBhbGwgeWVhcnMpIiwiICBhcnJhbmdlKE1JRCx5ZWFyKSAlPiUiLCIgIGdyb3VwX2J5KE1JRCkgJT4lIiwiICBmaWxsKHN0YXRlLC5kaXJlY3Rpb24gPSBcImRvd251cFwiKSAlPiUgIzwtIGZpbGwgaW4gbWlzc2luZyBvYnNlcnZhdGlvbnMiLCIgIG1lcmdlKHN0YXRlX2NvZGVzKSAlPiUgIzwtIG1lcmdlIGluIHRoZSBjcm9zcy13YWxrIHdpdGggRklQUyBjb2RlcyBhbmQgU09JIGNvZGVzIiwiICBsZWZ0X2pvaW4oY2hfY2FyZSkgIzw9IHVzZSBvbmx5IHRoZSBtYWluIGZpbGUgdG8gbGluayJdfQ== -->
-<pre class="r"><code># state codes measures residence for survey year
-state_codes = read.csv(&quot;~/Dropbox/PSID_CDS/StateCodes.csv&quot;) %&gt;% mutate(X=NULL,X.1 = NULL) %&gt;% #&lt;- this is a simple crosswalk of state codes
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Next we load in a panel of state codes, which we merge with the cross-year individual file. We then merge that file with a state code cross-walk so that we can link the PSID&#39;s state code with FIPS and SOI. We also merge, based on the household interview number and year, annual household expenditures on child care (cleaned in a previous section).
+
+Finally, this file is merged with the panel of mothers we just created, using years before and after to fill in missing state observations.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyBzdGF0ZSBjb2RlcyBtZWFzdXJlcyByZXNpZGVuY2UgZm9yIHN1cnZleSB5ZWFyXG5zdGF0ZV9jb2RlcyA9IHJlYWQuY3N2KFxcfi9Ecm9wYm94L1BTSURfQ0RTL1N0YXRlQ29kZXMuY3N2XFwpICU+JSBtdXRhdGUoWD1OVUxMLFguMSA9IE5VTEwpICU+JSAjPC0gdGhpcyBpcyBhIHNpbXBsZSBjcm9zc3dhbGsgb2Ygc3RhdGUgY29kZXNcbiAgc2VsZWN0KC1zdGF0ZSkgJT4lIFxuICByZW5hbWUoc3RhdGUgPSBQU0lELCBTdEZJUFMgPSBmaXBzKSAlPiUgIzwtIHdlIHJlbmFtZSBzb21lIHRoaW5ncyBpbiBvcmRlciB0byBkbyB0aGUgbWVyZ2UgcHJvcGVybHlcbiAgc2VsZWN0KHN0YXRlLFN0RklQUyxTT0kpXG5cblxuIyBjaGlsZCBjYXJlIGV4cGVuZGl0dXJlcyBhcmUgZm9yIHByZXZpb3VzIHllYXIsIHNvIHdlIGhhdmUgdG8gYmUgY2FyZWZ1bCBob3cgd2UgZG8gdGhlIG1lcmdlIVxuIyB3ZSBtZXJnZSBieSBzdXJ2ZXkgeWVhciB0aGVuIHN1YnRyYWN0IG9uZSB5ZWFyIHRvIG1ha2UgdGhlIHJlZmVyZW5jZSBjb3JyZWN0XG4jIHRoZW4gd2UgZHJvcCBpbnRudW0sIHVzaW5nIG9ubHkgTUlEIGFuZCB5ZWFyIHRvIGxpbmsgd2l0aCB0aGUgbWFpbiBmaWxlIGluIHRoZSBuZXh0IHN0ZXBcbmNoX2NhcmUgPC0gcmVhZC5jc3YoXFx+L0Ryb3Bib3gvUFNJRF9DRFMvUFNJRF9DTEVBTi9NYWluX2NoaWxkY2FyZS5jc3ZcXCkgJT4lIFxuICBtdXRhdGUoWD1OVUxMKSAlPiVcbiAgaW5uZXJfam9pbihEX0luZCkgJT4lICM8LSBtZXJnZSB0byBtb3RoZXIncyB0aHJvdWdoIHRoZSBwYW5lbCBmaWxlXG4gIG11dGF0ZSh5ZWFyID0geWVhci0xKSAlPiUgIzwtIGNvbnZlcnQgc3VydmV5IHllYXIgdG8gbGFnIHllYXJcbiAgc2VsZWN0KE1JRCx5ZWFyLGNoaWxkY2FyZV9leHApXG5cblxuRCA8LSByZWFkLmNzdihcXH4vRHJvcGJveC9QU0lEX0NEUy9QU0lEX1JBVy9TdGF0ZVZlcnRpY2FsLmNzdlxcKSAlPiUgIzwtIHN0YXRlIG9mIHJlc2lkZW5jZSBwYW5lbCBkYXRhXG4gIG11dGF0ZShYPU5VTEwpICU+JVxuICByaWdodF9qb2luKEluZCkgJT4lICM8LSBtZXJnZSB3aXRoIEluZGl2aWR1YWwgZmlsZVxuICByaWdodF9qb2luKEQpICU+JSAjPC0gbWVyZ2Ugd2l0aCB0aGUgcGFuZWwgd2UgY3JlYXRlZCAoa2VlcGluZyBhbGwgeWVhcnMpXG4gIGFycmFuZ2UoTUlELHllYXIpICU+JVxuICBncm91cF9ieShNSUQpICU+JVxuICBmaWxsKHN0YXRlLC5kaXJlY3Rpb24gPSBcXGRvd251cFxcKSAlPiUgIzwtIGZpbGwgaW4gbWlzc2luZyBvYnNlcnZhdGlvbnNcbiAgbWVyZ2Uoc3RhdGVfY29kZXMpICU+JSAjPC0gbWVyZ2UgaW4gdGhlIGNyb3NzLXdhbGsgd2l0aCBGSVBTIGNvZGVzIGFuZCBTT0kgY29kZXNcbiAgbGVmdF9qb2luKGNoX2NhcmUpICM8PSB1c2Ugb25seSB0aGUgbWFpbiBmaWxlIHRvIGxpbmtcbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+# state codes measures residence for survey year
+state_codes = read.csv(\~/Dropbox/PSID_CDS/StateCodes.csv\) %&gt;% mutate(X=NULL,X.1 = NULL) %&gt;% #&lt;- this is a simple crosswalk of state codes
   select(-state) %&gt;% 
   rename(state = PSID, StFIPS = fips) %&gt;% #&lt;- we rename some things in order to do the merge properly
   select(state,StFIPS,SOI)
@@ -2007,42 +2096,49 @@ state_codes = read.csv(&quot;~/Dropbox/PSID_CDS/StateCodes.csv&quot;) %&gt;% mut
 # child care expenditures are for previous year, so we have to be careful how we do the merge!
 # we merge by survey year then subtract one year to make the reference correct
 # then we drop intnum, using only MID and year to link with the main file in the next step
-ch_care &lt;- read.csv(&quot;~/Dropbox/PSID_CDS/PSID_CLEAN/Main_childcare.csv&quot;) %&gt;% 
+ch_care &lt;- read.csv(\~/Dropbox/PSID_CDS/PSID_CLEAN/Main_childcare.csv\) %&gt;% 
   mutate(X=NULL) %&gt;%
   inner_join(D_Ind) %&gt;% #&lt;- merge to mother&#39;s through the panel file
   mutate(year = year-1) %&gt;% #&lt;- convert survey year to lag year
   select(MID,year,childcare_exp)
 
 
-D &lt;- read.csv(&quot;~/Dropbox/PSID_CDS/PSID_RAW/StateVertical.csv&quot;) %&gt;% #&lt;- state of residence panel data
+D &lt;- read.csv(\~/Dropbox/PSID_CDS/PSID_RAW/StateVertical.csv\) %&gt;% #&lt;- state of residence panel data
   mutate(X=NULL) %&gt;%
   right_join(Ind) %&gt;% #&lt;- merge with Individual file
   right_join(D) %&gt;% #&lt;- merge with the panel we created (keeping all years)
   arrange(MID,year) %&gt;%
   group_by(MID) %&gt;%
-  fill(state,.direction = &quot;downup&quot;) %&gt;% #&lt;- fill in missing observations
+  fill(state,.direction = \downup\) %&gt;% #&lt;- fill in missing observations
   merge(state_codes) %&gt;% #&lt;- merge in the cross-walk with FIPS codes and SOI codes
   left_join(ch_care) #&lt;= use only the main file to link</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-</div>
-<div id="identify-and-merge-in-spouses-fathers" class="section level2">
-<h2>Identify and Merge in Spouses (“Fathers”)</h2>
-<p>The next step is to identify spouses for each mother in each year.
-Spouses are linked by the <em>mpair</em> variable which is unique within
-a household interview. We identify partners by: 1. Merging the
-individual file with the triple
-(<em>MID</em>,<em>year</em>,<em>age_mother</em>) from the panel, keeping
-all observations from the individual file. 2. Partners are identified by
-the fact that they are not successfully matched in this merge, meaning
-that <em>age_mother</em> will be missing. We keep those observations and
-rename the variables in order to merge them once more with the panel of
-mothers.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIkQgPC0gRCAlPiUiLCIgIHNlbGVjdChNSUQseWVhcixhZ2VfbW90aGVyKSAlPiUiLCIgIHJpZ2h0X2pvaW4oSW5kKSAlPiUgIzwtIG1lcmdlIHdpdGggaW5kaXZpZHVhbCBmaWxlLCBrZWVwIGFsbCBvYnNlcnZhdGlvbnMgZnJvbSBJbmQiLCIgIGZpbHRlcihpcy5uYShhZ2VfbW90aGVyKSkgJT4lICM8LSBpZGVudGlmeSBzcG91c2VzIGJ5IG1pc3NpbmcgaW5mbyBmcm9tIHRoZSBtZXJnZSIsIiAgcmVuYW1lKEZJRD1NSUQsc25GPXNuKSAlPiUgIzwtIHJlbmFtZSB2YXJpYWJsZXMgZm9yIG1lcmdlIiwiICBmaWx0ZXIobXBhaXI+MCkgJT4lICM8LSBvbmx5IGtlZXAgaW5kaXZpZHVhbHMgd2hvIGFyZSBub3QgbW90aGVycyBidXQgd2hvIGFyZSBpbiBhIHJlbGF0aW9uc2hpcCBpbiB0aGUgc2FtZSBob3VzZWhvbGQiLCIgIHNlbGVjdChGSUQseWVhcixpbnRudW0sbXBhaXIsc25GKSAlPiUiLCIgIHJpZ2h0X2pvaW4oRCkgJT4lICM8LSBkbyB0aGUgbWVyZ2UiLCIgIG11dGF0ZShzbkYgPSByZXBsYWNlX25hKHNuRiwtMSkpICM8LSByZXBsYWNlIG1pc3NpbmcgdmFsdWVzLiJdfQ== -->
-<pre class="r"><code>D &lt;- D %&gt;%
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+## Identify and Merge in Spouses (&quot;Fathers&quot;)
+
+The next step is to identify spouses for each mother in each year. Spouses are linked by the *mpair* variable which is unique within a household interview. We identify partners by:
+1. Merging the individual file with the triple (*MID*,*year*,*age_mother*) from the panel, keeping all observations from the individual file.
+2. Partners are identified by the fact that they are not successfully matched in this merge, meaning that *age_mother* will be missing. We keep those observations and rename the variables in order to merge them once more with the panel of mothers.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuRCA8LSBEICU+JVxuICBzZWxlY3QoTUlELHllYXIsYWdlX21vdGhlcikgJT4lXG4gIHJpZ2h0X2pvaW4oSW5kKSAlPiUgIzwtIG1lcmdlIHdpdGggaW5kaXZpZHVhbCBmaWxlLCBrZWVwIGFsbCBvYnNlcnZhdGlvbnMgZnJvbSBJbmRcbiAgZmlsdGVyKGlzLm5hKGFnZV9tb3RoZXIpKSAlPiUgIzwtIGlkZW50aWZ5IHNwb3VzZXMgYnkgbWlzc2luZyBpbmZvIGZyb20gdGhlIG1lcmdlXG4gIHJlbmFtZShGSUQ9TUlELHNuRj1zbikgJT4lICM8LSByZW5hbWUgdmFyaWFibGVzIGZvciBtZXJnZVxuICBmaWx0ZXIobXBhaXI+MCkgJT4lICM8LSBvbmx5IGtlZXAgaW5kaXZpZHVhbHMgd2hvIGFyZSBub3QgbW90aGVycyBidXQgd2hvIGFyZSBpbiBhIHJlbGF0aW9uc2hpcCBpbiB0aGUgc2FtZSBob3VzZWhvbGRcbiAgc2VsZWN0KEZJRCx5ZWFyLGludG51bSxtcGFpcixzbkYpICU+JVxuICByaWdodF9qb2luKEQpICU+JSAjPC0gZG8gdGhlIG1lcmdlXG4gIG11dGF0ZShzbkYgPSByZXBsYWNlX25hKHNuRiwtMSkpICM8LSByZXBsYWNlIG1pc3NpbmcgdmFsdWVzLlxuXG5cbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+D &lt;- D %&gt;%
   select(MID,year,age_mother) %&gt;%
   right_join(Ind) %&gt;% #&lt;- merge with individual file, keep all observations from Ind
   filter(is.na(age_mother)) %&gt;% #&lt;- identify spouses by missing info from the merge
@@ -2050,26 +2146,36 @@ mothers.</p>
   filter(mpair&gt;0) %&gt;% #&lt;- only keep individuals who are not mothers but who are in a relationship in the same household
   select(FID,year,intnum,mpair,snF) %&gt;%
   right_join(D) %&gt;% #&lt;- do the merge
-  mutate(snF = replace_na(snF,-1)) #&lt;- replace missing values.</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-</div>
-<div id="merge-in-spouse-birth-year-and-marriage-summary-variables" class="section level2">
-<h2>Merge in Spouse Birth Year and Marriage Summary Variables</h2>
-<p>The <em>Marriage History File</em> is prepared by the PSID and
-contains a record of each marriage in the PSID. We use this file to
-determine which individuals have ever been married, to filter out
-individuals with missing marriage information, and to identify the birth
-year of spouses.</p>
-<p>First we load the marriage file and create an “ever” married summary
-variable. We finish by merging this file with the main panel (based on
-MID)</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIiMgIyAgLS0tLSBsb2FkIG1hcnJpYWdlIGluZm8gYW5kIGNyZWF0ZSBzb21lIHN1bW1hcnkgdmFyaWFibGVzIiwiTSA8LSByZWFkLmNzdihcIn4vRHJvcGJveC9QU0lEX0NEUy9QU0lEX1JBVy9NYXJyaWFnZS5jc3ZcIikgJT4lIiwiICBtdXRhdGUoWCA9IE5VTEwpICU+JSIsIiAgcmVuYW1lKE1JRCA9IElEMSkgJT4lICM8LSB3ZSByZW5hbWUgdG8gTUlEIGluIHByZXBhcmF0aW9uIGZvciBhIGZpcnN0IG1lcmdlIHdpdGggc2FtcGxlIG1vdGhlcnMiLCIgIHJlbmFtZSh5YmlydGggPSBNSDYpICU+JSIsIiAgZmlsdGVyKHliaXJ0aDw5OTk4KSAlPiUgIzwtIGRyb3AgaW5kaXZpZHVhbHMgd2l0aCBtaXNzaW5nIGJpcnRoIGluZm8iLCIgIHJlbmFtZSh5bWFyID0gTUgxMSkgJT4lIiwiICBmaWx0ZXIoeW1hciE9OTk5OCkgJT4lICM8LSByZW1vdmUgaW5kaXZpZHVhbHMgd2l0aG91dCBtYXJyaWFnZSBpbmZvIiwiICBtdXRhdGUocmVjb3JkID0geW1hcjw5OTk5KSAlPiUgIzwtIHltYXI9PTk5OTkgaW5kaWNhdGVzIG5ldmVyIG1hcnJpZWQiLCIgIGdyb3VwX2J5KE1JRCkgJT4lIiwiICBzdW1tYXJpc2UoZXZlcl9tYXJyaWVkID0gc3VtKHJlY29yZCk+MCx5YmlydGggPSB5YmlydGhbMV0pIiwiIiwiRCA9IE0gJT4lICIsIiAgaW5uZXJfam9pbihEKSJdfQ== -->
-<pre class="r"><code># #  ---- load marriage info and create some summary variables
-M &lt;- read.csv(&quot;~/Dropbox/PSID_CDS/PSID_RAW/Marriage.csv&quot;) %&gt;%
+  mutate(snF = replace_na(snF,-1)) #&lt;- replace missing values.
+</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+## Merge in Spouse Birth Year and Marriage Summary Variables
+
+The *Marriage History File* is prepared by the PSID and contains a record of each marriage in the PSID. We use this file to determine which individuals have ever been married, to filter out individuals with missing marriage information, and to identify the birth year of spouses.
+
+First we load the marriage file and create an &quot;ever&quot; married summary variable. We finish by merging this file with the main panel (based on MID)
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuIyAjICAtLS0tIGxvYWQgbWFycmlhZ2UgaW5mbyBhbmQgY3JlYXRlIHNvbWUgc3VtbWFyeSB2YXJpYWJsZXNcbk0gPC0gcmVhZC5jc3YoXFx+L0Ryb3Bib3gvUFNJRF9DRFMvUFNJRF9SQVcvTWFycmlhZ2UuY3N2XFwpICU+JVxuICBtdXRhdGUoWCA9IE5VTEwpICU+JVxuICByZW5hbWUoTUlEID0gSUQxKSAlPiUgIzwtIHdlIHJlbmFtZSB0byBNSUQgaW4gcHJlcGFyYXRpb24gZm9yIGEgZmlyc3QgbWVyZ2Ugd2l0aCBzYW1wbGUgbW90aGVyc1xuICByZW5hbWUoeWJpcnRoID0gTUg2KSAlPiVcbiAgZmlsdGVyKHliaXJ0aDw5OTk4KSAlPiUgIzwtIGRyb3AgaW5kaXZpZHVhbHMgd2l0aCBtaXNzaW5nIGJpcnRoIGluZm9cbiAgcmVuYW1lKHltYXIgPSBNSDExKSAlPiVcbiAgZmlsdGVyKHltYXIhPTk5OTgpICU+JSAjPC0gcmVtb3ZlIGluZGl2aWR1YWxzIHdpdGhvdXQgbWFycmlhZ2UgaW5mb1xuICBtdXRhdGUocmVjb3JkID0geW1hcjw5OTk5KSAlPiUgIzwtIHltYXI9PTk5OTkgaW5kaWNhdGVzIG5ldmVyIG1hcnJpZWRcbiAgZ3JvdXBfYnkoTUlEKSAlPiVcbiAgc3VtbWFyaXNlKGV2ZXJfbWFycmllZCA9IHN1bShyZWNvcmQpPjAseWJpcnRoID0geWJpcnRoWzFdKVxuXG5EID0gTSAlPiUgXG4gIGlubmVyX2pvaW4oRClcblxuXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+# #  ---- load marriage info and create some summary variables
+M &lt;- read.csv(\~/Dropbox/PSID_CDS/PSID_RAW/Marriage.csv\) %&gt;%
   mutate(X = NULL) %&gt;%
   rename(MID = ID1) %&gt;% #&lt;- we rename to MID in preparation for a first merge with sample mothers
   rename(ybirth = MH6) %&gt;%
@@ -2081,112 +2187,172 @@ M &lt;- read.csv(&quot;~/Dropbox/PSID_CDS/PSID_RAW/Marriage.csv&quot;) %&gt;%
   summarise(ever_married = sum(record)&gt;0,ybirth = ybirth[1])
 
 D = M %&gt;% 
-  inner_join(D)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>We also use this file to merge with FID for each spouse to deduce the
-spouse’s age. This means we don’t have the spouse’s age for cohabiting
-couples. We use the triple <em>year</em>, <em>intnum</em> and
-<em>mpair</em> to match women with their spouses. To do this, we first
-create an individual index file of people that are <em>not</em> women in
-the sample. This is the potential pool of fathers that we use for the
-merge.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIkQgPC0gRF9JbmQgJT4lIiwiICBzZWxlY3QoTUlELHllYXIsYWdlX21vdGhlcikgJT4lIiwiICByaWdodF9qb2luKEluZCkgJT4lIiwiICBmaWx0ZXIoaXMubmEoYWdlX21vdGhlcikpICU+JSAjPC0gcGljayBvdXQgaW5kaXZpZHVhbHMgZnJvbSB0aGUgbWVyZ2Ugd2hvIHdlcmUgKm5vdCogbWF0Y2hlZCIsIiAgcmVuYW1lKEZJRCA9IE1JRCxzbkYgPSBzbikgJT4lIiwiICBzZWxlY3QoYyhcIkZJRFwiLFwieWVhclwiLFwiaW50bnVtXCIsXCJtcGFpclwiLFwic25GXCIpKSAlPiUiLCIgIGZpbHRlcihtcGFpcj4wKSAlPiUiLCIgIHJpZ2h0X2pvaW4oRCkiLCIiLCJEIDwtIE0gJT4lIiwiICByZW5hbWUoRklEPU1JRCx5YmlydGhGID0geWJpcnRoKSAlPiUiLCIgIHJpZ2h0X2pvaW4oRCkgJT4lIiwiICBtdXRhdGUoZl9hZ2UgPSB5ZWFyIC0geWJpcnRoRikiXX0= -->
-<pre class="r"><code>D &lt;- D_Ind %&gt;%
+  inner_join(D)
+</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+We also use this file to merge with FID for each spouse to deduce the spouse&#39;s age. This means we don&#39;t have the spouse&#39;s age for cohabiting couples. We use the triple *year*, *intnum* and *mpair* to match women with their spouses. To do this, we first create an individual index file of people that are *not* women in the sample. This is the potential pool of fathers that we use for the merge.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuXG5EIDwtIERfSW5kICU+JVxuICBzZWxlY3QoTUlELHllYXIsYWdlX21vdGhlcikgJT4lXG4gIHJpZ2h0X2pvaW4oSW5kKSAlPiVcbiAgZmlsdGVyKGlzLm5hKGFnZV9tb3RoZXIpKSAlPiUgIzwtIHBpY2sgb3V0IGluZGl2aWR1YWxzIGZyb20gdGhlIG1lcmdlIHdobyB3ZXJlICpub3QqIG1hdGNoZWRcbiAgcmVuYW1lKEZJRCA9IE1JRCxzbkYgPSBzbikgJT4lXG4gIHNlbGVjdChjKFxcRklEXFwsXFx5ZWFyXFwsXFxpbnRudW1cXCxcXG1wYWlyXFwsXFxzbkZcXCkpICU+JVxuICBmaWx0ZXIobXBhaXI+MCkgJT4lXG4gIHJpZ2h0X2pvaW4oRClcblxuRCA8LSBNICU+JVxuICByZW5hbWUoRklEPU1JRCx5YmlydGhGID0geWJpcnRoKSAlPiVcbiAgcmlnaHRfam9pbihEKSAlPiVcbiAgbXV0YXRlKGZfYWdlID0geWVhciAtIHliaXJ0aEYpXG5cbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+
+D &lt;- D_Ind %&gt;%
   select(MID,year,age_mother) %&gt;%
   right_join(Ind) %&gt;%
   filter(is.na(age_mother)) %&gt;% #&lt;- pick out individuals from the merge who were *not* matched
   rename(FID = MID,snF = sn) %&gt;%
-  select(c(&quot;FID&quot;,&quot;year&quot;,&quot;intnum&quot;,&quot;mpair&quot;,&quot;snF&quot;)) %&gt;%
+  select(c(\FID\,\year\,\intnum\,\mpair\,\snF\)) %&gt;%
   filter(mpair&gt;0) %&gt;%
   right_join(D)
 
 D &lt;- M %&gt;%
   rename(FID=MID,ybirthF = ybirth) %&gt;%
   right_join(D) %&gt;%
-  mutate(f_age = year - ybirthF)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-</div>
-<div id="merge-in-mothers-race-education-and-cpi-external" class="section level2">
-<h2>Merge in Mother’s Race, Education, and CPI (external)</h2>
-<p>In the current version we don’t use CPI, but we’ll put it in anyway.
-Race and education are previously cleaned summary variables stored
-non-locally. We drop mothers from the sample with missing information on
-education and race.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIlIgPC0gcmVhZC5jc3YoXCJ+L0Ryb3Bib3gvUFNJRF9DRFMvUFNJRF9SQVcvUmFjZUhvcml6b250YWwuY3N2XCIpICU+JSBtdXRhdGUoWCA9IE5VTEwpICU+JSAiLCIgIHJlbmFtZShNSUQgPSBJRCkiLCIiLCJlZHVjID0gcmVhZC5jc3YoXCJ+L0Ryb3Bib3gvUFNJRF9DRFMvUFNJRF9SQVcvSEdDLmNzdlwiKSAlPiUgIiwiICBtdXRhdGUoWCA9IE5VTEwsSUQgPSBpbnRudW02OCoxMDAwICsgcG51bTY4KSAlPiUiLCIgIG11dGF0ZShlZD1jYXNlX3doZW4oaGdjPjE2IH4gNSxoZ2MgPT0gMTYgfiA0LCBoZ2M+PTEzIH4gMywgaGdjPj0xMiB+IDIsIGhnYzwxMiB+IDEpKSAlPiUiLCIgIHNlbGVjdChJRCxlZCkgJT4lIiwiICBtdXRhdGUoZWQgPSBmYWN0b3IoZWQsbGV2ZWxzID0gYygxLDIsMyw0LDUpLGxhYmVscz1jKFwiPDEyXCIsXCIxMlwiLFwiMTMtMTVcIixcIjE2XCIsXCI+MTZcIikpKSIsIiAgICAiLCJjcGkgPSByZWFkLmNzdihcIn4vRHJvcGJveC9QU0lEX0NEUy9DUEktVS5jc3ZcIikgJT4lICIsIiAgcmVuYW1lKHllYXIgPSBZRUFSKSAlPiUiLCIgIG11dGF0ZShDUElVID0gQ1BJVS9DUElVWzUzXSkiXX0= -->
-<pre class="r"><code>R &lt;- read.csv(&quot;~/Dropbox/PSID_CDS/PSID_RAW/RaceHorizontal.csv&quot;) %&gt;% mutate(X = NULL) %&gt;% 
-  rename(MID = ID)
+  mutate(f_age = year - ybirthF)
+</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
 
-educ = read.csv(&quot;~/Dropbox/PSID_CDS/PSID_RAW/HGC.csv&quot;) %&gt;% 
-  mutate(X = NULL,ID = intnum68*1000 + pnum68) %&gt;%
-  mutate(ed=case_when(hgc&gt;16 ~ 5,hgc == 16 ~ 4, hgc&gt;=13 ~ 3, hgc&gt;=12 ~ 2, hgc&lt;12 ~ 1)) %&gt;%
-  select(ID,ed) %&gt;%
-  mutate(ed = factor(ed,levels = c(1,2,3,4,5),labels=c(&quot;&lt;12&quot;,&quot;12&quot;,&quot;13-15&quot;,&quot;16&quot;,&quot;&gt;16&quot;)))
-    
-cpi = read.csv(&quot;~/Dropbox/PSID_CDS/CPI-U.csv&quot;) %&gt;% 
-  rename(year = YEAR) %&gt;%
-  mutate(CPIU = CPIU/CPIU[53])</code></pre>
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+## Merge in Mother&#39;s Race, Education, and CPI (external)
+In the current version we don&#39;t use CPI, but we&#39;ll put it in anyway. Race and education are previously cleaned summary variables stored non-locally. We drop mothers from the sample with missing information on education and race.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZWQgPC0gcmVhZC5jc3YoXCIuLi8uLi9kYXRhLW1haW4vZWR1Y2F0aW9uL2VkdWNhdGlvbi5jc3ZcIikgJT4lXG4gIHNlbGVjdChJRCxlZHVjKSAlPiVcbiAgbGVmdF9qb2luKGVkdWMpICU+JVxuICBmaWx0ZXIoIWlzLm5hKGVkdWMpKVxuXG5gYGAifQ== --&gt;
+
+```r
+ed &lt;- read.csv(&quot;../../data-main/education/education.csv&quot;) %&gt;%
+  select(ID,educ) %&gt;%
+  left_join(educ) %&gt;%
+  filter(!is.na(educ))
+</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiSm9pbmluZywgYnkgPSBcIklEXCJcbiJ9 -->
+<pre><code>Joining, by = &quot;ID&quot;</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Then we merge them into the main file.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIkQgPC0gRCAlPiUgIzwtIGRyb3AgaWYgbW90aGVyIGhhcyBtaXNzaW5nIHJhY2Ugb3IgZWR1Y2F0aW9uIGluZm8iLCIgIGlubmVyX2pvaW4oUikgJT4lICIsIiAgaW5uZXJfam9pbihlZHVjLGJ5ID0gYyhcIk1JRFwiID0gXCJJRFwiKSkgJT4lIiwiICByZW5hbWUobV9lZCA9IGVkKSAlPiUiLCIgIGxlZnRfam9pbihlZHVjLGJ5ID0gYyhcIkZJRFwiID0gXCJJRFwiKSkgJT4lIiwiICByZW5hbWUoZl9lZCA9IGVkKSAlPiUiLCIgIGlubmVyX2pvaW4oUikgJT4lIiwiICBpbm5lcl9qb2luKGNwaSkiXX0= -->
-<pre class="r"><code>D &lt;- D %&gt;% #&lt;- drop if mother has missing race or education info
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuRCA8LSBEICU+JSAjPC0gZHJvcCBpZiBtb3RoZXIgaGFzIG1pc3NpbmcgcmFjZSBvciBlZHVjYXRpb24gaW5mb1xuICBpbm5lcl9qb2luKFIpICU+JSBcbiAgaW5uZXJfam9pbihlZHVjLGJ5ID0gYyhcXE1JRFxcID0gXFxJRFxcKSkgJT4lXG4gIHJlbmFtZShtX2VkID0gZWQpICU+JVxuICBsZWZ0X2pvaW4oZWR1YyxieSA9IGMoXFxGSURcXCA9IFxcSURcXCkpICU+JVxuICByZW5hbWUoZl9lZCA9IGVkKSAlPiVcbiAgaW5uZXJfam9pbihSKSAlPiVcbiAgaW5uZXJfam9pbihjcGkpXG5gYGBcbmBgYCJ9 -->
+<pre class="r"><code>```r
+D &lt;- D %&gt;% #&lt;- drop if mother has missing race or education info
   inner_join(R) %&gt;% 
-  inner_join(educ,by = c(&quot;MID&quot; = &quot;ID&quot;)) %&gt;%
+  inner_join(educ,by = c(\MID\ = \ID\)) %&gt;%
   rename(m_ed = ed) %&gt;%
-  left_join(educ,by = c(&quot;FID&quot; = &quot;ID&quot;)) %&gt;%
+  left_join(educ,by = c(\FID\ = \ID\)) %&gt;%
   rename(f_ed = ed) %&gt;%
   inner_join(R) %&gt;%
   inner_join(cpi)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-</div>
-<div id="clean-and-prepare-labor-market-data" class="section level2">
-<h2>Clean and Prepare Labor Market Data</h2>
-<p>Labor market earnings and hours come from the main interview of the
-PSID, which collects information for the “husband”, the “wife” and other
-family members. Individuals can be matched to these variables via their
-sequence number in the household (which we will do below). First, let’s
-load a cleaned panel dataset of these household data.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiTCA9IHJlYWQuY3N2KFwifi9Ecm9wYm94L1BTSURfQ0RTL1BTSURfUkFXL0xhYm9yRmlsZS5jc3ZcIikgJT4lIG11dGF0ZShYID0gTlVMTCkgIzwtIGNvbnRhaW5zIHRoZSBob3VycyBhbmQgZWFybmluZ3Mgb2YgdGhlIFwiaGVhZFwiIGFuZCB0aGUgXCJ3aWZlXCIgd2hpY2ggY2FuIGJlIG1hdGNoZWQgdG8gaW5kaXZpZHVhbHMgdmlhIHNlcXVlbmNlIG51bWJlciJ9 -->
-<pre class="r"><code>L = read.csv(&quot;~/Dropbox/PSID_CDS/PSID_RAW/LaborFile.csv&quot;) %&gt;% mutate(X = NULL) #&lt;- contains the hours and earnings of the &quot;head&quot; and the &quot;wife&quot; which can be matched to individuals via sequence number</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Next, we merge with the main panel and assign wages, earnings, and
-hours, based on the mother’s and father’s sequence number, which tells
-us if they are either the “husband” or “wife” in the household.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIkwgPC0gRCAlPiUiLCIgIHNlbGVjdChNSUQsRklELHllYXIsaW50bnVtLHNuLHNuRikgJT4lICIsIiAgaW5uZXJfam9pbihMKSAlPiUgIzwtIG1lcmdlIGJhc2VkIG9uIHllYXIgYW5kIGludGVydmlldyBudW1iZXIiLCIgIG11dGF0ZShtX2hycyA9IGNhc2Vfd2hlbihzbj09MSB+IGhfaHJzLHNuPT0yIH4gd19ocnMpLG1fZWFybiA9IGNhc2Vfd2hlbihzbj09MSB+IGhfZWFybixzbj09MiB+IHdfZWFybikpICU+JSIsIiAgbXV0YXRlKGZfaHJzID0gY2FzZV93aGVuKHNuRj09MSB+IGhfaHJzLHNuRj09MiB+IHdfaHJzKSxmX2Vhcm4gPSBjYXNlX3doZW4oc25GPT0xIH4gaF9lYXJuLHNuRj09MiB+IHdfZWFybikpICU+JSIsIiAgbXV0YXRlKG1fd2FnZSA9IG1fZWFybi9tX2hycyxmX3dhZ2UgPSBmX2Vhcm4vZl9ocnMpICU+JSIsIiAgc2VsZWN0KE1JRCx5ZWFyLG1fZWFybixtX2hycyxtX3dhZ2UsZl9lYXJuLGZfaHJzLGZfd2FnZSkgJT4lICM8LSB3ZSBkb24ndCBrZWVwIEZJRCBiZWNhdXNlIHRoZSBjb3VwbGluZyBNSUQsRklEIGlzIGR5bmFtaWMgYW5kIG1heSBub3QgbWF0Y2ggdGhlIHBhaXIgKE1JRCxGSUQpIGZyb20gdGhlIHByZXZpb3VzIHllYXIgd2hlbiB3ZSBtZXJnZSB0aGVzZSBkYXRhIGJhY2sgaW4iLCIgIG11dGF0ZSh5ZWFyID0geWVhciAtIDEpICM8LSB0aGVzZSB2YXJpYWJsZSByZWZlciB0byB0aGUgcHJldmlvdXMgeWVhciBzbyB3ZSBzdWJ0cmFjdCBvbmUgIl19 -->
-<pre class="r"><code>L &lt;- D %&gt;%
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+## Clean and Prepare Labor Market Data
+
+Labor market earnings and hours come from the main interview of the PSID, which collects information for the &quot;husband&quot;, the &quot;wife&quot; and other family members. Individuals can be matched to these variables via their sequence number in the household (which we will do below). First, let&#39;s load a cleaned panel dataset of these household data. 
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuTCA9IHJlYWQuY3N2KFxcfi9Ecm9wYm94L1BTSURfQ0RTL1BTSURfUkFXL0xhYm9yRmlsZS5jc3ZcXCkgJT4lIG11dGF0ZShYID0gTlVMTCkgIzwtIGNvbnRhaW5zIHRoZSBob3VycyBhbmQgZWFybmluZ3Mgb2YgdGhlIFxcaGVhZFxcIGFuZCB0aGUgXFx3aWZlXFwgd2hpY2ggY2FuIGJlIG1hdGNoZWQgdG8gaW5kaXZpZHVhbHMgdmlhIHNlcXVlbmNlIG51bWJlclxuXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+L = read.csv(\~/Dropbox/PSID_CDS/PSID_RAW/LaborFile.csv\) %&gt;% mutate(X = NULL) #&lt;- contains the hours and earnings of the \head\ and the \wife\ which can be matched to individuals via sequence number
+</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Next, we merge with the main panel and assign wages, earnings, and hours, based on the mother&#39;s and father&#39;s sequence number, which tells us if they are either the &quot;husband&quot; or &quot;wife&quot; in the household.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuTCA8LSBEICU+JVxuICBzZWxlY3QoTUlELEZJRCx5ZWFyLGludG51bSxzbixzbkYpICU+JSBcbiAgaW5uZXJfam9pbihMKSAlPiUgIzwtIG1lcmdlIGJhc2VkIG9uIHllYXIgYW5kIGludGVydmlldyBudW1iZXJcbiAgbXV0YXRlKG1faHJzID0gY2FzZV93aGVuKHNuPT0xIH4gaF9ocnMsc249PTIgfiB3X2hycyksbV9lYXJuID0gY2FzZV93aGVuKHNuPT0xIH4gaF9lYXJuLHNuPT0yIH4gd19lYXJuKSkgJT4lXG4gIG11dGF0ZShmX2hycyA9IGNhc2Vfd2hlbihzbkY9PTEgfiBoX2hycyxzbkY9PTIgfiB3X2hycyksZl9lYXJuID0gY2FzZV93aGVuKHNuRj09MSB+IGhfZWFybixzbkY9PTIgfiB3X2Vhcm4pKSAlPiVcbiAgbXV0YXRlKG1fd2FnZSA9IG1fZWFybi9tX2hycyxmX3dhZ2UgPSBmX2Vhcm4vZl9ocnMpICU+JVxuICBzZWxlY3QoTUlELHllYXIsbV9lYXJuLG1faHJzLG1fd2FnZSxmX2Vhcm4sZl9ocnMsZl93YWdlKSAlPiUgIzwtIHdlIGRvbid0IGtlZXAgRklEIGJlY2F1c2UgdGhlIGNvdXBsaW5nIE1JRCxGSUQgaXMgZHluYW1pYyBhbmQgbWF5IG5vdCBtYXRjaCB0aGUgcGFpciAoTUlELEZJRCkgZnJvbSB0aGUgcHJldmlvdXMgeWVhciB3aGVuIHdlIG1lcmdlIHRoZXNlIGRhdGEgYmFjayBpblxuICBtdXRhdGUoeWVhciA9IHllYXIgLSAxKSAjPC0gdGhlc2UgdmFyaWFibGUgcmVmZXIgdG8gdGhlIHByZXZpb3VzIHllYXIgc28gd2Ugc3VidHJhY3Qgb25lIFxuXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+L &lt;- D %&gt;%
   select(MID,FID,year,intnum,sn,snF) %&gt;% 
   inner_join(L) %&gt;% #&lt;- merge based on year and interview number
   mutate(m_hrs = case_when(sn==1 ~ h_hrs,sn==2 ~ w_hrs),m_earn = case_when(sn==1 ~ h_earn,sn==2 ~ w_earn)) %&gt;%
   mutate(f_hrs = case_when(snF==1 ~ h_hrs,snF==2 ~ w_hrs),f_earn = case_when(snF==1 ~ h_earn,snF==2 ~ w_earn)) %&gt;%
   mutate(m_wage = m_earn/m_hrs,f_wage = f_earn/f_hrs) %&gt;%
   select(MID,year,m_earn,m_hrs,m_wage,f_earn,f_hrs,f_wage) %&gt;% #&lt;- we don&#39;t keep FID because the coupling MID,FID is dynamic and may not match the pair (MID,FID) from the previous year when we merge these data back in
-  mutate(year = year - 1) #&lt;- these variable refer to the previous year so we subtract one </code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIlQyIDwtIHJlYWQuY3N2KFwiLi4vLi4vZGF0YS1tYWluL2xhYm9yLW1hcmtldC9UMmNsZWFuLmNzdlwiKSIsIiIsIiMgd2UgbGluayBmaXJzdCB0byBtb3RoZXJzOiIsIlQybSA8LSBEICU+JSIsIiAgc2VsZWN0KE1JRCkgJT4lIiwiICB1bmlxdWUoKSAlPiUiLCIgIGlubmVyX2pvaW4oVDIpICU+JSAjPC0gZmlyc3QgZm91ciBsaW5lcyBwaWNrIG91dCBtb3RoZXJzIGluIENEUyBzYW1wbGUiLCIgIHJlbmFtZShtX2Vhcm4gPSBlYXJuLG1faHJzID0gaHJzKSAlPiUiLCIgIG11dGF0ZShtX3dhZ2UgPSBtX2Vhcm4vbV9ocnMpICU+JSIsIiAgc2VsZWN0KE1JRCx5ZWFyLG1fZWFybixtX3dhZ2UsbV9ocnMpICM8LSB0aGVzZSBhcmUgbW90aGVycyBzbyBkcm9wIHRoZSBGSUQgdmFyaWFibGUiLCIiLCIjIGFuZCB0aGVuIHRvIGZhdGhlcnMiLCJUMmYgPC0gRCAlPiUiLCIgIHNlbGVjdChGSUQpICU+JSAiLCIgIHVuaXF1ZSgpICU+JSIsIiAgaW5uZXJfam9pbihUMikgJT4lICM8LWZpcnN0IGZvdXIgbGluZXMgcGljayBvdXQgXCJmYXRoZXJzXCIgaW4gc2FtcGxlIChyZWNhbGwgd2UgYXJlIGxhYmVsbGluZyBhbGwgc3BvdXNlcyBhcyBmYXRoZXJzKSIsIiAgcmVuYW1lKGZfZWFybiA9IGVhcm4sZl9ocnMgPSBocnMpICU+JSIsIiAgbXV0YXRlKGZfd2FnZSA9IGZfZWFybi9mX2hycykgJT4lIiwiICBzZWxlY3QoRklELHllYXIsZl9lYXJuLGZfd2FnZSxmX2hycykgIzwtIHRoZXNlIGFyZSBmYXRoZXJzIHNvIGRyb3AgdGhlIE1JRCB2YXJpYWJsZSIsIiIsIiMgbm93IHdlIGxpbmsgdGhlIHBhaXIgKE1JRCxGSUQseWVhcikgZmlyc3QgdG8gbW90aGVycyAoTUlELHllYXIpIGFuZCB0aGVuIHRvIGZhdGhlcnMgKE1JRCx5ZWFyKSwgKnRoZW4qIHdlIGFwcGVuZCBhbGwgb2YgdGhpcyB0byB0aGUgZGF0YSBmcm9tIHRoZSBtYWluIGludGVydmlldyJdfQ== -->
-<pre class="r"><code>T2 &lt;- read.csv(&quot;../../data-main/labor-market/T2clean.csv&quot;)
+  mutate(year = year - 1) #&lt;- these variable refer to the previous year so we subtract one 
+</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuVDIgPC0gcmVhZC5jc3YoXFwuLi8uLi9kYXRhLW1haW4vbGFib3ItbWFya2V0L1QyY2xlYW4uY3N2XFwpXG5cbiMgd2UgbGluayBmaXJzdCB0byBtb3RoZXJzOlxuVDJtIDwtIEQgJT4lXG4gIHNlbGVjdChNSUQpICU+JVxuICB1bmlxdWUoKSAlPiVcbiAgaW5uZXJfam9pbihUMikgJT4lICM8LSBmaXJzdCBmb3VyIGxpbmVzIHBpY2sgb3V0IG1vdGhlcnMgaW4gQ0RTIHNhbXBsZVxuICByZW5hbWUobV9lYXJuID0gZWFybixtX2hycyA9IGhycykgJT4lXG4gIG11dGF0ZShtX3dhZ2UgPSBtX2Vhcm4vbV9ocnMpICU+JVxuICBzZWxlY3QoTUlELHllYXIsbV9lYXJuLG1fd2FnZSxtX2hycykgIzwtIHRoZXNlIGFyZSBtb3RoZXJzIHNvIGRyb3AgdGhlIEZJRCB2YXJpYWJsZVxuXG4jIGFuZCB0aGVuIHRvIGZhdGhlcnNcblQyZiA8LSBEICU+JVxuICBzZWxlY3QoRklEKSAlPiUgXG4gIHVuaXF1ZSgpICU+JVxuICBpbm5lcl9qb2luKFQyKSAlPiUgIzwtZmlyc3QgZm91ciBsaW5lcyBwaWNrIG91dCBcXGZhdGhlcnNcXCBpbiBzYW1wbGUgKHJlY2FsbCB3ZSBhcmUgbGFiZWxsaW5nIGFsbCBzcG91c2VzIGFzIGZhdGhlcnMpXG4gIHJlbmFtZShmX2Vhcm4gPSBlYXJuLGZfaHJzID0gaHJzKSAlPiVcbiAgbXV0YXRlKGZfd2FnZSA9IGZfZWFybi9mX2hycykgJT4lXG4gIHNlbGVjdChGSUQseWVhcixmX2Vhcm4sZl93YWdlLGZfaHJzKSAjPC0gdGhlc2UgYXJlIGZhdGhlcnMgc28gZHJvcCB0aGUgTUlEIHZhcmlhYmxlXG5cbiMgbm93IHdlIGxpbmsgdGhlIHBhaXIgKE1JRCxGSUQseWVhcikgZmlyc3QgdG8gbW90aGVycyAoTUlELHllYXIpIGFuZCB0aGVuIHRvIGZhdGhlcnMgKE1JRCx5ZWFyKSwgKnRoZW4qIHdlIGFwcGVuZCBhbGwgb2YgdGhpcyB0byB0aGUgZGF0YSBmcm9tIHRoZSBtYWluIGludGVydmlld1xuXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+T2 &lt;- read.csv(\../../data-main/labor-market/T2clean.csv\)
 
 # we link first to mothers:
 T2m &lt;- D %&gt;%
@@ -2201,25 +2367,40 @@ T2m &lt;- D %&gt;%
 T2f &lt;- D %&gt;%
   select(FID) %&gt;% 
   unique() %&gt;%
-  inner_join(T2) %&gt;% #&lt;-first four lines pick out &quot;fathers&quot; in sample (recall we are labelling all spouses as fathers)
+  inner_join(T2) %&gt;% #&lt;-first four lines pick out \fathers\ in sample (recall we are labelling all spouses as fathers)
   rename(f_earn = earn,f_hrs = hrs) %&gt;%
   mutate(f_wage = f_earn/f_hrs) %&gt;%
   select(FID,year,f_earn,f_wage,f_hrs) #&lt;- these are fathers so drop the MID variable
 
-# now we link the pair (MID,FID,year) first to mothers (MID,year) and then to fathers (MID,year), *then* we append all of this to the data from the main interview</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-</div>
-<div id="merge-in-labor-market-earnings-hours-wages" class="section level2">
-<h2>Merge in Labor Market Earnings, Hours, Wages</h2>
-<p>We finish by (1) linking each of these files to mothers and fathers
-in our panel sample; (2) Adding this to the data from the main
-interview; and (3) Merging with the panel dataset.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbIkQgPC0gRCAlPiUiLCIgIHNlbGVjdChNSUQsRklELHllYXIpICU+JSIsIiAgaW5uZXJfam9pbihUMm0pICU+JSIsIiAgbGVmdF9qb2luKFQyZikgJT4lIiwiICBzZWxlY3QoLUZJRCkgJT4lIiwiICByYmluZChMKSAlPiUgIzwtIGFkZCBhbGwgb2YgdGhpcyB0byB0aGUgb3JpZ2luYWwgZGF0YSBmcmFtZSB3aXRoIHRoZSBpbnRlcnZpZXcgeWVhciBxdWVzdGlvbnMiLCIgIG11dGF0ZShob3VzZV9lYXJuID0gY2FzZV93aGVuKCFpcy5uYShmX2Vhcm4pIH4gZl9lYXJuK21fZWFybixUUlVFIH4gbV9lYXJuKSxtX3dhZ2UgPSBuYV9pZihuYV9pZihtX3dhZ2UsSW5mKSwwKSxmX3dhZ2UgPSBuYV9pZihuYV9pZihmX3dhZ2UsSW5mKSwwKSkgJT4lIiwiICByaWdodF9qb2luKEQpICMlPiUiXX0= -->
-<pre class="r"><code>D &lt;- D %&gt;%
+# now we link the pair (MID,FID,year) first to mothers (MID,year) and then to fathers (MID,year), *then* we append all of this to the data from the main interview
+</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+## Merge in Labor Market Earnings, Hours, Wages
+
+
+We finish by (1) linking each of these files to mothers and fathers in our panel sample; (2) Adding this to the data from the main interview; and (3) Merging with the panel dataset.
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuRCA8LSBEICU+JVxuICBzZWxlY3QoTUlELEZJRCx5ZWFyKSAlPiVcbiAgaW5uZXJfam9pbihUMm0pICU+JVxuICBsZWZ0X2pvaW4oVDJmKSAlPiVcbiAgc2VsZWN0KC1GSUQpICU+JVxuICByYmluZChMKSAlPiUgIzwtIGFkZCBhbGwgb2YgdGhpcyB0byB0aGUgb3JpZ2luYWwgZGF0YSBmcmFtZSB3aXRoIHRoZSBpbnRlcnZpZXcgeWVhciBxdWVzdGlvbnNcbiAgbXV0YXRlKGhvdXNlX2Vhcm4gPSBjYXNlX3doZW4oIWlzLm5hKGZfZWFybikgfiBmX2Vhcm4rbV9lYXJuLFRSVUUgfiBtX2Vhcm4pLG1fd2FnZSA9IG5hX2lmKG5hX2lmKG1fd2FnZSxJbmYpLDApLGZfd2FnZSA9IG5hX2lmKG5hX2lmKGZfd2FnZSxJbmYpLDApKSAlPiVcbiAgcmlnaHRfam9pbihEKSAjJT4lXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+D &lt;- D %&gt;%
   select(MID,FID,year) %&gt;%
   inner_join(T2m) %&gt;%
   left_join(T2f) %&gt;%
@@ -2227,28 +2408,55 @@ interview; and (3) Merging with the panel dataset.</p>
   rbind(L) %&gt;% #&lt;- add all of this to the original data frame with the interview year questions
   mutate(house_earn = case_when(!is.na(f_earn) ~ f_earn+m_earn,TRUE ~ m_earn),m_wage = na_if(na_if(m_wage,Inf),0),f_wage = na_if(na_if(f_wage,Inf),0)) %&gt;%
   right_join(D) #%&gt;%</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>We save the panel dataset.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoid3JpdGUuY3N2KEQsXCJ+L0Ryb3Bib3gvUFNJRF9DRFMvUFNJRF9DTEVBTi9Nb3RoZXJQYW5lbENEUy5jc3ZcIikifQ== -->
-<pre class="r"><code>write.csv(D,&quot;~/Dropbox/PSID_CDS/PSID_CLEAN/MotherPanelCDS.csv&quot;)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-</div>
-</div>
-<div id="creating-a-child-panel" class="section level1">
-<h1>Creating a Child Panel</h1>
-<p>It may be useful to link the above panel of data to our data on
-children. The chunk of code below arranges the CDS data into a combined
-panel and merges it with <em>MotherPanelCDS</em>.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjpbImNkcyA8LSByZWFkLmNzdihcIn4vRHJvcGJveC9QU0lEX0NEUy9QU0lEX1JBVy9Nb3RoZXJJbmRleC5jc3ZcIikgJT4lIG11dGF0ZShYPU5VTEwpIiwiIiwiICIsIkRfbWFpbiA8LSBDICU+JSIsIiAgZ3JvdXBfYnkoS0lEKSAlPiUiLCIgIGZpbHRlcihzdW0oQ0FIMj09Mik9PTApICU+JSAjIGRyb3AgY2hpbGRyZW4gd2l0aCBhZG9wdGlvbiByZWNvcmRzIiwiICByZW5hbWUoeWJpcnRoX2NoaWxkID0gQ0FIMTUpICU+JSIsIiAgbXV0YXRlKHliaXJ0aF9jaGlsZCA9IG5hX2lmKHliaXJ0aF9jaGlsZCw5OTk4KSkgJT4lIiwiICBzZWxlY3QoTUlELEtJRCx5YmlydGhfY2hpbGQpICU+JSIsIiAgbWVyZ2UoRCkgJT4lIiwiICBtdXRhdGUoYWdlID0geWVhciAtIHliaXJ0aF9jaGlsZCkgJT4lIiwiICBsZWZ0X2pvaW4oQSkgJT4lICM8LSBsZWZ0X2pvaW4gYXNzZXNzbWVudHMiLCIgIGxlZnRfam9pbihFeHBlbmRpdHVyZXMpICU+JSIsIiAgbGVmdF9qb2luKENoaWxkQ2FyZVBhbmVsKSAlPiUiLCIgIGxlZnRfam9pbihURF9hZ2cpICU+JSIsIiAgbGVmdF9qb2luKFBQRSkgICU+JSIsIiAgc2VsZWN0KC1zdGFydHNfd2l0aChcIlEyMVwiKSwtc3RhcnRzX3dpdGgoXCJFUlwiKSkiLCIgICIsIiIsIndyaXRlLmNzdihEX21haW4sXCJ+L0Ryb3Bib3gvUFNJRF9DRFMvUFNJRF9DTEVBTi9DaGlsZFBhbmVsQ0RTLmNzdlwiKSJdfQ== -->
-<pre class="r"><code>cds &lt;- read.csv(&quot;~/Dropbox/PSID_CDS/PSID_RAW/MotherIndex.csv&quot;) %&gt;% mutate(X=NULL)
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+We save the panel dataset.
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxud3JpdGUuY3N2KEQsXFx+L0Ryb3Bib3gvUFNJRF9DRFMvUFNJRF9DTEVBTi9Nb3RoZXJQYW5lbENEUy5jc3ZcXClcbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+write.csv(D,\~/Dropbox/PSID_CDS/PSID_CLEAN/MotherPanelCDS.csv\)</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+# Creating a Child Panel
+It may be useful to link the above panel of data to our data on children. The chunk of code below arranges the CDS data into a combined panel and merges it with *MotherPanelCDS*. 
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuXG5cbmNkcyA8LSByZWFkLmNzdihcXH4vRHJvcGJveC9QU0lEX0NEUy9QU0lEX1JBVy9Nb3RoZXJJbmRleC5jc3ZcXCkgJT4lIG11dGF0ZShYPU5VTEwpXG5cbiBcbkRfbWFpbiA8LSBDICU+JVxuICBncm91cF9ieShLSUQpICU+JVxuICBmaWx0ZXIoc3VtKENBSDI9PTIpPT0wKSAlPiUgIyBkcm9wIGNoaWxkcmVuIHdpdGggYWRvcHRpb24gcmVjb3Jkc1xuICByZW5hbWUoeWJpcnRoX2NoaWxkID0gQ0FIMTUpICU+JVxuICBtdXRhdGUoeWJpcnRoX2NoaWxkID0gbmFfaWYoeWJpcnRoX2NoaWxkLDk5OTgpKSAlPiVcbiAgc2VsZWN0KE1JRCxLSUQseWJpcnRoX2NoaWxkKSAlPiVcbiAgbWVyZ2UoRCkgJT4lXG4gIG11dGF0ZShhZ2UgPSB5ZWFyIC0geWJpcnRoX2NoaWxkKSAlPiVcbiAgbGVmdF9qb2luKEEpICU+JSAjPC0gbGVmdF9qb2luIGFzc2Vzc21lbnRzXG4gIGxlZnRfam9pbihFeHBlbmRpdHVyZXMpICU+JVxuICBsZWZ0X2pvaW4oQ2hpbGRDYXJlUGFuZWwpICU+JVxuICBsZWZ0X2pvaW4oVERfYWdnKSAlPiVcbiAgbGVmdF9qb2luKFBQRSkgICU+JVxuICBzZWxlY3QoLXN0YXJ0c193aXRoKFxcUTIxXFwpLC1zdGFydHNfd2l0aChcXEVSXFwpKVxuICBcblxud3JpdGUuY3N2KERfbWFpbixcXH4vRHJvcGJveC9QU0lEX0NEUy9QU0lEX0NMRUFOL0NoaWxkUGFuZWxDRFMuY3N2XFwpXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+
+
+cds &lt;- read.csv(\~/Dropbox/PSID_CDS/PSID_RAW/MotherIndex.csv\) %&gt;% mutate(X=NULL)
 
  
 D_main &lt;- C %&gt;%
@@ -2264,15 +2472,17 @@ D_main &lt;- C %&gt;%
   left_join(ChildCarePanel) %&gt;%
   left_join(TD_agg) %&gt;%
   left_join(PPE)  %&gt;%
-  select(-starts_with(&quot;Q21&quot;),-starts_with(&quot;ER&quot;))
+  select(-starts_with(\Q21\),-starts_with(\ER\))
   
 
-write.csv(D_main,&quot;~/Dropbox/PSID_CDS/PSID_CLEAN/ChildPanelCDS.csv&quot;)</code></pre>
+write.csv(D_main,\~/Dropbox/PSID_CDS/PSID_CLEAN/ChildPanelCDS.csv\)</code></pre>
+<p>```</p>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 </div>
+</div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ3JlYXRpbmcgYSBQYW5lbCBEYXRhc2V0IGZvciBDYXVjdXR0IGV0IGFsLiIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKIyBDcmVhdGluZyBhIFBhbmVsIERhdGFzZXQKVGhpcyBzY3JpcHQgdXNlcyB0aGUgY2xlYW5lZCBQU0lEIGFuZCBDRFMgZGF0YSB0byBjb25zdHJ1Y3QgYSBwYW5lbCBvZiBvYnNlcnZhdGlvbnMgYnVpbHQgYXJvdW5kIG1vdGhlcnMgaW4gdGhlIFBTSUQsIHdoZXJlaW4gd2UgYXBwbHkgYSBudW1iZXIgb2Ygc2FtcGxlIHJlc3RyaWN0aW9ucy4KCiMjIEZlcnRpbGl0eSBIaXN0b3J5IFBhbmVsCgpXZSBzdGFydCBieSBsb2FkaW5nIHRoZSBjaGlsZGJpcnRoIGhpc3RvcnkgZmlsZSwgd2hpY2ggd2Ugd2lsbCB1c2UgdG8gaWRlbnRpZnkgbW90aGVycyBhbmQgYXJyYW5nZSB0aGVpciBmZXJ0aWxpdHkgaGlzdG9yeSBpbnRvIGEgcGFuZWwgZGF0YXNldC4gSXQgd2lsbCBiZSB1c2VmdWwgdG8ga25vdyB0aGUgZm9sbG93aW5nIG1hcHBpbmcgYmV0d2VlbiB2YXJpYWJsZSBuYW1lcyBhbmQgdmFyaWFibGVzOgoKVm51bSAgICAgVm5hbWUKLS0tLS0tLSAgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpDQUgzICAgICBpbnRudW02OApDQUg0ICAgICBwZXJudW0KQ0FINSAgICAgc2V4CkNBSDYgICAgIHBhcmVudCBtb250aCBvZiBiaXJ0aApDQUg3ICAgICBwYXJlbnQgeWVhciBvZiBiaXJ0aApDQUg4ICAgICBtYXJpdGFsIHN0YXR1cyB3aGVuIGJvcm4KQ0FIOSAgICAgYmlydGggb3JkZXIKQ0FIMTAgICAgY2hpbGQgaW50bnVtCkNBSDExICAgIGNoaWxkIHBlcm51bQpDQUgxMiAgICBzZXggb2YgY2hpbGQKQ0FIMTMgICAgY2hpbGQgbW9udGggb2YgYmlydGgKQ0FIMTUgICAgY2hpbGQgeWVhciBvZiBiaXJ0aApDQUgxMDggICBudW1iZXIgb2YgYmlydGggcmVjb3JkcwoKVGhlIGNodW5rIGJlbG93IGxvYWRzIHRoZXNlIGRhdGEgYW5kIGFwcGxpZXMgc29tZSBzYW1wbGUgcmVzdHJpY3Rpb25zOgogLSBEcm9wIHdvbWVuIHdpdGhvdXQgcmVjb3JkZWQgYmlydGhzCiAtIERyb3Agd29tZW4gd2l0aCBtaXNzaW5nIGJpcnRoIHllYXIgaW5mb3JtYXRpb24KIC0gRHJvcCB3b21lbiB3aXRoIG1pc3NpbmcgaW5mb3JtYXRpb24gaW4gdGhlaXIgY2hpbGRiaXJ0aCBoaXN0b3J5CiAtIEtlZXAgb25seSB3b21lbiB3aG9zZSBjaGlsZHJlbiBhcHBlYXIgaW4gdGhlIENEUwoKRmlyc3QsIHdlIHVzZSBvbmUgb2YgdGhlIGNsZWFuZWQgQ0RTIGZpbGVzIHRvIGlkZW50aWZ5IHRoZSBjaGlsZHJlbiBpbiB0aGUgQ0RTLgoKYGBge3J9CktJRCA8LSByZWFkLmNzdigiLi4vLi4vZGF0YS1jZHMvYXNzZXNzbWVudHMvQXNzZXNzbWVudFBhbmVsLmNzdiIpICU+JQogIHNlbGVjdChLSUQpICU+JQogIHVuaXF1ZSgpCgpgYGAKCk5leHQsIHdlIGxpbmsgdGhlbSB3aXRoIHRoZWlyIG1vdGhlcnMgdXNpbmcgdGhlIGNoaWxkYmlydGggYW5kIGFkb3B0aW9uIGhpc3RvcnkgZmlsZSwgYW5kIGFwcGx5IHRoZSBhYm92ZSBzYW1wbGUgcmVzdHJpY3Rpb25zLgoKYGBge3J9CgpDID0gcmVhZC5jc3YoIi4uLy4uL2RhdGEtbWFpbi9jaGlsZGJpcnRoL0NoaWxkYmlydGguY3N2IikgJT4lIAogIG11dGF0ZShYID0gTlVMTCkgJT4lICM8LSBsb2FkIGNoaWxkYmlydGggZmlsZQogIGZpbHRlcihDQUg1PT0yKSAgJT4lICNrZWVwIG9ubHkgd29tZW4KICBmaWx0ZXIoQ0FIMTAhPTApICU+JSAjIGRyb3Agd29tZW4gd2hvIGhhdmUgbm8gY2hpbGRyZW4gYWNjb3JkaW5nIHRvIHRoaXMgZmlsZQogIGZpbHRlcihDQUg3IT05OTk4KSAlPiUgIyBkcm9wIHdvbWVuIHdpdGggbWlzc2luZyBiaXJ0aCB5ZWFyIGluZm8KICBtdXRhdGUoTUlEID0gQ0FIMyoxMDAwICsgQ0FINCwgS0lEID0gQ0FIMTAqMTAwMCArIENBSDExKSAlPiUgIzwtIGNyZWF0ZSBpZGVudGlmaWVyIGZvciBtb3RoZXIgYW5kIGNoaWxkCiAgc2VsZWN0KEtJRCkgJT4lCiAgdW5pcXVlKCkgJT4lCiAgaW5uZXJfam9pbihLSUQpICU+JSAjPC0ga2VlcCBvbmx5IHdvbWVuIHdob3NlIGNoaWxkcmVuIGFyZSBpbiB0aGUgQ0RTIChUSElTIEFMU08gRFJPUFMgTk9OLUNEUyBDSElMRFJFTi4gRE9FU04nVCBXT1JLISEhISkKICBncm91cF9ieShNSUQpICU+JQogIGZpbHRlcighYW55KENBSDEwID09IDk5OTkpKQoKI0xpbmsgbW90aGVyJ3Mgc3RhbmRhcmRpemVkIGFuZCByYXcgcGFzc2FnZSBjb21wcmVoZW5zaW9uIHNjb3JlcyBmcm9tIHRoZSAxOTk3IFBDRyBpbnRlcnZpZXcgdG8gbW90aGVyJ3MuIAoKbV9wYzk3IDwtIHJlYWQuY3N2KCJ+L0Ryb3Bib3gvUFNJRF9DRFMvUFNJRF9SQVcvTW90aGVyUEMuY3N2IikgJT4lIAogIG11dGF0ZShLSUQgPSBFUjMwMDAxKjEwMDAgKyBFUjMwMDAyKSAlPiUgCiAgc2VsZWN0KEtJRCxRMVBDU1MsUTFQQ1JBVyxQQ0cpJT4lCiAgcmVuYW1lKG1fcGNfc3Q9IFExUENTUywgbV9wY19yYXc9IFExUENSQVcpCgojIE1lcmdlIG1vdGhlcidzIHNjb3JlIHdpdGggbW90aGVyJ3MgcGFuZWwKbV9wYzk3IDwtIHJlYWQuY3N2KCJ+L0Ryb3Bib3gvUFNJRF9DRFMvUFNJRF9DTEVBTi9Bc3Nlc3NtZW50TW90aGVyLmNzdiIpICU+JSBtdXRhdGUoWD1OVUxMKQptX3BjOTcgPC0gbWVyZ2UoeD1DLHk9bV9wYzk3LGJ5PSJLSUQiLGFsbD1UUlVFKSU+JSBncm91cF9ieShNSUQpICU+JQpzZWxlY3QoTUlELG1fcGNfc3QsbV9wY19yYXcpICU+JSBkcm9wX25hKG1fcGNfc3QsbV9wY19yYXcpICU+JWRpc3RpbmN0KE1JRCwgLmtlZXBfYWxsPSBUUlVFKQoKCmBgYAogCldlIHdhbnQgYSBwYW5lbCBkYXRhc2V0IHRoYXQgYmVnaW5zIHdoZW4gZWFjaCBtb3RoZXIgdHVybnMgMTggYW5kIGVuZHMgaW4gMjAxNy4gRWFjaCBpbmRpdmlkdWFsLXllYXIgb2JzZXJ2YXRpb24gaGFzIHRoZSBudW1iZXIgb2YgZGVwZW5kZW50IGNoaWxkcmVuLCB0aGUgYWdlIG9mIHRoZSB5b3VuZ2VzdCBjaGlsZCwgdGhlIG51bWJlciBvZiBjaGlsZHJlbiBiZXR3ZWVuIDAgYW5kIDUsIGFuZCB0aGUgbnVtYmVyIG9mIGNoaWxkcmVuIGJldHdlZW4gNiBhbmQgMTIuCgpUaGUgZnVuY3Rpb24gYmVsb3cgZG9lcyB0aGlzIGFzc3VtaW5nIHRoYXQgdGhlIGRhdGFmcmFtZSAkZCQgY29udGFpbnMgdGhlIGNoaWxkYmlydGggZGF0YSBmb3IganVzdCBvbmUgbW90aGVyOgoKYGBge3J9Ck1ha2VQYW5lbCA8LSBmdW5jdGlvbihkKSB7CiAgeWVhciA8LSAoZCRDQUg3WzFdKzE4KToyMDE3CiAgTnkgPC0gbGVuZ3RoKHllYXIpCiAga251bSA9IGQkQ0FIMTA4WzFdCiAgYWdlX3lvdW5nZXN0IDwtIGludGVnZXIoTnkpIC0xCiAgYWdlX29sZGVzdCA8LSBpbnRlZ2VyKE55KSArIEluZgogIG51bV8wXzUgPC0gaW50ZWdlcihOeSkKICBudW1fNl8xMiA8LSBpbnRlZ2VyKE55KQogIG51bV9jaGlsZCA8LSBpbnRlZ2VyKE55KQogIGFnZV9tb3RoZXIgPSB5ZWFyLWQkQ0FIN1sxXQogIGZvciAoaSBpbiAxOmxlbmd0aCh5ZWFyKSkgewogICAgYXkgPSBJbmYKICAgIGFvID0gLTEKICAgIGE1ID0gMAogICAgYTYgPSAwCiAgICBmb3IgKGsgaW4gMTpucm93KGQpKSB7CiAgICAgIGFnZWsgPSB5ZWFyW2ldLWQkQ0FIMTVba10KICAgICAgaWYgKGFnZWs+PTAgJiBhZ2VrPD0xOCkgewogICAgICAgICNwcmludChhZ2VrKQogICAgICAgIGF5ID0gbWluKGF5LGFnZWspCiAgICAgICAgYW8gPSBtYXgoYW8sYWdlaykKICAgICAgICBudW1fY2hpbGRbaV0gID0gbnVtX2NoaWxkW2ldICsgMQogICAgICB9CiAgICAgIGlmIChhZ2VrPj0wICYgYWdlazw9NSkgewogICAgICAgIGE1ID0gYTUgKyAxCiAgICAgIH0KICAgICAgaWYgKGFnZWs+NSAmIGFnZWs8PTEyKSB7CiAgICAgICAgYTYgPSBhNiArIDEKICAgICAgfQoKICAgIH0KICAgIGFnZV95b3VuZ2VzdFtpXSA9IGF5CiAgICBhZ2Vfb2xkZXN0W2ldID0gYW8KICAgIG51bV8wXzVbaV0gPSBhNQogICAgbnVtXzZfMTJbaV0gPSBhNgogIH0KICBkYXRhLmZyYW1lKE1JRCA9IGQkTUlEWzFdLCBhZ2VfbW90aGVyPWFnZV9tb3RoZXIsIHllYXIgPSB5ZWFyLCBrbnVtID0ga251bSwgbnVtX2NoaWxkPW51bV9jaGlsZCxhZ2VfeW91bmdlc3Q9YWdlX3lvdW5nZXN0LGFnZV9vbGRlc3Q9YWdlX29sZGVzdCwgbnVtXzBfNSA9IG51bV8wXzUsIG51bV82XzEyID0gbnVtXzZfMTIsIHlfZmlyc3QgPSBkJENBSDE1WzFdKQp9CgpgYGAKClRoZSBjaHVuayBiZWxvdyBhcHBsaWVzIHRoZSBmdW5jdGlvbiBmb3IgZWFjaCBtb3RoZXIgKGRlZmluZWQgYnkgdGhlaXIgSUQgbnVtYmVyICpNSUQqKSB3aGljaCByZXN1bHRzIGluIGEgcGFuZWwgZGF0YXNldC4gSW4gb3JkZXIgdG8gc3BlZWQgdXAgYW5hbHlzaXMsIHdlIGFsc28gZHJvcCBvYnNlcnZhdGlvbnMgdGhhdCB3ZSBrbm93IHdpbGwgYmUgdG9vIGVhcmx5IGZvciB0aGUgQ0RTIChldmVyeW9uZSB3aXRoIGZpcnN0IGJpcnRocyBiZWZvcmUgMTk2MCkuCgpgYGB7cn0KCkQgPC0gQyAlPiUgZ3JvdXBfYnkoTUlEKSAlPiUgZG8oTWFrZVBhbmVsKC4pKSAlPiUgZmlsdGVyKHlfZmlyc3Q+PTE5NjApICU+JQpsZWZ0X2pvaW4obV9wYzk3KSAjIEFkZCBtb3RoZXIncyBjb2duaXRpdmUgc2NvcmUKYGBgCgojIyBNZXJnZSBpbiBTdGF0ZSBJZGVudGlmaWVycyBhbmQgQ2hpbGRjYXJlIEV4cGVuZGl0dXJlcwoKV2Ugc3RhcnQgYnkgbWVyZ2luZyB0aGlzIHBhbmVsIHdpdGggdGhlIEluZGl2aWR1YWwgQ3Jvc3MtWWVhciBGaWxlLCB3aGljaCBtYXBzIGFuIChJRCx5ZWFyKSBjb21iaW5hdGlvbiB3aXRoIGFuIGludGVydmlldyBudW1iZXIgYW5kIHNlcXVlbmNlIG51bWJlciAod2hpY2ggYWxsb3dzIHVzIHRvIGxpbmsgd2l0aCBzdGF0ZSBjb2RlcyBhbmQgaG91c2Vob2xkIGNoaWxkIGNhcmUgZXhwZW5kaXR1cmVzKQoKVGhpcyBjaHVuayBsb2FkcyB0aGUgaW5kaXZpZHVhbCBmaWxlIGFuZCBjcmVhdGVzIHRoZSBJRCBudW1iZXI6CmBgYHtyfQpJbmQgPSByZWFkLmNzdigifi9Ecm9wYm94L1BTSURfQ0RTL1BTSURfUkFXL0luZEZpbGVWZXJ0aWNhbC5jc3YiKSAlPiUgCiAgbXV0YXRlKFggPSBOVUxMKSAlPiUgCiAgbXV0YXRlKE1JRCA9IGludG51bTY4KjEwMDAgKyBwZXJudW0sbWFyX3N0YXQgPSBtcGFpcj4wKQoKYGBgCgpTaW5jZSB3ZSB3b3VsZCBsaWtlIHRvIHNlZSBtYXJpdGFsIHN0YXR1cyBpbiBzb21lIG5vbi1pbnRlcnZpZXcgeWVhcnMsIHdlIHVzZSB0aGUgZm9sbG93aW5nIHllYXIncyBtYXJpdGFsIHN0YXR1czoKCmBgYHtyfQpJbmQgPC0gSW5kICU+JSBmaWx0ZXIoeWVhcj49MTk5OSkgJT4lIAogIG11dGF0ZSh5ZWFyID0geWVhciAtIDEpICU+JQogIHJiaW5kKEluZCkKYGBgClRoaXMgbWV0aG9kIG9mIGltcHV0YXRpb24gZW5zdXJlcyB0aGF0IHdlIG9ubHkgZmlsbCBpbiBtaXNzaW5nIGRhdGEgZnJvbSBub24taW50ZXJ2aWV3IHllYXJzLgoKT25lIHRoaW5nIHRoYXQgd2lsbCBiZSB1c2VmdWwgdGhyb3VnaG91dCBpcyBhIHBhbmVsIHdpdGggdGhlIG1vdGhlcidzIElEIGxpbmtlZCB0byB0aGVpciBpbnRlcnZpZXcgYW5kIGNhbGVuZGFyIHllYXIuIFNvbWUgdmFyaWFibGVzIGZyb20gdGhlIG1haW4gaW50ZXJ2aWV3IHJlZmVyIHRvIHRoZSBwcmV2aW91cyB5ZWFyIGFuZCB0aGluZ3MgY2FuIGdldCBtZXNzeSwgc28gd2UgdXNlIHRoaXMgZmlsZSB0byBrZWVwIHRoaW5ncyBjb25zaXN0ZW50LgpgYGB7cn0KIyB0aGlzIHdpbGwgYmUgdXNlZnVsIHRocm91Z2hvdXQ6IGNyZWF0ZSBhIGRhdGFmcmFtZSB0aGF0IG1hcHMgbW90aGVycyB0byB0aGVpciBpbnRlcnZpZXcgbnVtYmVyIGFuZCBzZXF1ZW5jZSBudW1iZXIKRF9JbmQgPC0gRCAlPiUKICBpbm5lcl9qb2luKEluZCkKYGBgCgpOZXh0IHdlIGxvYWQgaW4gYSBwYW5lbCBvZiBzdGF0ZSBjb2Rlcywgd2hpY2ggd2UgbWVyZ2Ugd2l0aCB0aGUgY3Jvc3MteWVhciBpbmRpdmlkdWFsIGZpbGUuIFdlIHRoZW4gbWVyZ2UgdGhhdCBmaWxlIHdpdGggYSBzdGF0ZSBjb2RlIGNyb3NzLXdhbGsgc28gdGhhdCB3ZSBjYW4gbGluayB0aGUgUFNJRCdzIHN0YXRlIGNvZGUgd2l0aCBGSVBTIGFuZCBTT0kuIFdlIGFsc28gbWVyZ2UsIGJhc2VkIG9uIHRoZSBob3VzZWhvbGQgaW50ZXJ2aWV3IG51bWJlciBhbmQgeWVhciwgYW5udWFsIGhvdXNlaG9sZCBleHBlbmRpdHVyZXMgb24gY2hpbGQgY2FyZSAoY2xlYW5lZCBpbiBhIHByZXZpb3VzIHNlY3Rpb24pLgoKRmluYWxseSwgdGhpcyBmaWxlIGlzIG1lcmdlZCB3aXRoIHRoZSBwYW5lbCBvZiBtb3RoZXJzIHdlIGp1c3QgY3JlYXRlZCwgdXNpbmcgeWVhcnMgYmVmb3JlIGFuZCBhZnRlciB0byBmaWxsIGluIG1pc3Npbmcgc3RhdGUgb2JzZXJ2YXRpb25zLgoKYGBge3J9CiMgc3RhdGUgY29kZXMgbWVhc3VyZXMgcmVzaWRlbmNlIGZvciBzdXJ2ZXkgeWVhcgpzdGF0ZV9jb2RlcyA9IHJlYWQuY3N2KCJ+L0Ryb3Bib3gvUFNJRF9DRFMvU3RhdGVDb2Rlcy5jc3YiKSAlPiUgbXV0YXRlKFg9TlVMTCxYLjEgPSBOVUxMKSAlPiUgIzwtIHRoaXMgaXMgYSBzaW1wbGUgY3Jvc3N3YWxrIG9mIHN0YXRlIGNvZGVzCiAgc2VsZWN0KC1zdGF0ZSkgJT4lIAogIHJlbmFtZShzdGF0ZSA9IFBTSUQsIFN0RklQUyA9IGZpcHMpICU+JSAjPC0gd2UgcmVuYW1lIHNvbWUgdGhpbmdzIGluIG9yZGVyIHRvIGRvIHRoZSBtZXJnZSBwcm9wZXJseQogIHNlbGVjdChzdGF0ZSxTdEZJUFMsU09JKQoKCiMgY2hpbGQgY2FyZSBleHBlbmRpdHVyZXMgYXJlIGZvciBwcmV2aW91cyB5ZWFyLCBzbyB3ZSBoYXZlIHRvIGJlIGNhcmVmdWwgaG93IHdlIGRvIHRoZSBtZXJnZSEKIyB3ZSBtZXJnZSBieSBzdXJ2ZXkgeWVhciB0aGVuIHN1YnRyYWN0IG9uZSB5ZWFyIHRvIG1ha2UgdGhlIHJlZmVyZW5jZSBjb3JyZWN0CiMgdGhlbiB3ZSBkcm9wIGludG51bSwgdXNpbmcgb25seSBNSUQgYW5kIHllYXIgdG8gbGluayB3aXRoIHRoZSBtYWluIGZpbGUgaW4gdGhlIG5leHQgc3RlcApjaF9jYXJlIDwtIHJlYWQuY3N2KCJ+L0Ryb3Bib3gvUFNJRF9DRFMvUFNJRF9DTEVBTi9NYWluX2NoaWxkY2FyZS5jc3YiKSAlPiUgCiAgbXV0YXRlKFg9TlVMTCkgJT4lCiAgaW5uZXJfam9pbihEX0luZCkgJT4lICM8LSBtZXJnZSB0byBtb3RoZXIncyB0aHJvdWdoIHRoZSBwYW5lbCBmaWxlCiAgbXV0YXRlKHllYXIgPSB5ZWFyLTEpICU+JSAjPC0gY29udmVydCBzdXJ2ZXkgeWVhciB0byBsYWcgeWVhcgogIHNlbGVjdChNSUQseWVhcixjaGlsZGNhcmVfZXhwKQoKCkQgPC0gcmVhZC5jc3YoIn4vRHJvcGJveC9QU0lEX0NEUy9QU0lEX1JBVy9TdGF0ZVZlcnRpY2FsLmNzdiIpICU+JSAjPC0gc3RhdGUgb2YgcmVzaWRlbmNlIHBhbmVsIGRhdGEKICBtdXRhdGUoWD1OVUxMKSAlPiUKICByaWdodF9qb2luKEluZCkgJT4lICM8LSBtZXJnZSB3aXRoIEluZGl2aWR1YWwgZmlsZQogIHJpZ2h0X2pvaW4oRCkgJT4lICM8LSBtZXJnZSB3aXRoIHRoZSBwYW5lbCB3ZSBjcmVhdGVkIChrZWVwaW5nIGFsbCB5ZWFycykKICBhcnJhbmdlKE1JRCx5ZWFyKSAlPiUKICBncm91cF9ieShNSUQpICU+JQogIGZpbGwoc3RhdGUsLmRpcmVjdGlvbiA9ICJkb3dudXAiKSAlPiUgIzwtIGZpbGwgaW4gbWlzc2luZyBvYnNlcnZhdGlvbnMKICBtZXJnZShzdGF0ZV9jb2RlcykgJT4lICM8LSBtZXJnZSBpbiB0aGUgY3Jvc3Mtd2FsayB3aXRoIEZJUFMgY29kZXMgYW5kIFNPSSBjb2RlcwogIGxlZnRfam9pbihjaF9jYXJlKSAjPD0gdXNlIG9ubHkgdGhlIG1haW4gZmlsZSB0byBsaW5rCmBgYAoKIyMgSWRlbnRpZnkgYW5kIE1lcmdlIGluIFNwb3VzZXMgKCJGYXRoZXJzIikKClRoZSBuZXh0IHN0ZXAgaXMgdG8gaWRlbnRpZnkgc3BvdXNlcyBmb3IgZWFjaCBtb3RoZXIgaW4gZWFjaCB5ZWFyLiBTcG91c2VzIGFyZSBsaW5rZWQgYnkgdGhlICptcGFpciogdmFyaWFibGUgd2hpY2ggaXMgdW5pcXVlIHdpdGhpbiBhIGhvdXNlaG9sZCBpbnRlcnZpZXcuIFdlIGlkZW50aWZ5IHBhcnRuZXJzIGJ5OgoxLiBNZXJnaW5nIHRoZSBpbmRpdmlkdWFsIGZpbGUgd2l0aCB0aGUgdHJpcGxlICgqTUlEKiwqeWVhciosKmFnZV9tb3RoZXIqKSBmcm9tIHRoZSBwYW5lbCwga2VlcGluZyBhbGwgb2JzZXJ2YXRpb25zIGZyb20gdGhlIGluZGl2aWR1YWwgZmlsZS4KMi4gUGFydG5lcnMgYXJlIGlkZW50aWZpZWQgYnkgdGhlIGZhY3QgdGhhdCB0aGV5IGFyZSBub3Qgc3VjY2Vzc2Z1bGx5IG1hdGNoZWQgaW4gdGhpcyBtZXJnZSwgbWVhbmluZyB0aGF0ICphZ2VfbW90aGVyKiB3aWxsIGJlIG1pc3NpbmcuIFdlIGtlZXAgdGhvc2Ugb2JzZXJ2YXRpb25zIGFuZCByZW5hbWUgdGhlIHZhcmlhYmxlcyBpbiBvcmRlciB0byBtZXJnZSB0aGVtIG9uY2UgbW9yZSB3aXRoIHRoZSBwYW5lbCBvZiBtb3RoZXJzLgoKYGBge3J9CkQgPC0gRCAlPiUKICBzZWxlY3QoTUlELHllYXIsYWdlX21vdGhlcikgJT4lCiAgcmlnaHRfam9pbihJbmQpICU+JSAjPC0gbWVyZ2Ugd2l0aCBpbmRpdmlkdWFsIGZpbGUsIGtlZXAgYWxsIG9ic2VydmF0aW9ucyBmcm9tIEluZAogIGZpbHRlcihpcy5uYShhZ2VfbW90aGVyKSkgJT4lICM8LSBpZGVudGlmeSBzcG91c2VzIGJ5IG1pc3NpbmcgaW5mbyBmcm9tIHRoZSBtZXJnZQogIHJlbmFtZShGSUQ9TUlELHNuRj1zbikgJT4lICM8LSByZW5hbWUgdmFyaWFibGVzIGZvciBtZXJnZQogIGZpbHRlcihtcGFpcj4wKSAlPiUgIzwtIG9ubHkga2VlcCBpbmRpdmlkdWFscyB3aG8gYXJlIG5vdCBtb3RoZXJzIGJ1dCB3aG8gYXJlIGluIGEgcmVsYXRpb25zaGlwIGluIHRoZSBzYW1lIGhvdXNlaG9sZAogIHNlbGVjdChGSUQseWVhcixpbnRudW0sbXBhaXIsc25GKSAlPiUKICByaWdodF9qb2luKEQpICU+JSAjPC0gZG8gdGhlIG1lcmdlCiAgbXV0YXRlKHNuRiA9IHJlcGxhY2VfbmEoc25GLC0xKSkgIzwtIHJlcGxhY2UgbWlzc2luZyB2YWx1ZXMuCgoKYGBgCgojIyBNZXJnZSBpbiBTcG91c2UgQmlydGggWWVhciBhbmQgTWFycmlhZ2UgU3VtbWFyeSBWYXJpYWJsZXMKClRoZSAqTWFycmlhZ2UgSGlzdG9yeSBGaWxlKiBpcyBwcmVwYXJlZCBieSB0aGUgUFNJRCBhbmQgY29udGFpbnMgYSByZWNvcmQgb2YgZWFjaCBtYXJyaWFnZSBpbiB0aGUgUFNJRC4gV2UgdXNlIHRoaXMgZmlsZSB0byBkZXRlcm1pbmUgd2hpY2ggaW5kaXZpZHVhbHMgaGF2ZSBldmVyIGJlZW4gbWFycmllZCwgdG8gZmlsdGVyIG91dCBpbmRpdmlkdWFscyB3aXRoIG1pc3NpbmcgbWFycmlhZ2UgaW5mb3JtYXRpb24sIGFuZCB0byBpZGVudGlmeSB0aGUgYmlydGggeWVhciBvZiBzcG91c2VzLgoKRmlyc3Qgd2UgbG9hZCB0aGUgbWFycmlhZ2UgZmlsZSBhbmQgY3JlYXRlIGFuICJldmVyIiBtYXJyaWVkIHN1bW1hcnkgdmFyaWFibGUuIFdlIGZpbmlzaCBieSBtZXJnaW5nIHRoaXMgZmlsZSB3aXRoIHRoZSBtYWluIHBhbmVsIChiYXNlZCBvbiBNSUQpCgpgYGB7cn0KIyAjICAtLS0tIGxvYWQgbWFycmlhZ2UgaW5mbyBhbmQgY3JlYXRlIHNvbWUgc3VtbWFyeSB2YXJpYWJsZXMKTSA8LSByZWFkLmNzdigifi9Ecm9wYm94L1BTSURfQ0RTL1BTSURfUkFXL01hcnJpYWdlLmNzdiIpICU+JQogIG11dGF0ZShYID0gTlVMTCkgJT4lCiAgcmVuYW1lKE1JRCA9IElEMSkgJT4lICM8LSB3ZSByZW5hbWUgdG8gTUlEIGluIHByZXBhcmF0aW9uIGZvciBhIGZpcnN0IG1lcmdlIHdpdGggc2FtcGxlIG1vdGhlcnMKICByZW5hbWUoeWJpcnRoID0gTUg2KSAlPiUKICBmaWx0ZXIoeWJpcnRoPDk5OTgpICU+JSAjPC0gZHJvcCBpbmRpdmlkdWFscyB3aXRoIG1pc3NpbmcgYmlydGggaW5mbwogIHJlbmFtZSh5bWFyID0gTUgxMSkgJT4lCiAgZmlsdGVyKHltYXIhPTk5OTgpICU+JSAjPC0gcmVtb3ZlIGluZGl2aWR1YWxzIHdpdGhvdXQgbWFycmlhZ2UgaW5mbwogIG11dGF0ZShyZWNvcmQgPSB5bWFyPDk5OTkpICU+JSAjPC0geW1hcj09OTk5OSBpbmRpY2F0ZXMgbmV2ZXIgbWFycmllZAogIGdyb3VwX2J5KE1JRCkgJT4lCiAgc3VtbWFyaXNlKGV2ZXJfbWFycmllZCA9IHN1bShyZWNvcmQpPjAseWJpcnRoID0geWJpcnRoWzFdKQoKRCA9IE0gJT4lIAogIGlubmVyX2pvaW4oRCkKCgpgYGAKCldlIGFsc28gdXNlIHRoaXMgZmlsZSB0byBtZXJnZSB3aXRoIEZJRCBmb3IgZWFjaCBzcG91c2UgdG8gZGVkdWNlIHRoZSBzcG91c2UncyBhZ2UuIFRoaXMgbWVhbnMgd2UgZG9uJ3QgaGF2ZSB0aGUgc3BvdXNlJ3MgYWdlIGZvciBjb2hhYml0aW5nIGNvdXBsZXMuIFdlIHVzZSB0aGUgdHJpcGxlICp5ZWFyKiwgKmludG51bSogYW5kICptcGFpciogdG8gbWF0Y2ggd29tZW4gd2l0aCB0aGVpciBzcG91c2VzLiBUbyBkbyB0aGlzLCB3ZSBmaXJzdCBjcmVhdGUgYW4gaW5kaXZpZHVhbCBpbmRleCBmaWxlIG9mIHBlb3BsZSB0aGF0IGFyZSAqbm90KiB3b21lbiBpbiB0aGUgc2FtcGxlLiBUaGlzIGlzIHRoZSBwb3RlbnRpYWwgcG9vbCBvZiBmYXRoZXJzIHRoYXQgd2UgdXNlIGZvciB0aGUgbWVyZ2UuCgpgYGB7cn0KCkQgPC0gRF9JbmQgJT4lCiAgc2VsZWN0KE1JRCx5ZWFyLGFnZV9tb3RoZXIpICU+JQogIHJpZ2h0X2pvaW4oSW5kKSAlPiUKICBmaWx0ZXIoaXMubmEoYWdlX21vdGhlcikpICU+JSAjPC0gcGljayBvdXQgaW5kaXZpZHVhbHMgZnJvbSB0aGUgbWVyZ2Ugd2hvIHdlcmUgKm5vdCogbWF0Y2hlZAogIHJlbmFtZShGSUQgPSBNSUQsc25GID0gc24pICU+JQogIHNlbGVjdChjKCJGSUQiLCJ5ZWFyIiwiaW50bnVtIiwibXBhaXIiLCJzbkYiKSkgJT4lCiAgZmlsdGVyKG1wYWlyPjApICU+JQogIHJpZ2h0X2pvaW4oRCkKCkQgPC0gTSAlPiUKICByZW5hbWUoRklEPU1JRCx5YmlydGhGID0geWJpcnRoKSAlPiUKICByaWdodF9qb2luKEQpICU+JQogIG11dGF0ZShmX2FnZSA9IHllYXIgLSB5YmlydGhGKQoKYGBgCgoKIyMgTWVyZ2UgaW4gTW90aGVyJ3MgUmFjZSwgRWR1Y2F0aW9uLCBhbmQgQ1BJIChleHRlcm5hbCkKSW4gdGhlIGN1cnJlbnQgdmVyc2lvbiB3ZSBkb24ndCB1c2UgQ1BJLCBidXQgd2UnbGwgcHV0IGl0IGluIGFueXdheS4gUmFjZSBhbmQgZWR1Y2F0aW9uIGFyZSBwcmV2aW91c2x5IGNsZWFuZWQgc3VtbWFyeSB2YXJpYWJsZXMgc3RvcmVkIG5vbi1sb2NhbGx5LiBXZSBkcm9wIG1vdGhlcnMgZnJvbSB0aGUgc2FtcGxlIHdpdGggbWlzc2luZyBpbmZvcm1hdGlvbiBvbiBlZHVjYXRpb24gYW5kIHJhY2UuCgpgYGB7cn0KUiA8LSByZWFkLmNzdigifi9Ecm9wYm94L1BTSURfQ0RTL1BTSURfUkFXL1JhY2VIb3Jpem9udGFsLmNzdiIpICU+JSBtdXRhdGUoWCA9IE5VTEwpICU+JSAKICByZW5hbWUoTUlEID0gSUQpCgplZHVjID0gcmVhZC5jc3YoIn4vRHJvcGJveC9QU0lEX0NEUy9QU0lEX1JBVy9IR0MuY3N2IikgJT4lIAogIG11dGF0ZShYID0gTlVMTCxJRCA9IGludG51bTY4KjEwMDAgKyBwbnVtNjgpICU+JQogIG11dGF0ZShlZD1jYXNlX3doZW4oaGdjPjE2IH4gNSxoZ2MgPT0gMTYgfiA0LCBoZ2M+PTEzIH4gMywgaGdjPj0xMiB+IDIsIGhnYzwxMiB+IDEpKSAlPiUKICBzZWxlY3QoSUQsZWQpICU+JQogIG11dGF0ZShlZCA9IGZhY3RvcihlZCxsZXZlbHMgPSBjKDEsMiwzLDQsNSksbGFiZWxzPWMoIjwxMiIsIjEyIiwiMTMtMTUiLCIxNiIsIj4xNiIpKSkKICAgIApjcGkgPSByZWFkLmNzdigifi9Ecm9wYm94L1BTSURfQ0RTL0NQSS1VLmNzdiIpICU+JSAKICByZW5hbWUoeWVhciA9IFlFQVIpICU+JQogIG11dGF0ZShDUElVID0gQ1BJVS9DUElVWzUzXSkKICAKYGBgCgpUaGVuIHdlIG1lcmdlIHRoZW0gaW50byB0aGUgbWFpbiBmaWxlLgpgYGB7cn0KRCA8LSBEICU+JSAjPC0gZHJvcCBpZiBtb3RoZXIgaGFzIG1pc3NpbmcgcmFjZSBvciBlZHVjYXRpb24gaW5mbwogIGlubmVyX2pvaW4oUikgJT4lIAogIGlubmVyX2pvaW4oZWR1YyxieSA9IGMoIk1JRCIgPSAiSUQiKSkgJT4lCiAgcmVuYW1lKG1fZWQgPSBlZCkgJT4lCiAgbGVmdF9qb2luKGVkdWMsYnkgPSBjKCJGSUQiID0gIklEIikpICU+JQogIHJlbmFtZShmX2VkID0gZWQpICU+JQogIGlubmVyX2pvaW4oUikgJT4lCiAgaW5uZXJfam9pbihjcGkpCmBgYAoKIyMgQ2xlYW4gYW5kIFByZXBhcmUgTGFib3IgTWFya2V0IERhdGEKCkxhYm9yIG1hcmtldCBlYXJuaW5ncyBhbmQgaG91cnMgY29tZSBmcm9tIHRoZSBtYWluIGludGVydmlldyBvZiB0aGUgUFNJRCwgd2hpY2ggY29sbGVjdHMgaW5mb3JtYXRpb24gZm9yIHRoZSAiaHVzYmFuZCIsIHRoZSAid2lmZSIgYW5kIG90aGVyIGZhbWlseSBtZW1iZXJzLiBJbmRpdmlkdWFscyBjYW4gYmUgbWF0Y2hlZCB0byB0aGVzZSB2YXJpYWJsZXMgdmlhIHRoZWlyIHNlcXVlbmNlIG51bWJlciBpbiB0aGUgaG91c2Vob2xkICh3aGljaCB3ZSB3aWxsIGRvIGJlbG93KS4gRmlyc3QsIGxldCdzIGxvYWQgYSBjbGVhbmVkIHBhbmVsIGRhdGFzZXQgb2YgdGhlc2UgaG91c2Vob2xkIGRhdGEuIAoKYGBge3J9CkwgPSByZWFkLmNzdigifi9Ecm9wYm94L1BTSURfQ0RTL1BTSURfUkFXL0xhYm9yRmlsZS5jc3YiKSAlPiUgbXV0YXRlKFggPSBOVUxMKSAjPC0gY29udGFpbnMgdGhlIGhvdXJzIGFuZCBlYXJuaW5ncyBvZiB0aGUgImhlYWQiIGFuZCB0aGUgIndpZmUiIHdoaWNoIGNhbiBiZSBtYXRjaGVkIHRvIGluZGl2aWR1YWxzIHZpYSBzZXF1ZW5jZSBudW1iZXIKCmBgYAoKTmV4dCwgd2UgbWVyZ2Ugd2l0aCB0aGUgbWFpbiBwYW5lbCBhbmQgYXNzaWduIHdhZ2VzLCBlYXJuaW5ncywgYW5kIGhvdXJzLCBiYXNlZCBvbiB0aGUgbW90aGVyJ3MgYW5kIGZhdGhlcidzIHNlcXVlbmNlIG51bWJlciwgd2hpY2ggdGVsbHMgdXMgaWYgdGhleSBhcmUgZWl0aGVyIHRoZSAiaHVzYmFuZCIgb3IgIndpZmUiIGluIHRoZSBob3VzZWhvbGQuCgpgYGB7cn0KTCA8LSBEICU+JQogIHNlbGVjdChNSUQsRklELHllYXIsaW50bnVtLHNuLHNuRikgJT4lIAogIGlubmVyX2pvaW4oTCkgJT4lICM8LSBtZXJnZSBiYXNlZCBvbiB5ZWFyIGFuZCBpbnRlcnZpZXcgbnVtYmVyCiAgbXV0YXRlKG1faHJzID0gY2FzZV93aGVuKHNuPT0xIH4gaF9ocnMsc249PTIgfiB3X2hycyksbV9lYXJuID0gY2FzZV93aGVuKHNuPT0xIH4gaF9lYXJuLHNuPT0yIH4gd19lYXJuKSkgJT4lCiAgbXV0YXRlKGZfaHJzID0gY2FzZV93aGVuKHNuRj09MSB+IGhfaHJzLHNuRj09MiB+IHdfaHJzKSxmX2Vhcm4gPSBjYXNlX3doZW4oc25GPT0xIH4gaF9lYXJuLHNuRj09MiB+IHdfZWFybikpICU+JQogIG11dGF0ZShtX3dhZ2UgPSBtX2Vhcm4vbV9ocnMsZl93YWdlID0gZl9lYXJuL2ZfaHJzKSAlPiUKICBzZWxlY3QoTUlELHllYXIsbV9lYXJuLG1faHJzLG1fd2FnZSxmX2Vhcm4sZl9ocnMsZl93YWdlKSAlPiUgIzwtIHdlIGRvbid0IGtlZXAgRklEIGJlY2F1c2UgdGhlIGNvdXBsaW5nIE1JRCxGSUQgaXMgZHluYW1pYyBhbmQgbWF5IG5vdCBtYXRjaCB0aGUgcGFpciAoTUlELEZJRCkgZnJvbSB0aGUgcHJldmlvdXMgeWVhciB3aGVuIHdlIG1lcmdlIHRoZXNlIGRhdGEgYmFjayBpbgogIG11dGF0ZSh5ZWFyID0geWVhciAtIDEpICM8LSB0aGVzZSB2YXJpYWJsZSByZWZlciB0byB0aGUgcHJldmlvdXMgeWVhciBzbyB3ZSBzdWJ0cmFjdCBvbmUgCgpgYGAKCgoKYGBge3J9ClQyIDwtIHJlYWQuY3N2KCIuLi8uLi9kYXRhLW1haW4vbGFib3ItbWFya2V0L1QyY2xlYW4uY3N2IikKCiMgd2UgbGluayBmaXJzdCB0byBtb3RoZXJzOgpUMm0gPC0gRCAlPiUKICBzZWxlY3QoTUlEKSAlPiUKICB1bmlxdWUoKSAlPiUKICBpbm5lcl9qb2luKFQyKSAlPiUgIzwtIGZpcnN0IGZvdXIgbGluZXMgcGljayBvdXQgbW90aGVycyBpbiBDRFMgc2FtcGxlCiAgcmVuYW1lKG1fZWFybiA9IGVhcm4sbV9ocnMgPSBocnMpICU+JQogIG11dGF0ZShtX3dhZ2UgPSBtX2Vhcm4vbV9ocnMpICU+JQogIHNlbGVjdChNSUQseWVhcixtX2Vhcm4sbV93YWdlLG1faHJzKSAjPC0gdGhlc2UgYXJlIG1vdGhlcnMgc28gZHJvcCB0aGUgRklEIHZhcmlhYmxlCgojIGFuZCB0aGVuIHRvIGZhdGhlcnMKVDJmIDwtIEQgJT4lCiAgc2VsZWN0KEZJRCkgJT4lIAogIHVuaXF1ZSgpICU+JQogIGlubmVyX2pvaW4oVDIpICU+JSAjPC1maXJzdCBmb3VyIGxpbmVzIHBpY2sgb3V0ICJmYXRoZXJzIiBpbiBzYW1wbGUgKHJlY2FsbCB3ZSBhcmUgbGFiZWxsaW5nIGFsbCBzcG91c2VzIGFzIGZhdGhlcnMpCiAgcmVuYW1lKGZfZWFybiA9IGVhcm4sZl9ocnMgPSBocnMpICU+JQogIG11dGF0ZShmX3dhZ2UgPSBmX2Vhcm4vZl9ocnMpICU+JQogIHNlbGVjdChGSUQseWVhcixmX2Vhcm4sZl93YWdlLGZfaHJzKSAjPC0gdGhlc2UgYXJlIGZhdGhlcnMgc28gZHJvcCB0aGUgTUlEIHZhcmlhYmxlCgojIG5vdyB3ZSBsaW5rIHRoZSBwYWlyIChNSUQsRklELHllYXIpIGZpcnN0IHRvIG1vdGhlcnMgKE1JRCx5ZWFyKSBhbmQgdGhlbiB0byBmYXRoZXJzIChNSUQseWVhciksICp0aGVuKiB3ZSBhcHBlbmQgYWxsIG9mIHRoaXMgdG8gdGhlIGRhdGEgZnJvbSB0aGUgbWFpbiBpbnRlcnZpZXcKCmBgYAoKCiMjIE1lcmdlIGluIExhYm9yIE1hcmtldCBFYXJuaW5ncywgSG91cnMsIFdhZ2VzCgoKV2UgZmluaXNoIGJ5ICgxKSBsaW5raW5nIGVhY2ggb2YgdGhlc2UgZmlsZXMgdG8gbW90aGVycyBhbmQgZmF0aGVycyBpbiBvdXIgcGFuZWwgc2FtcGxlOyAoMikgQWRkaW5nIHRoaXMgdG8gdGhlIGRhdGEgZnJvbSB0aGUgbWFpbiBpbnRlcnZpZXc7IGFuZCAoMykgTWVyZ2luZyB3aXRoIHRoZSBwYW5lbCBkYXRhc2V0LgoKYGBge3J9CkQgPC0gRCAlPiUKICBzZWxlY3QoTUlELEZJRCx5ZWFyKSAlPiUKICBpbm5lcl9qb2luKFQybSkgJT4lCiAgbGVmdF9qb2luKFQyZikgJT4lCiAgc2VsZWN0KC1GSUQpICU+JQogIHJiaW5kKEwpICU+JSAjPC0gYWRkIGFsbCBvZiB0aGlzIHRvIHRoZSBvcmlnaW5hbCBkYXRhIGZyYW1lIHdpdGggdGhlIGludGVydmlldyB5ZWFyIHF1ZXN0aW9ucwogIG11dGF0ZShob3VzZV9lYXJuID0gY2FzZV93aGVuKCFpcy5uYShmX2Vhcm4pIH4gZl9lYXJuK21fZWFybixUUlVFIH4gbV9lYXJuKSxtX3dhZ2UgPSBuYV9pZihuYV9pZihtX3dhZ2UsSW5mKSwwKSxmX3dhZ2UgPSBuYV9pZihuYV9pZihmX3dhZ2UsSW5mKSwwKSkgJT4lCiAgcmlnaHRfam9pbihEKSAjJT4lCmBgYAoKV2Ugc2F2ZSB0aGUgcGFuZWwgZGF0YXNldC4KYGBge3J9CndyaXRlLmNzdihELCJ+L0Ryb3Bib3gvUFNJRF9DRFMvUFNJRF9DTEVBTi9Nb3RoZXJQYW5lbENEUy5jc3YiKQpgYGAKCgojIENyZWF0aW5nIGEgQ2hpbGQgUGFuZWwKSXQgbWF5IGJlIHVzZWZ1bCB0byBsaW5rIHRoZSBhYm92ZSBwYW5lbCBvZiBkYXRhIHRvIG91ciBkYXRhIG9uIGNoaWxkcmVuLiBUaGUgY2h1bmsgb2YgY29kZSBiZWxvdyBhcnJhbmdlcyB0aGUgQ0RTIGRhdGEgaW50byBhIGNvbWJpbmVkIHBhbmVsIGFuZCBtZXJnZXMgaXQgd2l0aCAqTW90aGVyUGFuZWxDRFMqLiAKCmBgYHtyfQoKCmNkcyA8LSByZWFkLmNzdigifi9Ecm9wYm94L1BTSURfQ0RTL1BTSURfUkFXL01vdGhlckluZGV4LmNzdiIpICU+JSBtdXRhdGUoWD1OVUxMKQoKIApEX21haW4gPC0gQyAlPiUKICBncm91cF9ieShLSUQpICU+JQogIGZpbHRlcihzdW0oQ0FIMj09Mik9PTApICU+JSAjIGRyb3AgY2hpbGRyZW4gd2l0aCBhZG9wdGlvbiByZWNvcmRzCiAgcmVuYW1lKHliaXJ0aF9jaGlsZCA9IENBSDE1KSAlPiUKICBtdXRhdGUoeWJpcnRoX2NoaWxkID0gbmFfaWYoeWJpcnRoX2NoaWxkLDk5OTgpKSAlPiUKICBzZWxlY3QoTUlELEtJRCx5YmlydGhfY2hpbGQpICU+JQogIG1lcmdlKEQpICU+JQogIG11dGF0ZShhZ2UgPSB5ZWFyIC0geWJpcnRoX2NoaWxkKSAlPiUKICBsZWZ0X2pvaW4oQSkgJT4lICM8LSBsZWZ0X2pvaW4gYXNzZXNzbWVudHMKICBsZWZ0X2pvaW4oRXhwZW5kaXR1cmVzKSAlPiUKICBsZWZ0X2pvaW4oQ2hpbGRDYXJlUGFuZWwpICU+JQogIGxlZnRfam9pbihURF9hZ2cpICU+JQogIGxlZnRfam9pbihQUEUpICAlPiUKICBzZWxlY3QoLXN0YXJ0c193aXRoKCJRMjEiKSwtc3RhcnRzX3dpdGgoIkVSIikpCiAgCgp3cml0ZS5jc3YoRF9tYWluLCJ+L0Ryb3Bib3gvUFNJRF9DRFMvUFNJRF9DTEVBTi9DaGlsZFBhbmVsQ0RTLmNzdiIpCmBgYA==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiQ3JlYXRpbmcgYSBQYW5lbCBEYXRhc2V0IGZvciBDYXVjdXR0IGV0IGFsLiIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKIyBDcmVhdGluZyBhIFBhbmVsIERhdGFzZXQKVGhpcyBzY3JpcHQgdXNlcyB0aGUgY2xlYW5lZCBQU0lEIGFuZCBDRFMgZGF0YSB0byBjb25zdHJ1Y3QgYSBwYW5lbCBvZiBvYnNlcnZhdGlvbnMgYnVpbHQgYXJvdW5kIG1vdGhlcnMgaW4gdGhlIFBTSUQsIHdoZXJlaW4gd2UgYXBwbHkgYSBudW1iZXIgb2Ygc2FtcGxlIHJlc3RyaWN0aW9ucy4KCiMjIEZlcnRpbGl0eSBIaXN0b3J5IFBhbmVsCgpXZSBzdGFydCBieSBsb2FkaW5nIHRoZSBjaGlsZGJpcnRoIGhpc3RvcnkgZmlsZSwgd2hpY2ggd2Ugd2lsbCB1c2UgdG8gaWRlbnRpZnkgbW90aGVycyBhbmQgYXJyYW5nZSB0aGVpciBmZXJ0aWxpdHkgaGlzdG9yeSBpbnRvIGEgcGFuZWwgZGF0YXNldC4gSXQgd2lsbCBiZSB1c2VmdWwgdG8ga25vdyB0aGUgZm9sbG93aW5nIG1hcHBpbmcgYmV0d2VlbiB2YXJpYWJsZSBuYW1lcyBhbmQgdmFyaWFibGVzOgoKVm51bSAgICAgVm5hbWUKLS0tLS0tLSAgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQpDQUgzICAgICBpbnRudW02OApDQUg0ICAgICBwZXJudW0KQ0FINSAgICAgc2V4CkNBSDYgICAgIHBhcmVudCBtb250aCBvZiBiaXJ0aApDQUg3ICAgICBwYXJlbnQgeWVhciBvZiBiaXJ0aApDQUg4ICAgICBtYXJpdGFsIHN0YXR1cyB3aGVuIGJvcm4KQ0FIOSAgICAgYmlydGggb3JkZXIKQ0FIMTAgICAgY2hpbGQgaW50bnVtCkNBSDExICAgIGNoaWxkIHBlcm51bQpDQUgxMiAgICBzZXggb2YgY2hpbGQKQ0FIMTMgICAgY2hpbGQgbW9udGggb2YgYmlydGgKQ0FIMTUgICAgY2hpbGQgeWVhciBvZiBiaXJ0aApDQUgxMDggICBudW1iZXIgb2YgYmlydGggcmVjb3JkcwoKVGhlIGNodW5rIGJlbG93IGxvYWRzIHRoZXNlIGRhdGEgYW5kIGFwcGxpZXMgc29tZSBzYW1wbGUgcmVzdHJpY3Rpb25zOgogLSBEcm9wIHdvbWVuIHdpdGhvdXQgcmVjb3JkZWQgYmlydGhzCiAtIERyb3Agd29tZW4gd2l0aCBtaXNzaW5nIGJpcnRoIHllYXIgaW5mb3JtYXRpb24KIC0gRHJvcCB3b21lbiB3aXRoIG1pc3NpbmcgaW5mb3JtYXRpb24gaW4gdGhlaXIgY2hpbGRiaXJ0aCBoaXN0b3J5CiAtIEtlZXAgb25seSB3b21lbiB3aG9zZSBjaGlsZHJlbiBhcHBlYXIgaW4gdGhlIENEUwoKRmlyc3QsIHdlIHVzZSBvbmUgb2YgdGhlIGNsZWFuZWQgQ0RTIGZpbGVzIHRvIGdldCBhIGZpbGUgd2l0aCBJRCBudW1ibmVycyBvZiBhbGwgQ0RTIGNoaWxkcmVuLgoKYGBge3J9CiMgZ2V0IGFuIGluZGV4IG9mIENEUyBjaGlsZHJlbgpLSUQgPC0gcmVhZC5jc3YoIi4uLy4uL2RhdGEtY2RzL2Fzc2Vzc21lbnRzL0Fzc2Vzc21lbnRQYW5lbC5jc3YiKSAlPiUKICBzZWxlY3QoS0lEKSAlPiUKICB1bmlxdWUoKQoKYGBgCgpOZXh0LCB3ZSBsb2FkIHRoZSBjaGlsZGJpcnRoIHJlY29yZCBmb3Igd29tZW4gaW4gdGhlIFBTSUQgYW5kIGFwcGx5IHNvbWUgc2FtcGxlIHJlc3RyaWN0aW9ucy4KCmBgYHtyfQpjaGlsZF9yZWNvcmQgPC0gcmVhZC5jc3YoIi4uLy4uL2RhdGEtbWFpbi9jaGlsZGJpcnRoL0NoaWxkYmlydGguY3N2IikgJT4lIAogIG11dGF0ZShYID0gTlVMTCkgJT4lICM8LSBsb2FkIGNoaWxkYmlydGggZmlsZQogIGZpbHRlcihDQUg1PT0yKSAgJT4lICNrZWVwIG9ubHkgd29tZW4KICBmaWx0ZXIoQ0FIMTAhPTApICU+JSAjIGRyb3Agd29tZW4gd2hvIGhhdmUgbm8gY2hpbGRyZW4gYWNjb3JkaW5nIHRvIHRoaXMgZmlsZQogIGZpbHRlcihDQUg3IT05OTk4KSAlPiUgIyBkcm9wIHdvbWVuIHdpdGggbWlzc2luZyBiaXJ0aCB5ZWFyIGluZm8KICBtdXRhdGUoTUlEID0gQ0FIMyoxMDAwICsgQ0FINCwgS0lEID0gQ0FIMTAqMTAwMCArIENBSDExKSAlPiUKICBncm91cF9ieShNSUQpICU+JQogIGZpbHRlcighYW55KENBSDEwID09IDk5OTkpKSAKCmBgYAoKV2UgdXNlIHRoaXMgY2hpbGRiaXJ0aCByZWNvcmQgdG8gZmlyc3QgY3JlYXRlIGEgZGF0YSBmcmFtZSB3aXRoIHRoZSBJRHMgb2YgYWxsIENEUyBtb3RoZXJzLgoKVGhlbiwgd2UgdXNlIHRoYXQgZmlsZSB0byBwcm9kdWNlIGEgZnVsbCBjaGlsZGJpcnRoIGhpc3RvcnkgZmlsZSB3aXRoIGp1c3QgQ0RTIG1vdGhlcnMuCgpgYGB7cn0KCm1vdGhlcl9pbmRleCA8LSBjaGlsZF9yZWNvcmQgJT4lCiAgc2VsZWN0KE1JRCxLSUQpICU+JQogIGlubmVyX2pvaW4oS0lEKSAlPiUKICBzZWxlY3QoTUlEKSAlPiUKICB1bmlxdWUoKQoKQyA8LSBjaGlsZF9yZWNvcmQgJT4lICM8LSB0aGlzIG1hdGNoZXMgdGhlIHNhbXBsZSBmcm9tIGJlZm9yZS4gQWxsIGdvb2QuCiAgaW5uZXJfam9pbihtb3RoZXJfaW5kZXgpCgpgYGAKCgpGaW5hbGx5LCBpbiBwcmVwYXJhdGlvbiBmb3IgYnVpbGRpbmcgdGhlIHBhbmVsIGRhdGFzZXQsIHdlIGxvYWQgdGhlIGNsZWFuZWQgcGFzc2FnZSBjb21wcmVoZW5zaW9uIHNjb3JlIHdoaWNoIHdpbGwgbGluayB0byB0aGUgbW90aGVyIHBhbmVsIGlmIHRoZXkgYXJlIGlkZW50aWZpZWQgYXMgdGhlIHByaW1hcnkgY2FyZWdpdmVyIGZvciBvbmUgb2YgdGhlIGNoaWxkcmVuIGluIHRoZSBDRFMgKGFuZCBoYXZlIGEgdmFsaWQgUEMgc2NvcmUpLgoKYGBge3J9ClBDIDwtIHJlYWQuY3N2KCIuLi8uLi9kYXRhLWNkcy9hc3Nlc3NtZW50cy9QQ0ctUEMtY2xlYW4uY3N2IikgJT4lIG11dGF0ZShYPU5VTEwpCmBgYAoKCldlIHdhbnQgYSBwYW5lbCBkYXRhc2V0IHRoYXQgYmVnaW5zIHdoZW4gZWFjaCBtb3RoZXIgdHVybnMgMTggYW5kIGVuZHMgaW4gMjAxNy4gRWFjaCBpbmRpdmlkdWFsLXllYXIgb2JzZXJ2YXRpb24gaGFzIHRoZSBudW1iZXIgb2YgZGVwZW5kZW50IGNoaWxkcmVuLCB0aGUgYWdlIG9mIHRoZSB5b3VuZ2VzdCBjaGlsZCwgdGhlIG51bWJlciBvZiBjaGlsZHJlbiBiZXR3ZWVuIDAgYW5kIDUsIGFuZCB0aGUgbnVtYmVyIG9mIGNoaWxkcmVuIGJldHdlZW4gNiBhbmQgMTIuCgpUaGUgZnVuY3Rpb24gYmVsb3cgZG9lcyB0aGlzIGFzc3VtaW5nIHRoYXQgdGhlIGRhdGFmcmFtZSAkZCQgY29udGFpbnMgdGhlIGNoaWxkYmlydGggZGF0YSBmb3IganVzdCBvbmUgbW90aGVyOgoKYGBge3J9Ck1ha2VQYW5lbCA8LSBmdW5jdGlvbihkKSB7CiAgeWVhciA8LSAoZCRDQUg3WzFdKzE4KToyMDE3CiAgTnkgPC0gbGVuZ3RoKHllYXIpCiAga251bSA9IGQkQ0FIMTA4WzFdCiAgYWdlX3lvdW5nZXN0IDwtIGludGVnZXIoTnkpIC0xCiAgYWdlX29sZGVzdCA8LSBpbnRlZ2VyKE55KSArIEluZgogIG51bV8wXzUgPC0gaW50ZWdlcihOeSkKICBudW1fNl8xMiA8LSBpbnRlZ2VyKE55KQogIG51bV9jaGlsZCA8LSBpbnRlZ2VyKE55KQogIGFnZV9tb3RoZXIgPSB5ZWFyLWQkQ0FIN1sxXQogIGZvciAoaSBpbiAxOmxlbmd0aCh5ZWFyKSkgewogICAgYXkgPSBJbmYKICAgIGFvID0gLTEKICAgIGE1ID0gMAogICAgYTYgPSAwCiAgICBmb3IgKGsgaW4gMTpucm93KGQpKSB7CiAgICAgIGFnZWsgPSB5ZWFyW2ldLWQkQ0FIMTVba10KICAgICAgaWYgKGFnZWs+PTAgJiBhZ2VrPD0xOCkgewogICAgICAgICNwcmludChhZ2VrKQogICAgICAgIGF5ID0gbWluKGF5LGFnZWspCiAgICAgICAgYW8gPSBtYXgoYW8sYWdlaykKICAgICAgICBudW1fY2hpbGRbaV0gID0gbnVtX2NoaWxkW2ldICsgMQogICAgICB9CiAgICAgIGlmIChhZ2VrPj0wICYgYWdlazw9NSkgewogICAgICAgIGE1ID0gYTUgKyAxCiAgICAgIH0KICAgICAgaWYgKGFnZWs+NSAmIGFnZWs8PTEyKSB7CiAgICAgICAgYTYgPSBhNiArIDEKICAgICAgfQoKICAgIH0KICAgIGFnZV95b3VuZ2VzdFtpXSA9IGF5CiAgICBhZ2Vfb2xkZXN0W2ldID0gYW8KICAgIG51bV8wXzVbaV0gPSBhNQogICAgbnVtXzZfMTJbaV0gPSBhNgogIH0KICBkYXRhLmZyYW1lKE1JRCA9IGQkTUlEWzFdLCBhZ2VfbW90aGVyPWFnZV9tb3RoZXIsIHllYXIgPSB5ZWFyLCBrbnVtID0ga251bSwgbnVtX2NoaWxkPW51bV9jaGlsZCxhZ2VfeW91bmdlc3Q9YWdlX3lvdW5nZXN0LGFnZV9vbGRlc3Q9YWdlX29sZGVzdCwgbnVtXzBfNSA9IG51bV8wXzUsIG51bV82XzEyID0gbnVtXzZfMTIsIHlfZmlyc3QgPSBkJENBSDE1WzFdKQp9CgpgYGAKClRoZSBjaHVuayBiZWxvdyBhcHBsaWVzIHRoZSBmdW5jdGlvbiBmb3IgZWFjaCBtb3RoZXIgKGRlZmluZWQgYnkgdGhlaXIgSUQgbnVtYmVyICpNSUQqKSB3aGljaCByZXN1bHRzIGluIGEgcGFuZWwgZGF0YXNldC4gSW4gb3JkZXIgdG8gc3BlZWQgdXAgYW5hbHlzaXMsIHdlIGFsc28gZHJvcCBvYnNlcnZhdGlvbnMgdGhhdCB3ZSBrbm93IHdpbGwgYmUgdG9vIGVhcmx5IGZvciB0aGUgQ0RTIChldmVyeW9uZSB3aXRoIGZpcnN0IGJpcnRocyBiZWZvcmUgMTk2MCkuCgpgYGB7cn0KCkQgPC0gQyAlPiUgCiAgZ3JvdXBfYnkoTUlEKSAlPiUgCiAgZG8oTWFrZVBhbmVsKC4pKSAlPiUgCiAgZmlsdGVyKHlfZmlyc3Q+PTE5NjApICU+JQogIGxlZnRfam9pbihQQykgIyBBZGQgbW90aGVyJ3MgY29nbml0aXZlIHNjb3JlCmBgYAoKIyMgTWVyZ2UgaW4gU3RhdGUgSWRlbnRpZmllcnMgYW5kIENoaWxkY2FyZSBFeHBlbmRpdHVyZXMKCldlIHN0YXJ0IGJ5IG1lcmdpbmcgdGhpcyBwYW5lbCB3aXRoIHRoZSBJbmRpdmlkdWFsIENyb3NzLVllYXIgRmlsZSwgd2hpY2ggbWFwcyBhbiAoSUQseWVhcikgY29tYmluYXRpb24gd2l0aCBhbiBpbnRlcnZpZXcgbnVtYmVyIGFuZCBzZXF1ZW5jZSBudW1iZXIgKHdoaWNoIGFsbG93cyB1cyB0byBsaW5rIHdpdGggc3RhdGUgY29kZXMgYW5kIGhvdXNlaG9sZCBjaGlsZCBjYXJlIGV4cGVuZGl0dXJlcykKClRoaXMgY2h1bmsgbG9hZHMgdGhlIGluZGl2aWR1YWwgZmlsZSBhbmQgY3JlYXRlcyB0aGUgSUQgbnVtYmVyOgpgYGB7cn0KSW5kID0gcmVhZC5jc3YoIi4uLy4uL2RhdGEtbWFpbi9pZGVudGlmaWVycy9pZGVudGlmaWVycy1wYW5lbC5jc3YiKSAlPiUgCiAgbXV0YXRlKFggPSBOVUxMKSAlPiUgCiAgbXV0YXRlKE1JRCA9IGludG51bTY4KjEwMDAgKyBwZXJudW0sbWFyX3N0YXQgPSBtcGFpcj4wKQoKYGBgCgpTaW5jZSB3ZSB3b3VsZCBsaWtlIHRvIHNlZSBtYXJpdGFsIHN0YXR1cyBpbiBzb21lIG5vbi1pbnRlcnZpZXcgeWVhcnMsIHdlIHVzZSB0aGUgZm9sbG93aW5nIHllYXIncyBtYXJpdGFsIHN0YXR1czoKCmBgYHtyfQpJbmQgPC0gSW5kICU+JSBmaWx0ZXIoeWVhcj49MTk5OSkgJT4lIAogIG11dGF0ZSh5ZWFyID0geWVhciAtIDEpICU+JQogIHJiaW5kKEluZCkKYGBgClRoaXMgbWV0aG9kIG9mIGltcHV0YXRpb24gZW5zdXJlcyB0aGF0IHdlIG9ubHkgZmlsbCBpbiBtaXNzaW5nIGRhdGEgZnJvbSBub24taW50ZXJ2aWV3IHllYXJzLgoKT25lIHRoaW5nIHRoYXQgd2lsbCBiZSB1c2VmdWwgdGhyb3VnaG91dCBpcyBhIHBhbmVsIHdpdGggdGhlIG1vdGhlcidzIElEIGxpbmtlZCB0byB0aGVpciBpbnRlcnZpZXcgYW5kIGNhbGVuZGFyIHllYXIuIFNvbWUgdmFyaWFibGVzIGZyb20gdGhlIG1haW4gaW50ZXJ2aWV3IHJlZmVyIHRvIHRoZSBwcmV2aW91cyB5ZWFyIGFuZCB0aGluZ3MgY2FuIGdldCBtZXNzeSwgc28gd2UgdXNlIHRoaXMgZmlsZSB0byBrZWVwIHRoaW5ncyBjb25zaXN0ZW50LgpgYGB7cn0KIyB0aGlzIHdpbGwgYmUgdXNlZnVsIHRocm91Z2hvdXQ6IGNyZWF0ZSBhIGRhdGFmcmFtZSB0aGF0IG1hcHMgbW90aGVycyB0byB0aGVpciBpbnRlcnZpZXcgbnVtYmVyIGFuZCBzZXF1ZW5jZSBudW1iZXIKRF9JbmQgPC0gRCAlPiUKICBpbm5lcl9qb2luKEluZCkKYGBgCgpOZXh0IHdlIGxvYWQgaW4gYSBwYW5lbCBvZiBzdGF0ZSBjb2Rlcywgd2hpY2ggd2UgbWVyZ2Ugd2l0aCB0aGUgY3Jvc3MteWVhciBpbmRpdmlkdWFsIGZpbGUuIFdlIHRoZW4gbWVyZ2UgdGhhdCBmaWxlIHdpdGggYSBzdGF0ZSBjb2RlIGNyb3NzLXdhbGsgc28gdGhhdCB3ZSBjYW4gbGluayB0aGUgUFNJRCdzIHN0YXRlIGNvZGUgd2l0aCBGSVBTIGFuZCBTT0kuIFdlIGFsc28gbWVyZ2UsIGJhc2VkIG9uIHRoZSBob3VzZWhvbGQgaW50ZXJ2aWV3IG51bWJlciBhbmQgeWVhciwgYW5udWFsIGhvdXNlaG9sZCBleHBlbmRpdHVyZXMgb24gY2hpbGQgY2FyZSAoY2xlYW5lZCBpbiBhIHByZXZpb3VzIHNlY3Rpb24pLgoKRmluYWxseSwgdGhpcyBmaWxlIGlzIG1lcmdlZCB3aXRoIHRoZSBwYW5lbCBvZiBtb3RoZXJzIHdlIGp1c3QgY3JlYXRlZCwgdXNpbmcgeWVhcnMgYmVmb3JlIGFuZCBhZnRlciB0byBmaWxsIGluIG1pc3Npbmcgc3RhdGUgb2JzZXJ2YXRpb25zLgoKYGBge3J9CiMgc3RhdGUgY29kZXMgbWVhc3VyZXMgcmVzaWRlbmNlIGZvciBzdXJ2ZXkgeWVhcgpzdGF0ZV9jb2RlcyA9IHJlYWQuY3N2KCIuLi8uLi9TdGF0ZUNvZGVzLmNzdiIpICU+JSAKICBtdXRhdGUoWD1OVUxMLFguMSA9IE5VTEwpICU+JSAjPC0gdGhpcyBpcyBhIHNpbXBsZSBjcm9zc3dhbGsgb2Ygc3RhdGUgY29kZXMKICBzZWxlY3QoLXN0YXRlKSAlPiUgCiAgcmVuYW1lKHN0YXRlID0gUFNJRCwgU3RGSVBTID0gZmlwcykgJT4lICM8LSB3ZSByZW5hbWUgc29tZSB0aGluZ3MgaW4gb3JkZXIgdG8gZG8gdGhlIG1lcmdlIHByb3Blcmx5CiAgc2VsZWN0KHN0YXRlLFN0RklQUyxTT0kpCgojIGNoaWxkIGNhcmUgZXhwZW5kaXR1cmVzIGFyZSBmb3IgcHJldmlvdXMgeWVhciwgc28gd2UgaGF2ZSB0byBiZSBjYXJlZnVsIGhvdyB3ZSBkbyB0aGUgbWVyZ2UhCiMgd2UgbWVyZ2UgYnkgc3VydmV5IHllYXIgdGhlbiBzdWJ0cmFjdCBvbmUgeWVhciB0byBtYWtlIHRoZSByZWZlcmVuY2UgY29ycmVjdAojIHRoZW4gd2UgZHJvcCBpbnRudW0sIHVzaW5nIG9ubHkgTUlEIGFuZCB5ZWFyIHRvIGxpbmsgd2l0aCB0aGUgbWFpbiBmaWxlIGluIHRoZSBuZXh0IHN0ZXAKY2hfY2FyZSA8LSByZWFkLmNzdigifi9Ecm9wYm94L1BTSURfQ0RTL1BTSURfQ0xFQU4vTWFpbl9jaGlsZGNhcmUuY3N2IikgJT4lIAogIG11dGF0ZShYPU5VTEwpICU+JQogIGlubmVyX2pvaW4oRF9JbmQpICU+JSAjPC0gbWVyZ2UgdG8gbW90aGVyJ3MgdGhyb3VnaCB0aGUgcGFuZWwgZmlsZQogIG11dGF0ZSh5ZWFyID0geWVhci0xKSAlPiUgIzwtIGNvbnZlcnQgc3VydmV5IHllYXIgdG8gbGFnIHllYXIKICBzZWxlY3QoTUlELHllYXIsY2hpbGRjYXJlX2V4cCkKCgpEIDwtIHJlYWQuY3N2KCIuLi8uLi9kYXRhLW1haW4vc3RhdGUvU3RhdGVWZXJ0aWNhbC5jc3YiKSAlPiUgIzwtIHN0YXRlIG9mIHJlc2lkZW5jZSBwYW5lbCBkYXRhCiAgbXV0YXRlKFg9TlVMTCkgJT4lCiAgcmlnaHRfam9pbihJbmQpICU+JSAjPC0gbWVyZ2Ugd2l0aCBJbmRpdmlkdWFsIGZpbGUKICByaWdodF9qb2luKEQpICU+JSAjPC0gbWVyZ2Ugd2l0aCB0aGUgcGFuZWwgd2UgY3JlYXRlZCAoa2VlcGluZyBhbGwgeWVhcnMpCiAgYXJyYW5nZShNSUQseWVhcikgJT4lCiAgZ3JvdXBfYnkoTUlEKSAlPiUKICBmaWxsKHN0YXRlLC5kaXJlY3Rpb24gPSAiZG93bnVwIikgJT4lICM8LSBmaWxsIGluIG1pc3Npbmcgb2JzZXJ2YXRpb25zCiAgbWVyZ2Uoc3RhdGVfY29kZXMpICU+JSAjPC0gbWVyZ2UgaW4gdGhlIGNyb3NzLXdhbGsgd2l0aCBGSVBTIGNvZGVzIGFuZCBTT0kgY29kZXMKICBsZWZ0X2pvaW4oY2hfY2FyZSkgIzw9IHVzZSBvbmx5IHRoZSBtYWluIGZpbGUgdG8gbGluawpgYGAKCiMjIElkZW50aWZ5IGFuZCBNZXJnZSBpbiBTcG91c2VzICgiRmF0aGVycyIpCgpUaGUgbmV4dCBzdGVwIGlzIHRvIGlkZW50aWZ5IHNwb3VzZXMgZm9yIGVhY2ggbW90aGVyIGluIGVhY2ggeWVhci4gU3BvdXNlcyBhcmUgbGlua2VkIGJ5IHRoZSAqbXBhaXIqIHZhcmlhYmxlIHdoaWNoIGlzIHVuaXF1ZSB3aXRoaW4gYSBob3VzZWhvbGQgaW50ZXJ2aWV3LiBXZSBpZGVudGlmeSBwYXJ0bmVycyBieToKMS4gTWVyZ2luZyB0aGUgaW5kaXZpZHVhbCBmaWxlIHdpdGggdGhlIHRyaXBsZSAoKk1JRCosKnllYXIqLCphZ2VfbW90aGVyKikgZnJvbSB0aGUgcGFuZWwsIGtlZXBpbmcgYWxsIG9ic2VydmF0aW9ucyBmcm9tIHRoZSBpbmRpdmlkdWFsIGZpbGUuCjIuIFBhcnRuZXJzIGFyZSBpZGVudGlmaWVkIGJ5IHRoZSBmYWN0IHRoYXQgdGhleSBhcmUgbm90IHN1Y2Nlc3NmdWxseSBtYXRjaGVkIGluIHRoaXMgbWVyZ2UsIG1lYW5pbmcgdGhhdCAqYWdlX21vdGhlciogd2lsbCBiZSBtaXNzaW5nLiBXZSBrZWVwIHRob3NlIG9ic2VydmF0aW9ucyBhbmQgcmVuYW1lIHRoZSB2YXJpYWJsZXMgaW4gb3JkZXIgdG8gbWVyZ2UgdGhlbSBvbmNlIG1vcmUgd2l0aCB0aGUgcGFuZWwgb2YgbW90aGVycy4KCmBgYHtyfQpEIDwtIEQgJT4lCiAgc2VsZWN0KE1JRCx5ZWFyLGFnZV9tb3RoZXIpICU+JQogIHJpZ2h0X2pvaW4oSW5kKSAlPiUgIzwtIG1lcmdlIHdpdGggaW5kaXZpZHVhbCBmaWxlLCBrZWVwIGFsbCBvYnNlcnZhdGlvbnMgZnJvbSBJbmQKICBmaWx0ZXIoaXMubmEoYWdlX21vdGhlcikpICU+JSAjPC0gaWRlbnRpZnkgc3BvdXNlcyBieSBtaXNzaW5nIGluZm8gZnJvbSB0aGUgbWVyZ2UKICByZW5hbWUoRklEPU1JRCxzbkY9c24pICU+JSAjPC0gcmVuYW1lIHZhcmlhYmxlcyBmb3IgbWVyZ2UKICBmaWx0ZXIobXBhaXI+MCkgJT4lICM8LSBvbmx5IGtlZXAgaW5kaXZpZHVhbHMgd2hvIGFyZSBub3QgbW90aGVycyBidXQgd2hvIGFyZSBpbiBhIHJlbGF0aW9uc2hpcCBpbiB0aGUgc2FtZSBob3VzZWhvbGQKICBzZWxlY3QoRklELHllYXIsaW50bnVtLG1wYWlyLHNuRikgJT4lCiAgcmlnaHRfam9pbihEKSAlPiUgIzwtIGRvIHRoZSBtZXJnZQogIG11dGF0ZShzbkYgPSByZXBsYWNlX25hKHNuRiwtMSkpICM8LSByZXBsYWNlIG1pc3NpbmcgdmFsdWVzLgoKCmBgYAoKIyMgTWVyZ2UgaW4gU3BvdXNlIEJpcnRoIFllYXIgYW5kIE1hcnJpYWdlIFN1bW1hcnkgVmFyaWFibGVzCgpUaGUgKk1hcnJpYWdlIEhpc3RvcnkgRmlsZSogaXMgcHJlcGFyZWQgYnkgdGhlIFBTSUQgYW5kIGNvbnRhaW5zIGEgcmVjb3JkIG9mIGVhY2ggbWFycmlhZ2UgaW4gdGhlIFBTSUQuIFdlIHVzZSB0aGlzIGZpbGUgdG8gZGV0ZXJtaW5lIHdoaWNoIGluZGl2aWR1YWxzIGhhdmUgZXZlciBiZWVuIG1hcnJpZWQsIHRvIGZpbHRlciBvdXQgaW5kaXZpZHVhbHMgd2l0aCBtaXNzaW5nIG1hcnJpYWdlIGluZm9ybWF0aW9uLCBhbmQgdG8gaWRlbnRpZnkgdGhlIGJpcnRoIHllYXIgb2Ygc3BvdXNlcy4KCkZpcnN0IHdlIGxvYWQgdGhlIG1hcnJpYWdlIGZpbGUgYW5kIGNyZWF0ZSBhbiAiZXZlciIgbWFycmllZCBzdW1tYXJ5IHZhcmlhYmxlLiBXZSBmaW5pc2ggYnkgbWVyZ2luZyB0aGlzIGZpbGUgd2l0aCB0aGUgbWFpbiBwYW5lbCAoYmFzZWQgb24gTUlEKQoKYGBge3J9CiMgIyAgLS0tLSBsb2FkIG1hcnJpYWdlIGluZm8gYW5kIGNyZWF0ZSBzb21lIHN1bW1hcnkgdmFyaWFibGVzCk0gPC0gcmVhZC5jc3YoIi4uLy4uL2RhdGEtbWFpbi9tYXJyaWFnZS9NYXJyaWFnZS5jc3YiKSAlPiUKICBtdXRhdGUoWCA9IE5VTEwpICU+JQogIHJlbmFtZShNSUQgPSBJRDEpICU+JSAjPC0gd2UgcmVuYW1lIHRvIE1JRCBpbiBwcmVwYXJhdGlvbiBmb3IgYSBmaXJzdCBtZXJnZSB3aXRoIHNhbXBsZSBtb3RoZXJzCiAgcmVuYW1lKHliaXJ0aCA9IE1INikgJT4lCiAgZmlsdGVyKHliaXJ0aDw5OTk4KSAlPiUgIzwtIGRyb3AgaW5kaXZpZHVhbHMgd2l0aCBtaXNzaW5nIGJpcnRoIGluZm8KICByZW5hbWUoeW1hciA9IE1IMTEpICU+JQogIGZpbHRlcih5bWFyIT05OTk4KSAlPiUgIzwtIHJlbW92ZSBpbmRpdmlkdWFscyB3aXRob3V0IG1hcnJpYWdlIGluZm8KICBtdXRhdGUocmVjb3JkID0geW1hcjw5OTk5KSAlPiUgIzwtIHltYXI9PTk5OTkgaW5kaWNhdGVzIG5ldmVyIG1hcnJpZWQKICBncm91cF9ieShNSUQpICU+JQogIHN1bW1hcmlzZShldmVyX21hcnJpZWQgPSBzdW0ocmVjb3JkKT4wLHliaXJ0aCA9IHliaXJ0aFsxXSkKCkQgPSBNICU+JSAKICBpbm5lcl9qb2luKEQpCgoKYGBgCgpXZSBhbHNvIHVzZSB0aGlzIGZpbGUgdG8gbWVyZ2Ugd2l0aCBGSUQgZm9yIGVhY2ggc3BvdXNlIHRvIGRlZHVjZSB0aGUgc3BvdXNlJ3MgYWdlLiBUaGlzIG1lYW5zIHdlIGRvbid0IGhhdmUgdGhlIHNwb3VzZSdzIGFnZSBmb3IgY29oYWJpdGluZyBjb3VwbGVzLiBXZSB1c2UgdGhlIHRyaXBsZSAqeWVhciosICppbnRudW0qIGFuZCAqbXBhaXIqIHRvIG1hdGNoIHdvbWVuIHdpdGggdGhlaXIgc3BvdXNlcy4gVG8gZG8gdGhpcywgd2UgZmlyc3QgY3JlYXRlIGFuIGluZGl2aWR1YWwgaW5kZXggZmlsZSBvZiBwZW9wbGUgdGhhdCBhcmUgKm5vdCogd29tZW4gaW4gdGhlIHNhbXBsZS4gVGhpcyBpcyB0aGUgcG90ZW50aWFsIHBvb2wgb2YgZmF0aGVycyB0aGF0IHdlIHVzZSBmb3IgdGhlIG1lcmdlLgoKYGBge3J9CgpEIDwtIERfSW5kICU+JQogIHNlbGVjdChNSUQseWVhcixhZ2VfbW90aGVyKSAlPiUKICByaWdodF9qb2luKEluZCkgJT4lCiAgZmlsdGVyKGlzLm5hKGFnZV9tb3RoZXIpKSAlPiUgIzwtIHBpY2sgb3V0IGluZGl2aWR1YWxzIGZyb20gdGhlIG1lcmdlIHdobyB3ZXJlICpub3QqIG1hdGNoZWQKICByZW5hbWUoRklEID0gTUlELHNuRiA9IHNuKSAlPiUKICBzZWxlY3QoYygiRklEIiwieWVhciIsImludG51bSIsIm1wYWlyIiwic25GIikpICU+JQogIGZpbHRlcihtcGFpcj4wKSAlPiUKICByaWdodF9qb2luKEQpCgpEIDwtIE0gJT4lCiAgcmVuYW1lKEZJRD1NSUQseWJpcnRoRiA9IHliaXJ0aCkgJT4lCiAgcmlnaHRfam9pbihEKSAlPiUKICBtdXRhdGUoZl9hZ2UgPSB5ZWFyIC0geWJpcnRoRikKCmBgYAoKCiMjIE1lcmdlIGluIE1vdGhlcidzIFJhY2UsIEVkdWNhdGlvbiwgYW5kIENQSSAoZXh0ZXJuYWwpCkluIHRoZSBjdXJyZW50IHZlcnNpb24gd2UgZG9uJ3QgdXNlIENQSSwgYnV0IHdlJ2xsIHB1dCBpdCBpbiBhbnl3YXkuIFJhY2UgYW5kIGVkdWNhdGlvbiBhcmUgcHJldmlvdXNseSBjbGVhbmVkIHN1bW1hcnkgdmFyaWFibGVzIHN0b3JlZCBub24tbG9jYWxseS4gV2UgZHJvcCBtb3RoZXJzIGZyb20gdGhlIHNhbXBsZSB3aXRoIG1pc3NpbmcgaW5mb3JtYXRpb24gb24gZWR1Y2F0aW9uIGFuZCByYWNlLgoKYGBge3J9ClIgPC0gcmVhZC5jc3YoIn4vRHJvcGJveC9QU0lEX0NEUy9QU0lEX1JBVy9SYWNlSG9yaXpvbnRhbC5jc3YiKSAlPiUgbXV0YXRlKFggPSBOVUxMKSAlPiUgCiAgcmVuYW1lKE1JRCA9IElEKQoKZWR1YyA8LSByZWFkLmNzdigiLi4vLi4vZGF0YS1tYWluL2VkdWNhdGlvbi9lZHVjYXRpb24uY3N2IikgJT4lCiAgbXV0YXRlKFg9TlVMTCkKCiMgY3BpID0gcmVhZC5jc3YoIn4vRHJvcGJveC9QU0lEX0NEUy9DUEktVS5jc3YiKSAlPiUgCiMgICByZW5hbWUoeWVhciA9IFlFQVIpICU+JQojICAgbXV0YXRlKENQSVUgPSBDUElVL0NQSVVbNTNdKQogIApgYGAKClRoZW4gd2UgbWVyZ2UgdGhlbSBpbnRvIHRoZSBtYWluIGZpbGUuCmBgYHtyfQpEIDwtIEQgJT4lICM8LSBkcm9wIGlmIG1vdGhlciBoYXMgbWlzc2luZyByYWNlIG9yIGVkdWNhdGlvbiBpbmZvCiAgaW5uZXJfam9pbihSKSAlPiUgCiAgaW5uZXJfam9pbihlZHVjLGJ5ID0gYygiTUlEIiA9ICJJRCIpKSAlPiUKICByZW5hbWUobV9lZCA9IGVkKSAlPiUKICBsZWZ0X2pvaW4oZWR1YyxieSA9IGMoIkZJRCIgPSAiSUQiKSkgJT4lCiAgcmVuYW1lKGZfZWQgPSBlZCkgJT4lCiAgaW5uZXJfam9pbihSKSAKYGBgCgojIyBDbGVhbiBhbmQgUHJlcGFyZSBMYWJvciBNYXJrZXQgRGF0YQoKTGFib3IgbWFya2V0IGVhcm5pbmdzIGFuZCBob3VycyBjb21lIGZyb20gdGhlIG1haW4gaW50ZXJ2aWV3IG9mIHRoZSBQU0lELCB3aGljaCBjb2xsZWN0cyBpbmZvcm1hdGlvbiBmb3IgdGhlICJodXNiYW5kIiwgdGhlICJ3aWZlIiBhbmQgb3RoZXIgZmFtaWx5IG1lbWJlcnMuIEluZGl2aWR1YWxzIGNhbiBiZSBtYXRjaGVkIHRvIHRoZXNlIHZhcmlhYmxlcyB2aWEgdGhlaXIgc2VxdWVuY2UgbnVtYmVyIGluIHRoZSBob3VzZWhvbGQgKHdoaWNoIHdlIHdpbGwgZG8gYmVsb3cpLiBGaXJzdCwgbGV0J3MgbG9hZCBhIGNsZWFuZWQgcGFuZWwgZGF0YXNldCBvZiB0aGVzZSBob3VzZWhvbGQgZGF0YS4gCgpgYGB7cn0KTCA8LSByZWFkLmNzdigiLi4vLi4vZGF0YS1tYWluL2xhYm9yLW1hcmtldC9lYXJuaW5ncy1wYW5lbC5jc3YiKSAlPiUgCiAgbXV0YXRlKFggPSBOVUxMKSAjPC0gY29udGFpbnMgdGhlIGhvdXJzIGFuZCBlYXJuaW5ncyBvZiB0aGUgImhlYWQiIGFuZCB0aGUgIndpZmUiIHdoaWNoIGNhbiBiZSBtYXRjaGVkIHRvIGluZGl2aWR1YWxzIHZpYSBzZXF1ZW5jZSBudW1iZXIKCmBgYAoKTmV4dCwgd2UgbWVyZ2Ugd2l0aCB0aGUgbWFpbiBwYW5lbCBhbmQgYXNzaWduIHdhZ2VzLCBlYXJuaW5ncywgYW5kIGhvdXJzLCBiYXNlZCBvbiB0aGUgbW90aGVyJ3MgYW5kIGZhdGhlcidzIHNlcXVlbmNlIG51bWJlciwgd2hpY2ggdGVsbHMgdXMgaWYgdGhleSBhcmUgZWl0aGVyIHRoZSAiaHVzYmFuZCIgb3IgIndpZmUiIGluIHRoZSBob3VzZWhvbGQuCgpgYGB7cn0KTCA8LSBEICU+JQogIHNlbGVjdChNSUQsRklELHllYXIsaW50bnVtLHNuLHNuRikgJT4lIAogIGlubmVyX2pvaW4oTCkgJT4lICM8LSBtZXJnZSBiYXNlZCBvbiB5ZWFyIGFuZCBpbnRlcnZpZXcgbnVtYmVyCiAgbXV0YXRlKG1faHJzID0gY2FzZV93aGVuKHNuPT0xIH4gaF9ocnMsc249PTIgfiB3X2hycyksbV9lYXJuID0gY2FzZV93aGVuKHNuPT0xIH4gaF9lYXJuLHNuPT0yIH4gd19lYXJuKSkgJT4lCiAgbXV0YXRlKGZfaHJzID0gY2FzZV93aGVuKHNuRj09MSB+IGhfaHJzLHNuRj09MiB+IHdfaHJzKSxmX2Vhcm4gPSBjYXNlX3doZW4oc25GPT0xIH4gaF9lYXJuLHNuRj09MiB+IHdfZWFybikpICU+JQogIG11dGF0ZShtX3dhZ2UgPSBtX2Vhcm4vbV9ocnMsZl93YWdlID0gZl9lYXJuL2ZfaHJzKSAlPiUKICBzZWxlY3QoTUlELHllYXIsbV9lYXJuLG1faHJzLG1fd2FnZSxmX2Vhcm4sZl9ocnMsZl93YWdlKSAlPiUgIzwtIHdlIGRvbid0IGtlZXAgRklEIGJlY2F1c2UgdGhlIGNvdXBsaW5nIE1JRCxGSUQgaXMgZHluYW1pYyBhbmQgbWF5IG5vdCBtYXRjaCB0aGUgcGFpciAoTUlELEZJRCkgZnJvbSB0aGUgcHJldmlvdXMgeWVhciB3aGVuIHdlIG1lcmdlIHRoZXNlIGRhdGEgYmFjayBpbgogIG11dGF0ZSh5ZWFyID0geWVhciAtIDEpICM8LSB0aGVzZSB2YXJpYWJsZSByZWZlciB0byB0aGUgcHJldmlvdXMgeWVhciBzbyB3ZSBzdWJ0cmFjdCBvbmUgCgpgYGAKCgoKYGBge3J9ClQyIDwtIHJlYWQuY3N2KCIuLi8uLi9kYXRhLW1haW4vbGFib3ItbWFya2V0L1QyY2xlYW4uY3N2IikKCiMgd2UgbGluayBmaXJzdCB0byBtb3RoZXJzOgpUMm0gPC0gRCAlPiUKICBzZWxlY3QoTUlEKSAlPiUKICB1bmlxdWUoKSAlPiUKICBpbm5lcl9qb2luKFQyKSAlPiUgIzwtIGZpcnN0IGZvdXIgbGluZXMgcGljayBvdXQgbW90aGVycyBpbiBDRFMgc2FtcGxlCiAgcmVuYW1lKG1fZWFybiA9IGVhcm4sbV9ocnMgPSBocnMpICU+JQogIG11dGF0ZShtX3dhZ2UgPSBtX2Vhcm4vbV9ocnMpICU+JQogIHNlbGVjdChNSUQseWVhcixtX2Vhcm4sbV93YWdlLG1faHJzKSAjPC0gdGhlc2UgYXJlIG1vdGhlcnMgc28gZHJvcCB0aGUgRklEIHZhcmlhYmxlCgojIGFuZCB0aGVuIHRvIGZhdGhlcnMKVDJmIDwtIEQgJT4lCiAgc2VsZWN0KEZJRCkgJT4lIAogIHVuaXF1ZSgpICU+JQogIGlubmVyX2pvaW4oVDIpICU+JSAjPC1maXJzdCBmb3VyIGxpbmVzIHBpY2sgb3V0ICJmYXRoZXJzIiBpbiBzYW1wbGUgKHJlY2FsbCB3ZSBhcmUgbGFiZWxsaW5nIGFsbCBzcG91c2VzIGFzIGZhdGhlcnMpCiAgcmVuYW1lKGZfZWFybiA9IGVhcm4sZl9ocnMgPSBocnMpICU+JQogIG11dGF0ZShmX3dhZ2UgPSBmX2Vhcm4vZl9ocnMpICU+JQogIHNlbGVjdChGSUQseWVhcixmX2Vhcm4sZl93YWdlLGZfaHJzKSAjPC0gdGhlc2UgYXJlIGZhdGhlcnMgc28gZHJvcCB0aGUgTUlEIHZhcmlhYmxlCgojIG5vdyB3ZSBsaW5rIHRoZSBwYWlyIChNSUQsRklELHllYXIpIGZpcnN0IHRvIG1vdGhlcnMgKE1JRCx5ZWFyKSBhbmQgdGhlbiB0byBmYXRoZXJzIChNSUQseWVhciksICp0aGVuKiB3ZSBhcHBlbmQgYWxsIG9mIHRoaXMgdG8gdGhlIGRhdGEgZnJvbSB0aGUgbWFpbiBpbnRlcnZpZXcKCmBgYAoKCiMjIE1lcmdlIGluIExhYm9yIE1hcmtldCBFYXJuaW5ncywgSG91cnMsIFdhZ2VzCgoKV2UgZmluaXNoIGJ5ICgxKSBsaW5raW5nIGVhY2ggb2YgdGhlc2UgZmlsZXMgdG8gbW90aGVycyBhbmQgZmF0aGVycyBpbiBvdXIgcGFuZWwgc2FtcGxlOyAoMikgQWRkaW5nIHRoaXMgdG8gdGhlIGRhdGEgZnJvbSB0aGUgbWFpbiBpbnRlcnZpZXc7IGFuZCAoMykgTWVyZ2luZyB3aXRoIHRoZSBwYW5lbCBkYXRhc2V0LgoKYGBge3J9CkQgPC0gRCAlPiUKICBzZWxlY3QoTUlELEZJRCx5ZWFyKSAlPiUKICBpbm5lcl9qb2luKFQybSkgJT4lCiAgbGVmdF9qb2luKFQyZikgJT4lCiAgc2VsZWN0KC1GSUQpICU+JQogIHJiaW5kKEwpICU+JSAjPC0gYWRkIGFsbCBvZiB0aGlzIHRvIHRoZSBvcmlnaW5hbCBkYXRhIGZyYW1lIHdpdGggdGhlIGludGVydmlldyB5ZWFyIHF1ZXN0aW9ucwogIG11dGF0ZShob3VzZV9lYXJuID0gY2FzZV93aGVuKCFpcy5uYShmX2Vhcm4pIH4gZl9lYXJuK21fZWFybixUUlVFIH4gbV9lYXJuKSxtX3dhZ2UgPSBuYV9pZihuYV9pZihtX3dhZ2UsSW5mKSwwKSxmX3dhZ2UgPSBuYV9pZihuYV9pZihmX3dhZ2UsSW5mKSwwKSkgJT4lCiAgcmlnaHRfam9pbihEKSAjJT4lCmBgYAoKV2Ugc2F2ZSB0aGUgcGFuZWwgZGF0YXNldC4KYGBge3J9CndyaXRlLmNzdihELCJ+L0Ryb3Bib3gvUFNJRF9DRFMvUFNJRF9DTEVBTi9Nb3RoZXJQYW5lbENEUy5jc3YiKQpgYGAKCgojIENyZWF0aW5nIGEgQ2hpbGQgUGFuZWwKSXQgbWF5IGJlIHVzZWZ1bCB0byBsaW5rIHRoZSBhYm92ZSBwYW5lbCBvZiBkYXRhIHRvIG91ciBkYXRhIG9uIGNoaWxkcmVuLiBUaGUgY2h1bmsgb2YgY29kZSBiZWxvdyBhcnJhbmdlcyB0aGUgQ0RTIGRhdGEgaW50byBhIGNvbWJpbmVkIHBhbmVsIGFuZCBtZXJnZXMgaXQgd2l0aCAqTW90aGVyUGFuZWxDRFMqLiAKCmBgYHtyfQoKCmNkcyA8LSByZWFkLmNzdigifi9Ecm9wYm94L1BTSURfQ0RTL1BTSURfUkFXL01vdGhlckluZGV4LmNzdiIpICU+JSBtdXRhdGUoWD1OVUxMKQoKIApEX21haW4gPC0gQyAlPiUKICBncm91cF9ieShLSUQpICU+JQogIGZpbHRlcihzdW0oQ0FIMj09Mik9PTApICU+JSAjIGRyb3AgY2hpbGRyZW4gd2l0aCBhZG9wdGlvbiByZWNvcmRzCiAgcmVuYW1lKHliaXJ0aF9jaGlsZCA9IENBSDE1KSAlPiUKICBtdXRhdGUoeWJpcnRoX2NoaWxkID0gbmFfaWYoeWJpcnRoX2NoaWxkLDk5OTgpKSAlPiUKICBzZWxlY3QoTUlELEtJRCx5YmlydGhfY2hpbGQpICU+JQogIG1lcmdlKEQpICU+JQogIG11dGF0ZShhZ2UgPSB5ZWFyIC0geWJpcnRoX2NoaWxkKSAlPiUKICBsZWZ0X2pvaW4oQSkgJT4lICM8LSBsZWZ0X2pvaW4gYXNzZXNzbWVudHMKICBsZWZ0X2pvaW4oRXhwZW5kaXR1cmVzKSAlPiUKICBsZWZ0X2pvaW4oQ2hpbGRDYXJlUGFuZWwpICU+JQogIGxlZnRfam9pbihURF9hZ2cpICU+JQogIGxlZnRfam9pbihQUEUpICAlPiUKICBzZWxlY3QoLXN0YXJ0c193aXRoKCJRMjEiKSwtc3RhcnRzX3dpdGgoIkVSIikpCiAgCgp3cml0ZS5jc3YoRF9tYWluLCJ+L0Ryb3Bib3gvUFNJRF9DRFMvUFNJRF9DTEVBTi9DaGlsZFBhbmVsQ0RTLmNzdiIpCmBgYA==</div>
 
 
 
