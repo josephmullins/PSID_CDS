@@ -396,6 +396,19 @@ childcare <- read.csv("../../data-cds/childcare/ChildCarePanel.csv") %>%
 ppe <- read.csv("../../data-cds/expenditures/PPE.csv") %>%
   mutate(X = NULL)
 
+# load price data:
+# this is converted file of "/ESTIMATION 03-25-20/child_data/data/p_extendedcosts.dta"
+prices <- read.csv("../../../JPE_Child_Devp_2020/PSID/CleanData/prices_lance.csv") %>%
+  rename(StFIPS = stateid) %>%
+  mutate(price_g = 0.3*servo + 0.7*goods) %>%
+  mutate(p_4c = p_yocent_e_cps_cpkt / (33 * 52),
+  p_ic = p_icent_e_cps_cpkt / (33 * 52),
+  p_4f = p_yofcc_e_cps_cpkt / (33 * 52),
+  p_if = p_ifcc_e_cps_cpkt / (33 * 52)) %>%
+  select(StFIPS, year, price_g, p_4c, p_ic, p_4f, p_if, all) %>%
+  filter(year >= 1997, year <= 2002)
+
+
 #make only cds children
 child_panel <- KID %>%
   inner_join(C) %>%
@@ -411,6 +424,7 @@ child_panel <- KID %>%
   left_join(childcare) %>%
   left_join(time) %>%
   left_join(ppe) %>%
+  left_join(prices) %>%
   filter(year>=1997,year<=2002)
 
 write.csv(child_panel, "../../data-derived/ChildPanelCDS.csv")
