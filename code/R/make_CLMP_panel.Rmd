@@ -136,6 +136,20 @@ D <- C %>%
   do(MakePanel(.)) %>% 
   filter(y_first>=1960) %>%
   left_join(PC) # Add mother's cognitive score
+
+Do <- D
+M2 <- read.csv("~/Dropbox/JPE_Child_Devp_2020/PSID/CleanData/MotherPanelCDS.csv") %>%
+  mutate(X=NULL) %>%
+  filter(year>=1985,year<=2002)
+
+D1 <- D %>% filter(year>=1985,year<=2002)
+M2 %>%
+  select(MID,year) %>%
+  anti_join(D1) %>% #<- find members of M2 not in D
+  #merge(m1) %>% #<- check which of these are those in the final M1 but not in M2
+  nrow()
+
+
 ```
 
 ## Merge in State Identifiers and Childcare Expenditures
@@ -188,7 +202,7 @@ ch_care <- read.csv("~/Dropbox/PSID_CDS/PSID_CLEAN/Main_childcare.csv") %>%
   select(MID,year,childcare_exp)
 
 
-D <- read.csv("../../data-main/state/StateVertical.csv") %>% #<- state of residence panel data
+D <- read.csv("../../data-main/state/state-vertical.csv") %>% #<- state of residence panel data
   mutate(X=NULL) %>%
   right_join(Ind) %>% #<- merge with Individual file
   right_join(D) %>% #<- merge with the panel we created (keeping all years)
@@ -197,6 +211,7 @@ D <- read.csv("../../data-main/state/StateVertical.csv") %>% #<- state of reside
   fill(state,.direction = "downup") %>% #<- fill in missing observations
   merge(state_codes) %>% #<- merge in the cross-walk with FIPS codes and SOI codes
   left_join(ch_care) #<= use only the main file to link
+
 ```
 
 ## Identify and Merge in Spouses ("Fathers")
@@ -284,12 +299,11 @@ educ <- read.csv("../../data-main/education/education.csv") %>%
 Then we merge them into the main file.
 ```{r}
 D <- D %>% #<- drop if mother has missing race or education info
-  inner_join(R) %>% 
+  left_join(R) %>% 
   inner_join(educ,by = c("MID" = "ID")) %>%
   rename(m_ed = ed) %>%
   left_join(educ,by = c("FID" = "ID")) %>%
-  rename(f_ed = ed) %>%
-  inner_join(R) 
+  rename(f_ed = ed) 
 ```
 
 ## Clean and Prepare Labor Market Data
@@ -308,8 +322,8 @@ Next, we merge with the main panel and assign wages, earnings, and hours, based 
 L <- D %>%
   select(MID,FID,year,intnum,sn,snF) %>% 
   inner_join(L) %>% #<- merge based on year and interview number
-  mutate(m_hrs = case_when(sn==1 ~ h_hrs,sn==2 ~ w_hrs),m_earn = case_when(sn==1 ~ h_earn,sn==2 ~ w_earn)) %>%
-  mutate(f_hrs = case_when(snF==1 ~ h_hrs,snF==2 ~ w_hrs),f_earn = case_when(snF==1 ~ h_earn,snF==2 ~ w_earn)) %>%
+  mutate(m_hrs = case_when(sn==1 ~ hours_head,sn==2 ~ hours_spouse),m_earn = case_when(sn==1 ~ earn_head,sn==2 ~ earn_spouse)) %>%
+  mutate(f_hrs = case_when(snF==1 ~ hours_head,snF==2 ~ hours_spouse),f_earn = case_when(snF==1 ~ earn_head,snF==2 ~ earn_spouse)) %>%
   mutate(m_wage = m_earn/m_hrs,f_wage = f_earn/f_hrs) %>%
   select(MID,year,m_earn,m_hrs,m_wage,f_earn,f_hrs,f_wage) %>% #<- we don't keep FID because the coupling MID,FID is dynamic and may not match the pair (MID,FID) from the previous year when we merge these data back in
   mutate(year = year - 1) #<- these variable refer to the previous year so we subtract one 
@@ -362,7 +376,7 @@ D <- D %>%
 
 We save the panel dataset.
 ```{r}
-write.csv(D,"~/Dropbox/PSID_CDS/PSID_CLEAN/MotherPanelCDS.csv")
+write.csv(D,"../../data-derived/MotherPanelCDS.csv")
 ```
 
 
@@ -371,7 +385,7 @@ It may be useful to link the above panel of data to our data on children. The ch
 
 ```{r}
 
-
+break
 cds <- read.csv("~/Dropbox/PSID_CDS/PSID_RAW/MotherIndex.csv") %>% mutate(X=NULL)
 
  

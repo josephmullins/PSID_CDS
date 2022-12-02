@@ -14,7 +14,8 @@ H <- H %>% select(-contains("relnum")) #dropping release num
 
 H <- H %>%
   pivot_longer(cols=everything(),names_to = c(".value","year"),names_sep = "_") %>%
-  filter(!is.na(intnum))
+  filter(!is.na(intnum)) %>%
+  filter(state!=0,state!=99) #<- drop missing observations
 
 H <- H[,c(2,3,1)]
 
