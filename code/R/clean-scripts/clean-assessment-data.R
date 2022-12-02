@@ -3,7 +3,7 @@
 library(dplyr)
 library(tidyr)
 
-D <- readxl::read_excel("../../../data-cds/assessments/ChildAssessments.xlsx") %>% 
+D <- readxl::read_excel("data-cds/assessments/ChildAssessments.xlsx") %>% 
   mutate(KID = ER30001*1000 + ER30002)
 
 # first we want to arrange the data nicely. We have the same scores for each year. They are:
@@ -38,5 +38,5 @@ for (i in 1:9) {
   D[,col_names[i]] <- na_if(D[,col_names[i]],missvals[i])
 }
 
-write.csv(D,"../../../data-cds/assessments/AssessmentPanel.csv")
+write.csv(D, "data-cds/assessments/AssessmentPanel.csv")
 

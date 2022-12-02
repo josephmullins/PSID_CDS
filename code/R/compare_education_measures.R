@@ -2,6 +2,7 @@
 
 library(tidyverse)
 
+
 educ = read.csv("~/Dropbox/PSID_CDS/PSID_RAW/HGC.csv") %>%
   mutate(X=NULL,MID=intnum68*1000+pnum68)
 
