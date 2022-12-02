@@ -429,3 +429,25 @@ child_panel <- KID %>%
 
 write.csv(child_panel, "../../data-derived/ChildPanelCDS.csv")
 ```
+
+## Reduce the child panel to something we can use for GMM Estimation
+
+```{r}
+
+child_panel <- read.csv("data-derived/ChildPanelCDS.csv")
+
+d <- child_panel %>%
+  filter(year == 2002) %>%
+  mutate(LW02 = (LW_std - 100)/15,
+  goods = SchSupplies + Toys + Food + tutoring + sports + lessons + comm_grps + tuition) %>%
+  select(KID,year,LW02,tau_m,tau_f,chcare,formal,informal,relative,goods,Race,m_ed,f_ed)
+
+d <- child_panel %>%
+  filter(year == 1997) %>%
+  mutate(LW97 = (LW_std - 100)/15, AP97 = (AP_std - 100)/15) %>%
+  select(KID, LW97, AP97) %>%
+  inner_join(d)
+
+write.csv(child_panel, "data-derived/gmm_data.csv")
+
+```
