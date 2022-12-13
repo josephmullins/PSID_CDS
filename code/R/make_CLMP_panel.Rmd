@@ -396,6 +396,19 @@ childcare <- read.csv("../../data-cds/childcare/ChildCarePanel.csv") %>%
 ppe <- read.csv("../../data-cds/expenditures/PPE.csv") %>%
   mutate(X = NULL)
 
+# load price data:
+# this is converted file of "/ESTIMATION 03-25-20/child_data/data/p_extendedcosts.dta"
+prices <- read.csv("~/Dropbox/JPE_Child_Devp_2020/PSID/CleanData/prices_lance.csv") %>%
+  rename(StFIPS = stateid) %>%
+  mutate(price_g = 0.3*servo + 0.7*goods) %>%
+  mutate(p_4c = p_yocent_e_cps_cpkt / (33 * 52),
+  p_ic = p_icent_e_cps_cpkt / (33 * 52),
+  p_4f = p_yofcc_e_cps_cpkt / (33 * 52),
+  p_if = p_ifcc_e_cps_cpkt / (33 * 52)) %>%
+  select(StFIPS, year, price_g, p_4c, p_ic, p_4f, p_if, all) %>%
+  filter(year >= 1997, year <= 2002)
+
+
 #make only cds children
 child_panel <- KID %>%
   inner_join(C) %>%
@@ -411,7 +424,30 @@ child_panel <- KID %>%
   left_join(childcare) %>%
   left_join(time) %>%
   left_join(ppe) %>%
+  left_join(prices) %>%
   filter(year>=1997,year<=2002)
 
 write.csv(child_panel, "../../data-derived/ChildPanelCDS.csv")
+```
+
+## Reduce the child panel to something we can use for GMM Estimation
+
+```{r}
+
+child_panel <- read.csv("data-derived/ChildPanelCDS.csv")
+
+d <- child_panel %>%
+  filter(year == 2002) %>%
+  mutate(LW02 = (LW_std - 100)/15,
+  goods = SchSupplies + Toys + Food + tutoring + sports + lessons + comm_grps + tuition) %>%
+  select(KID,year,LW02,goods,price_g,Race,m_ed,f_ed)
+
+d <- child_panel %>%
+  filter(year == 1997) %>%
+  mutate(LW97 = (LW_std - 100)/15, AP97 = (AP_std - 100)/15) %>%
+  select(KID, LW97, AP97, tau_m,tau_f,chcare,formal,informal,relative, mar_stat,age) %>%
+  inner_join(d)
+
+write.csv(d, "data-derived/gmm_data.csv")
+
 ```
