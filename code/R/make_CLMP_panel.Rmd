@@ -448,6 +448,6 @@ d <- child_panel %>%
   select(KID, LW97, AP97, tau_m,tau_f,chcare,formal,informal,relative, mar_stat,age) %>%
   inner_join(d)
 
-write.csv(d, "data-derived/gmm_data.csv")
+write.csv(d, "../../data-derived/gmm_data.csv")
 
 ```
