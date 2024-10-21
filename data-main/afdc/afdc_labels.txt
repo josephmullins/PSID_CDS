@@ -1,0 +1,112 @@
+****** PSID DATA CENTER ************************* 
+****** Variable labels for JobID = 328338 ******* 
+
+Variable    Labels
+
+V12501     RELEASE NUMBER                          
+V12502     1986 INTERVIEW NUMBER                   
+V12826     HD 85 ADC/AFDC                          
+V12847     WF 85 ADC/AFDC                          
+V13701     RELEASE NUMBER                          
+V13702     1987 INTERVIEW NUMBER                   
+V13928     HD 86 ADC/AFDC                          
+V13949     WF 86 ADC/AFDC                          
+V14801     RELEASE NUMBER                          
+V14802     1988 INTERVIEW NUMBER                   
+V14943     HD 87 ADC/AFDC                          
+V14964     WF 87 ADC/AFDC                          
+V16301     RELEASE NUMBER                          
+V16302     1989 INTERVIEW NUMBER                   
+V16443     HD 88 ADC/AFDC                          
+V16464     WF 88 ADC/AFDC                          
+V17701     RELEASE NUMBER                          
+V17702     1990 INTERVEW NUMBER                    
+V17859     HD 89 ADC/AFDC                          
+V17880     WF 89 ADC/AFDC                          
+V19001     RELEASE NUMBER                          
+V19002     1991 INTERVIEW NUMBER                   
+V19159     HD 90 ADC/AFDC                          
+V19180     WF 90 ADC/AFDC                          
+V20301     RELEASE NUMBER                          
+V20302     1992 INTERVIEW NUMBER                   
+V20459     HD 91 ADC/AFDC                          
+V20480     WF 91 ADC/AFDC                          
+V21601     RELEASE NUMBER                          
+V21602     1993 INTERVIEW NUMBER                   
+V21978     HD 1992 ADC/AFDC INCOME (G26E)          
+V22252     WF 1992 ADC/AFDC INCOME (G60B)          
+ER2001     RELEASE NUMBER                          
+ER2002     1994 INTERVIEW #                        
+ER3262     WHETHER ADC/AFDC HEAD                   
+ER3598     WTHR WIFE RECD ADC/AFDC                 
+ER5001     RELEASE NUMBER                          
+ER5002     1995 INTERVIEW #                        
+ER6262     WHETHER ADC/AFDC HEAD                   
+ER6600     WTHR WIFE RECD ADC/AFDC                 
+ER7001     RELEASE NUMBER                          
+ER7002     1996 INTERVIEW #                        
+ER8379     WHETHER ADC/AFDC HEAD                   
+ER8717     WTR WIFE RECD ADC/AFDC                  
+ER10001    RELEASE NUMBER                          
+ER10002    1997 INTERVIEW #                        
+ER11272    WHETHER ADC/AFDC HEAD                   
+ER11599    WTR WIFE RECD ADC/AFDC                  
+ER13001    RELEASE NUMBER                          
+ER13002    1999 FAMILY INTERVIEW (ID) NUMBER       
+ER14538    WHETHER ADC/AFDC HEAD                   
+ER14865    WTR WIFE RECD ADC/AFDC                  
+ER16158    R1 WTR REC STATE/LOCAL WELFARE IN 1997  
+ER17001    RELEASE NUMBER                          
+ER17002    2001 FAMILY INTERVIEW (ID) NUMBER       
+ER18697    WHETHER ADC/AFDC HEAD                   
+ER19046    WTR WIFE RECD ADC/AFDC                  
+ER20104    R1 WTR RECD ST/LOCL WELFARE YR B4 LAST  
+ER21001    RELEASE NUMBER                          
+ER21002    2003 FAMILY INTERVIEW (ID) NUMBER       
+ER22069    G25E WHETHER ADC/TANF HEAD              
+ER22419    G60B WTR WIFE RECD ADC/TANF             
+ER23703    R1 WTR RECD ST/LOCL WELFARE YR B4 LAST  
+ER25001    RELEASE NUMBER                          
+ER25002    2005 FAMILY INTERVIEW (ID) NUMBER       
+ER26050    G25E WHETHER ADC/TANF HEAD              
+ER26400    G60B WTR WIFE RECD ADC/TANF             
+ER27834    R51 WTR RECEIVED OTR WELFARE YR B4 LAST 
+ER36001    RELEASE NUMBER                          
+ER36002    2007 FAMILY INTERVIEW (ID) NUMBER       
+ER37068    G25E WHETHER ADC/TANF HEAD              
+ER37418    G60B WTR WIFE RECD ADC/TANF             
+ER40809    R51 WTR RECEIVED OTR WELFARE YR B4 LAST 
+ER42001    RELEASE NUMBER                          
+ER42002    2009 FAMILY INTERVIEW (ID) NUMBER       
+ER43059    G25E WHETHER ADC/TANF HEAD              
+ER43409    G60B WTR WIFE RECD ADC/TANF             
+ER46694    R51 WTR RECEIVED OTR WELFARE YR B4 LAST 
+ER47301    RELEASE NUMBER                          
+ER47302    2011 FAMILY INTERVIEW (ID) NUMBER       
+ER48381    G25E WHETHER ADC/TANF HEAD              
+ER48734    G60B WTR WIFE RECD ADC/TANF             
+ER52095    R51 WTR RECEIVED OTR WELFARE YR B4 LAST 
+ER53001    RELEASE NUMBER                          
+ER53002    2013 FAMILY INTERVIEW (ID) NUMBER       
+ER54059    G25E WHETHER ADC/TANF INCOME-HEAD       
+ER54429    G60B WTR RECEIVED ADC/TANF-WIFE         
+ER57899    R51 WTR RECEIVED OTR WELFARE YR B4 LAST 
+ER60001    RELEASE NUMBER                          
+ER60002    2015 FAMILY INTERVIEW (ID) NUMBER       
+ER61101    G25E WHETHER ADC/TANF INCOME-HEAD       
+ER61505    G60B WTR RECEIVED ADC/TANF-SPOUSE       
+ER65079    R51 WTR RECEIVED OTR WELFARE YR B4 LAST 
+ER66001    RELEASE NUMBER                          
+ER66002    2017 FAMILY INTERVIEW (ID) NUMBER       
+ER67153    G25E WHETHER ADC/TANF INCOME-RP         
+ER67508    G25E WTR RECEIVED ADC/TANF-SPOUSE       
+ER72001    RELEASE NUMBER                          
+ER72002    2019 FAMILY INTERVIEW (ID) NUMBER       
+ER73176    G25E WHETHER ADC/TANF INCOME-RP         
+ER73531    G25E WTR RECEIVED ADC/TANF-SPOUSE       
+ER78001    RELEASE NUMBER                          
+ER78002    2021 FAMILY INTERVIEW (ID) NUMBER       
+ER79272    G25E WHETHER ADC/TANF INCOME-RP         
+ER79652    G25E WTR RECEIVED ADC/TANF-SPOUSE       
+
+*** End of labels ******************************* 

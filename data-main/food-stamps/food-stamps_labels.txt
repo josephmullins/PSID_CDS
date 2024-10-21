@@ -1,0 +1,121 @@
+****** PSID DATA CENTER ************************* 
+****** Variable labels for JobID = 328339 ******* 
+
+Variable    Labels
+
+V4301      RELEASE NUMBER                          
+V4302      1976 ID NUMBER                          
+V4367      # MO FDSTAMP IN 75   G25                
+V5201      RELEASE NUMBER                          
+V5202      1977 ID                                 
+V5279      # MONTHS USED STAMPS  76                
+V5701      RELEASE NUMBER                          
+V5702      1978 ID                                 
+V5778      # MONTHS USED FDSTMP 77                 
+V6301      RELEASE NUMBER                          
+V6302      1979 ID                                 
+V6384      # MOS USED FDSTMP 78                    
+V6901      RELEASE NUMBER                          
+V6902      1980 INTERVIEW NUMBER                   
+V6978      # MOS USED FD STMP 1979                 
+V7501      RELEASE NUMBER                          
+V7502      1981 INTERVIEW NUMBER                   
+V7570      # MOS USED FD ST 1980                   
+V8201      RELEASE NUMBER                          
+V8202      1982 INTERVIEW NUMBER                   
+V8262      # MOS USED FD ST 1981                   
+V8801      RELEASE NUMBER                          
+V8802      1983 INTERVIEW NUMBER                   
+V8870      # MOS USED FD ST 1982                   
+V10001     RELEASE NUMBER                          
+V10002     1984 INTERVIEW NUMBER                   
+V10241     # MOS USED FD ST 83(J22)                
+V11101     RELEASE NUMBER                          
+V11102     1985 INTERVIEW NUMBER                   
+V11381     # MOS USED FD ST 84(H21)                
+V12501     RELEASE NUMBER                          
+V12502     1986 INTERVIEW NUMBER                   
+V12780     # MOS USED FD ST 85(H21)                
+V13701     RELEASE NUMBER                          
+V13702     1987 INTERVIEW NUMBER                   
+V13882     # MOS USED FD ST 86(F18)                
+V14801     RELEASE NUMBER                          
+V14802     1988 INTERVIEW NUMBER                   
+V14897     # MOS USED FD ST 87(F10)                
+V16301     RELEASE NUMBER                          
+V16302     1989 INTERVIEW NUMBER                   
+V16397     # MOS USED FD ST 88(F10)                
+V17701     RELEASE NUMBER                          
+V17702     1990 INTERVEW NUMBER                    
+V17813     # MOS USED FD ST 89(F10)                
+V19001     RELEASE NUMBER                          
+V19002     1991 INTERVIEW NUMBER                   
+V19113     # MOS USED FD ST 90(F22)                
+V20301     RELEASE NUMBER                          
+V20302     1992 INTERVIEW NUMBER                   
+V20413     # MOS USED FD ST 91(F22)                
+V21601     RELEASE NUMBER                          
+V21602     1993 INTERVIEW NUMBER                   
+V21729     # MONTHS RECD FOOD STAMPS IN 1992 (F10) 
+ER2001     RELEASE NUMBER                          
+ER2002     1994 INTERVIEW #                        
+ER3059     F8 REC FOOD STAMPS PYR                  
+ER5001     RELEASE NUMBER                          
+ER5002     1995 INTERVIEW #                        
+ER6058     F8 REC FOOD STAMPS PYR                  
+ER7001     RELEASE NUMBER                          
+ER7002     1996 INTERVIEW #                        
+ER8155     F8 REC FOOD STAMPS PYR                  
+ER10001    RELEASE NUMBER                          
+ER10002    1997 INTERVIEW #                        
+ER11049    F8 REC FOOD STAMPS PYR                  
+ER13001    RELEASE NUMBER                          
+ER13002    1999 FAMILY INTERVIEW (ID) NUMBER       
+ER14240    F8 WTR USED FOOD STAMPS IN 1997         
+ER14255    F11 WTR RECEIVED FOOD STAMPS IN 1998    
+ER17001    RELEASE NUMBER                          
+ER17002    2001 FAMILY INTERVIEW (ID) NUMBER       
+ER18370    F8 WTR USED FOOD STAMPS 2 YRS AGO       
+ER18386    F11 WTR RECEIVED FOOD STAMPS LAST YEAR  
+ER21001    RELEASE NUMBER                          
+ER21002    2003 FAMILY INTERVIEW (ID) NUMBER       
+ER21636    F8 WTR USED FOOD STAMPS 2 YRS AGO       
+ER21652    F11 WTR RECEIVED FOOD STAMPS LAST YEAR  
+ER25001    RELEASE NUMBER                          
+ER25002    2005 FAMILY INTERVIEW (ID) NUMBER       
+ER25638    F8 WTR USED FOOD STAMPS 2 YRS AGO       
+ER25654    F11 WTR RECEIVED FOOD STAMPS LAST YEAR  
+ER36001    RELEASE NUMBER                          
+ER36002    2007 FAMILY INTERVIEW (ID) NUMBER       
+ER36656    F8 WTR USED FOOD STAMPS 2 YRS AGO       
+ER36672    F11 WTR RECEIVED FOOD STAMPS LAST YEAR  
+ER42001    RELEASE NUMBER                          
+ER42002    2009 FAMILY INTERVIEW (ID) NUMBER       
+ER42675    F8 WTR USED FOOD STAMPS 2 YRS AGO       
+ER42691    F11 WTR RECEIVED FOOD STAMPS LAST YEAR  
+ER47301    RELEASE NUMBER                          
+ER47302    2011 FAMILY INTERVIEW (ID) NUMBER       
+ER47991    F8 WTR USED FOOD STAMPS 2 YRS AGO       
+ER48007    F11 WTR RECEIVED FOOD STAMPS LAST YEAR  
+ER53001    RELEASE NUMBER                          
+ER53002    2013 FAMILY INTERVIEW (ID) NUMBER       
+ER53703    F8 WTR USED FOOD STAMPS 2 YRS AGO       
+ER53704    F11 WTR RECEIVED FOOD STAMPS LAST YEAR  
+ER60001    RELEASE NUMBER                          
+ER60002    2015 FAMILY INTERVIEW (ID) NUMBER       
+ER60718    F8 WTR USED FOOD STAMPS 2 YRS AGO       
+ER60719    F11 WTR RECEIVED FOOD STAMPS LAST YEAR  
+ER66001    RELEASE NUMBER                          
+ER66002    2017 FAMILY INTERVIEW (ID) NUMBER       
+ER66765    F8 WTR USED FOOD STAMPS 2 YRS AGO       
+ER66766    F11 WTR RECEIVED FOOD STAMPS LAST YEAR  
+ER72001    RELEASE NUMBER                          
+ER72002    2019 FAMILY INTERVIEW (ID) NUMBER       
+ER72769    F8 WTR USED FOOD STAMPS 2 YRS AGO       
+ER72770    F11 WTR RECEIVED FOOD STAMPS LAST YEAR  
+ER78001    RELEASE NUMBER                          
+ER78002    2021 FAMILY INTERVIEW (ID) NUMBER       
+ER78846    F8 WTR USED FOOD STAMPS 2 YRS AGO       
+ER78847    F11 WTR RECEIVED FOOD STAMPS LAST YEAR  
+
+*** End of labels ******************************* 
