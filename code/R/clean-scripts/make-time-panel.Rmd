@@ -3,9 +3,13 @@ title: "Aggregating Time Use Data"
 output: html_notebook
 ---
 
+```{r}
+library(tidyverse)
+```
+
 # Time Use From Time Diaries
 
-First load the 1997 and 2002 time diaries, clean them, and rename the files so they are consistent across those years. The coding manual for time use activities are [here](../../../docs/codingman.pdf) and [here.](../../../docs/2003codebook.pdf). Inspecting these you will see that the code categories are slightly more fine in the 2002 wave (one extra digit). So for example a category coded as 919 in 1997 becomes 9190 in 2002 or potentially 919$x$ for some $x\in\{1,...,9\}$ depending on the sub-category.
+First load the 1997 and 2002 time diaries, clean them, and rename the files so they are consistent across those years. The coding manual for time use activities are [here](~/Dropbox/PSID_CDS/docs/codingman.pdf) and [here.](~/Dropbox/PSID_CDS/docs/2003codebook.pdf). Inspecting these you will see that the code categories are slightly more fine in the 2002 wave (one extra digit). So for example a category coded as 919 in 1997 becomes 9190 in 2002 or potentially 919$x$ for some $x\in\{1,...,9\}$ depending on the sub-category.
 
 For a consistent sent of categories, we use the 1997 activity codes and round down to the nearest multiple of 10 for 2002 categories. Here is a summary of the variables:
 
@@ -33,17 +37,26 @@ The chunk below imports the data, appends both waves into one dataset (after ren
 # 919 tv
 T0 <- read.csv("../../../data-cds/time-diary/TD97full.csv") %>%
   mutate(KID=ER30001*1000 + ER30002,year = 1997) %>%
-  select(KID,year,COLA,COLG_B,COLG_C,COLG_I,COLG_J,COLG_K,COLH_B,COLH_C,COLH_I,COLH_J,COLH_K,COLF,WDAYWEND,DURATION)
+  select(KID,year,COLA,COLG_B,COLG_C,COLG_I,COLG_J,COLG_K,COLH_B,COLH_C,COLH_I,COLH_J,COLH_K,COLF,WDAYWEND,DURATION, COLJ)
 
 
 
 T1 <- read.csv("../../../data-cds/time-diary/TD02full.csv") %>%
   mutate(KID=ER30001*1000 + ER30002,year = 2002) %>%
-  rename(COLG_B = COLGB_02, COLG_C = COLGC_02 , COLG_I = COLGI_02,COLG_J = COLGJ_02,COLG_K = COLGK_02, COLH_B = COLGH_02, COLH_C = COLHC_02, COLH_I = COLHI_02,COLH_J = COLHJ_02,COLH_K = COLHK_02, WDAYWEND = DIARY_02, DURATION = DUR_02, COLA = COLA_02,COLF = COLF_02) %>%
-  select(KID,year,COLA,COLG_B,COLG_C,COLG_I,COLG_J,COLG_K,COLH_B,COLH_C,COLH_I,COLH_J,COLH_K,COLF,WDAYWEND,DURATION) %>%
+  rename(COLG_B = COLGB_02, COLG_C = COLGC_02 , COLG_I = COLGI_02,COLG_J = COLGJ_02,COLG_K = COLGK_02, COLH_B = COLHB_02, COLH_C = COLHC_02, COLH_I = COLHI_02,COLH_J = COLHJ_02,COLH_K = COLHK_02, WDAYWEND = DIARY_02, DURATION = DUR_02, COLA = COLA_02,COLF = COLF_02, COLJ=COLJ_02) %>%
+  select(KID,year,COLA,COLG_B,COLG_C,COLG_I,COLG_J,COLG_K,COLH_B,COLH_C,COLH_I,COLH_J,COLH_K,COLF,WDAYWEND,DURATION, COLJ) %>%
   mutate(COLA = floor(COLA/10)) #<- have to round down
 
-TD <- rbind(T0,T1) %>%
+T2 <- read.csv("../../../data-cds/time-diary/TD07full.csv")%>%
+  mutate(KID=ER30001*1000 + ER30002,year = 2007) %>%
+  rename(COLG_B = COLHB_07, COLG_C = COLHC_07 , COLH_B = COLIB_07, COLH_C = COLIC_07, WDAYWEND = DIARY_07, DURATION = DUR_07, COLA = COLA_07, 
+         COLG_I= COLHI_07  , COLG_J= COLHJ_07, COLG_K= COLHK_07, COLH_I= COLII_07 ,COLH_J= COLIJ_07,COLH_K= COLIK_07,COLF = COLG_07, COLJ=COLJ_07) %>%
+   select(KID,year,COLA,COLG_B,COLG_C,COLG_I,COLG_J,COLG_K,COLH_B,COLH_C,COLH_I,COLH_J,COLH_K,COLF,WDAYWEND,DURATION, COLJ) %>%
+  mutate(COLG_B = if_else(COLG_B==5, as.integer(0), as.integer(COLG_B)),COLG_C = if_else(COLG_C==5, as.integer(0), as.integer(COLG_C)),
+         COLH_B = if_else(COLH_B==5, as.integer(0), as.integer(COLH_B)), COLH_C = if_else(COLH_C==5, as.integer(0), as.integer(COLH_C)),#<- 5 corresponds to activity being personal, private, school, or work according to the codebook - I make it 0
+         COLA = floor(COLA/10), COLJ = floor(COLJ/10)) #<- have to round down
+
+TD <- rbind(T0,T1,T2) %>%
   mutate(time2ind = COLA!=919) %>% #<-
   mutate(COLG_B = na_if(COLG_B,9),COLG_C = na_if(COLG_C,9),COLH_B = na_if(COLH_B,9), COLH_C = na_if(COLH_C,9),COLG_I = na_if(COLG_I,9),COLG_J = na_if(COLG_J,9),COLH_K = na_if(COLH_K,9),COLH_I = na_if(COLH_I,9),COLH_J = na_if(COLH_J,9),COLH_K = na_if(COLH_K,9)) #<- code in missing categories
 
@@ -56,42 +69,37 @@ Next, we define a few categories of time use that we will add up for each indivi
 ```{r}
 
 #create a dummy variable equal to 1 if parents are engaged into the "investment" activity
+TD <- TD %>%
+  mutate(investment = ifelse(COLA == 258 | COLA == 222 | COLA == 249 | 
+                      COLA == 259 | COLA == 238 | COLA == 339 |
+                      COLA == 411 | COLA == 488 | COLA == 501 |
+                      COLA == 504 | COLA == 511 | COLA == 519 |
+                      COLA == 549 | COLA == 569 | (COLA >= 709 & COLA <= 749) |
+                      (COLA >= 801 & COLA <= 889) | COLA == 939 | COLA == 941 |
+                      COLA == 959 | COLA == 942 | COLA == 943 | COLA == 962 |
+                      COLA == 967 | COLA == 979 | COLA == 963, 1, 0),
+        social = ifelse(COLA == 439 | COLA == 448 | COLA == 449 | 
+                    (COLA >= 601 & COLA <= 689) | COLA == 752 | COLA == 769 | 
+                    COLA == 771 | COLA == 772 | COLA == 789, 1, 0),
+        ex_soc = ifelse(COLA == 108 | COLA == 109 | COLA == 118 | 
+                  COLA == 119 | COLA == 698 | COLA == 699 | COLA == 799 | 
+                  social == 1,1,0),
+        ex_inv = ifelse(investment == 1 | 
+                   COLA == 248 | COLA == 221 | COLA == 239 | COLA == 377 | 
+                   COLA == 484 | COLA == 510 | COLA == 512 | COLA == 599 | 
+                   COLA == 597 | COLA == 598 | COLA == 899,1,0),
+        no_parent = (COLG_B == 0) & (COLG_C == 0) & (COLH_B == 0) & 
+            (COLH_C == 0),
+        either_parent = COLG_B + (1-COLG_B)*COLG_C,
+        formal = no_parent & (COLF == 84),
+        relative = no_parent & (COLG_I == 1 | COLG_J == 1 | 
+          COLH_I == 1 | COLH_J == 1),
+        relative_present = (COLG_I == 1 | COLG_J == 1 | 
+          COLH_I == 1 | COLH_J == 1),
+        informal = no_parent & !relative & 
+            (COLF != 84) & (COLF != 80) & (COLG_K == 1 | COLH_K == 1)
+            )
 
-TD$investment=ifelse(TD$COLA==258|TD$COLA==222|TD$COLA==249|TD$COLA==259|TD$COLA==238|
-                       TD$COLA==339|TD$COLA==411|TD$COLA==488|TD$COLA==501|TD$COLA==504|
-                       TD$COLA==511|TD$COLA==519|TD$COLA==549|TD$COLA==569|
-                       (TD$COLA>=709&TD$COLA<=749)|(TD$COLA>=801&TD$COLA<=889)|
-                       TD$COLA==939|TD$COLA==941|TD$COLA==959|TD$COLA==942|
-                       TD$COLA==943|TD$COLA==962|TD$COLA==967|TD$COLA==979|TD$COLA==963,1,0)
-
-#create an dummy variable equal to 1 if parents are engaged into the "socializing" activity
-TD$social=ifelse(TD$COLA==439|TD$COLA==448|TD$COLA==449|(TD$COLA>=601&TD$COLA<=689)|
-                   TD$COLA==752|TD$COLA==769|TD$COLA==771|TD$COLA==772|TD$COLA==789,1,0)
-
-#create expanded investment and social dummy variables
-
-
-TD$ex_soc=ifelse(TD$COLA==108|TD$COLA==109|TD$COLA==118|TD$COLA==119|TD$COLA==698|TD$COLA==699|TD$COLA==799|TD$social==1,1,0)
-
-
-TD$ex_inv=ifelse(TD$investment==1|
-                   TD$COLA==248|TD$COLA==221|TD$COLA==239|TD$COLA==377|
-                   TD$COLA==484|TD$COLA==510|TD$COLA==512|TD$COLA==599|
-                   TD$COLA==597|TD$COLA==598|TD$COLA==899,1,0)
-
-# a dummy if no parent is around 
-TD$no_parent = (TD$COLG_B==0) & (TD$COLG_C==0) & (TD$COLH_B==0) & (TD$COLH_C==0)
-
-
-# create a formal, non-relative care variable
-TD$formal = TD$no_parent & (TD$COLF==84)
-
-# create a relative care variable
-TD$relative = TD$no_parent & (TD$COLG_I==1 | TD$COLG_J==1 | TD$COLH_I==1 | TD$COLH_J==1)
-
-# create an informal non-relative care variable. Defined as time in non-relative care that does not occur in a formal center and does not occur at school
-
-TD$informal = TD$no_parent & !TD$relative & (TD$COLF!=84) & (TD$COLF!=80) & (TD$COLG_K==1 | TD$COLH_K==1)
 
 ```
 
@@ -109,13 +117,41 @@ Now we create the means of active time, measured in hours per week. Our main mea
 ```{r}
 TD_agg <- TD %>% 
   group_by(KID,year) %>% 
-  summarise(tau_m = sum(DURATION*wght*COLG_B,na.rm = TRUE)/3600, tau_f = sum(DURATION*wght*COLG_C,na.rm=TRUE)/3600, tau_both = sum(DURATION*wght*(COLG_B + (1-COLG_B)*COLG_C),na.rm=TRUE)/3600, tau_m2 = sum(time2ind*DURATION*wght*COLG_B,na.rm = TRUE)/3600, tau_f2 = sum(time2ind*DURATION*wght*COLG_C,na.rm=TRUE)/3600,
-            tau_m_investment = sum(DURATION*wght*COLG_B*investment,na.rm = TRUE)/3600,  tau_m_social = sum(DURATION*wght*COLG_B*social,na.rm = TRUE)/3600, tau_m_ex_inv = sum(DURATION*wght*COLG_B*ex_inv,na.rm = TRUE)/3600,  tau_m_ex_soc = sum(DURATION*wght*COLG_B*ex_soc,na.rm = TRUE)/3600, 
-            tau_f_investment = sum(DURATION*wght*COLG_C*investment,na.rm = TRUE)/3600,  tau_f_social = sum(DURATION*wght*COLG_C*social,na.rm = TRUE)/3600, tau_f_ex_inv = sum(DURATION*wght*COLG_C*ex_inv,na.rm = TRUE)/3600, tau_f_ex_soc = sum(DURATION*wght*COLG_C*ex_soc,na.rm = TRUE)/3600,
-            tau_both_investment = sum(DURATION*wght*(COLG_B + (1-COLG_B)*COLG_C)*investment,na.rm = TRUE)/3600,  tau_both_social = sum(DURATION*wght*(COLG_B + (1-COLG_B)*COLG_C)*social,na.rm = TRUE)/3600, tau_both_ex_inv = sum(DURATION*wght*(COLG_B + (1-COLG_B)*COLG_C)*ex_inv,na.rm = TRUE)/3600, tau_both_ex_soc = sum(DURATION*wght*(COLG_B + (1-COLG_B)*COLG_C)*ex_soc,na.rm = TRUE)/3600,
-            formal = sum(DURATION*wght*formal,na.rm = TRUE)/3600,informal = sum(DURATION*wght*informal,na.rm = TRUE)/3600,relative = sum(DURATION*wght*relative,na.rm = TRUE)/3600,)
+  summarise(tau_m = sum(DURATION*wght*COLG_B,na.rm = TRUE)/3600, 
+            tau_f = sum(DURATION*wght*COLG_C,na.rm=TRUE)/3600, 
+            tau_both = sum(DURATION*wght*either_parent,na.rm=TRUE)/3600,  
+            tau_m2 = sum(time2ind*DURATION*wght*COLG_B,na.rm = TRUE)/3600, 
+            tau_f2 = sum(time2ind*DURATION*wght*COLG_C,na.rm=TRUE)/3600,
+            tau_m_investment = sum(DURATION*wght*COLG_B*investment,na.rm = TRUE)/3600,  
+            tau_m_social = sum(DURATION*wght*COLG_B*social,na.rm = TRUE)/3600, 
+            tau_m_ex_inv = sum(DURATION*wght*COLG_B*ex_inv,na.rm = TRUE)/3600,  
+            tau_m_ex_soc = sum(DURATION*wght*COLG_B*ex_soc,na.rm = TRUE)/3600, 
+            tau_f_investment = sum(DURATION*wght*COLG_C*investment,na.rm = TRUE)/3600,  
+            tau_f_social = sum(DURATION*wght*COLG_C*social,na.rm = TRUE)/3600, 
+            tau_f_ex_inv = sum(DURATION*wght*COLG_C*ex_inv,na.rm = TRUE)/3600, 
+            tau_f_ex_soc = sum(DURATION*wght*COLG_C*ex_soc,na.rm = TRUE)/3600,
+            tau_both_investment = sum(DURATION*wght*either_parent*investment,na.rm = TRUE)/3600,  
+            tau_both_social = sum(DURATION*wght*either_parent*social,na.rm = TRUE)/3600, 
+            tau_both_ex_inv = sum(DURATION*wght*either_parent*ex_inv,na.rm = TRUE)/3600, 
+            tau_both_ex_soc = sum(DURATION*wght*either_parent*ex_soc,na.rm = TRUE)/3600,
+            relative_present = sum(DURATION*wght*relative_present,na.rm = TRUE)/3600,
+            informal_invest = sum(DURATION*wght*investment*informal,na.rm = TRUE)/3600,
+            formal_invest = sum(DURATION*wght*investment*formal,na.rm = TRUE)/3600,
+            relative_invest = sum(DURATION*wght*investment*relative,na.rm = TRUE)/3600,
+            formal = sum(DURATION*wght*formal,na.rm = TRUE)/3600,
+            relative = sum(DURATION*wght*relative,na.rm = TRUE)/3600,
+            informal = sum(DURATION*wght*informal,na.rm = TRUE)/3600
+            )
+
+
+#Create expanded social and expanded investment measure
+TD_agg <- TD_agg %>% 
+  mutate(tau_m_socinvest=tau_m_ex_inv+tau_m_ex_soc,
+         tau_f_socinvest=tau_f_ex_inv+tau_f_ex_soc,
+         tau_both_socinvest=tau_both_ex_inv+tau_both_ex_soc)
 
 ```
+
 
 Now let's write this file. 
 
@@ -136,8 +172,16 @@ g <- TD_agg %>%
   summarize(m = mean(value),se = sqrt(var(value)/n())) %>%
   ggplot(aes(x=rel_cut,y=m,ymin=m-1.96*se,ymax=m+1.96*se)) + geom_point() + geom_errorbar(width=0.2) + facet_grid(. ~ name) + xlab("Hours of Relative Care") + ylab("Hours of Care") + theme_minimal()
 
-ggsave("../../../figures/relative-care_vs_formal-informal.png",g)
-
-print(g)
+g
 ```
 
+Do these breakdowns make any sense at all? What kind of centers are being used?
+```{r}
+TD_agg %>%
+  ungroup() %>%
+  summarize(q_m = mean(tau_m_investment / tau_m, na.rm = TRUE),
+  q_relative = mean(relative_invest / relative, na.rm = TRUE),
+  q_informal = mean(informal_invest / informal, na.rm = TRUE),
+  q_formal = mean(formal_invest / formal, na.rm = TRUE)
+  )
+```

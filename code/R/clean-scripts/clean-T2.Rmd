@@ -1,0 +1,178 @@
+title: "Cleaning T2 data"
+output: html_notebook
+---
+```{r}
+library(tidyverse)
+```
+
+Since the PSID went to a biennial format after 1997, a supplementary set of questions is asked about the family members from the previous year. 
+These are sometimes called the "T2" supplements, which the chunk of code below cleans into a panel dataset for those missing years. 
+These data were collected from the "Individual Data Index" from the PSID's data center tool, so they are linked to individuals already. 
+The code below renames the variables and reshapes them into a panel. 
+The reporting of earnings in these years is slightly different from the main questions, so we keep only observations that are reported in annual terms (the large majority). 
+There is also an abnormally large increase in the number of individuals who report zero hours but positive earnings from 2001 and on. We have to correct for this using the T2 variables from the main interview file.
+
+The hourly wage rate is not calculated for 2003 income and on. Individual data index does not have labour income and hours available for 2007, so we use head and wife earnings from family file.
+
+```{r}
+
+
+
+Dt2 <- readxl::read_excel("../../../data-main/labor-market/T2_97_07.xlsx") %>% 
+  mutate(MID = ER30001*1000 + ER30002,FID = MID) %>%
+  rename(earn97 = ER33536A,earn99 = ER33627A,earn01 = ER33727A) %>%
+  rename(earn97u = ER33536B,earn99u = ER33627B,earn01u = ER33727B) %>%
+  rename(wage97 = ER33537O,wage99 = ER33628O,wage01 = ER33728O) %>%
+  rename(ww97 = ER33536C,ww99 = ER33627C,ww01 = ER33727C) %>%
+  rename(hw97 = ER33536Q,hw99 = ER33627Q,hw01 = ER33727Q)%>%
+  rename(earn03 = ER33826A,earn05 = ER33926A) %>%
+  rename(earn03u = ER33826B ,earn05u = ER33926B) %>%
+  rename(hw03 = ER33827U, hw05 = ER33927C ) %>%
+  rename(ww03 = ER33827S , ww05 = ER33927A  )
+
+
+
+  
+# let's just do these for now
+D97 <- Dt2 %>% select(MID,FID,earn97,earn97u,wage97,ww97,hw97) %>%
+  rename(earn=earn97,earnu=earn97u,wage=wage97,ww=ww97,hw=hw97) %>%
+  mutate(year=1997)
+
+D99 <- Dt2 %>% select(MID,FID,earn99,earn99u,wage99,ww99,hw99) %>%
+  rename(earn=earn99,earnu=earn99u,wage=wage99,ww=ww99,hw=hw99) %>%
+  mutate(year=1999)
+
+D01 <- Dt2 %>% select(MID,FID,earn01,earn01u,wage01,ww01,hw01) %>%
+  rename(earn=earn01,earnu=earn01u,wage=wage01,ww=ww01,hw=hw01) %>%
+  mutate(year=2001)
+
+D03 <- Dt2 %>% select(MID,FID,earn03,earn03u,ww03,hw03) %>%
+  rename(earn=earn03,earnu=earn03u,ww=ww03,hw=hw03) %>%
+  mutate(year=2003)
+
+D05 <- Dt2 %>% select(MID,FID,earn05,earn05u,ww05,hw05) %>%
+  rename(earn=earn05,earnu=earn05u,ww=ww05,hw=hw05) %>%
+  mutate(year=2005)
+
+# --- Now, read in the T-2 in 2001 variables from the family file
+Dt01 <- read.csv("../../../data-main/labor-market/T2_supp.csv") %>% 
+  rename(intnum = ER21002,h_earn = ER23702F1,h_ww = ER23702D3,h_hw = ER23702E8) %>%
+  rename(w_earn = ER23702L4, w_ww = ER23702J6, w_hw = ER23702L2) %>%
+  mutate(year = 2003)
+
+
+
+# --- Read in the T-2 from family file in 2003
+Dt03 =  read.csv("../../../data-main/labor-market/T2supp_2003_2007.csv")%>% #2005 family interview number , 2003 earnings
+  rename(intnum = ER25002,h_earn = ER27711F1,h_ww = ER27711D3,h_hw = ER27711E8, h_earnu=ER27711F2) %>%
+  rename(w_earn = ER27711L4, w_ww = ER27711J6  , w_hw = ER27711L2, w_earnu= ER27711L5) %>%
+  mutate(year = 2005) %>% select(year, intnum, h_earn,h_ww,h_hw,h_earnu,w_earn,w_ww,w_hw,w_earnu)
+
+
+# --- Read in the T-2 from family file in 2005
+Dt05 =  read.csv("../../../data-main/labor-market/T2supp_2003_2007.csv")%>% #2007 family interview number, 2005 earnings
+  rename(intnum = ER36002,h_earn = ER40686F1,h_ww = ER40686D3,h_hw = ER40686E8 , h_earnu=ER40686F2) %>%
+  rename(w_earn = ER40686L4, w_ww =  ER40686J6 , w_hw = ER40686L2, w_earnu= ER40686L5 ) %>%
+  mutate(year = 2007) %>% select(year, intnum, h_earn,h_ww,h_hw,h_earnu,w_earn,w_ww,w_hw,w_earnu)
+
+
+# --- Read in the T-2 from family file in 2007 
+Dt07 =  read.csv("../../../data-main/labor-market/T2supp_2003_2007.csv")%>% #2009 family interview number, 2007 earnings
+  rename(intnum = ER42002 ,h_earn = ER46673,h_ww = ER46670 ,h_hw = ER46671 , h_earnu=ER46674 ) %>%
+  rename(w_earn = ER46684, w_ww = ER46681   , w_hw = ER46682 , w_earnu= ER46685 ) %>%
+  mutate(year = 2009) %>% select(year, intnum, h_earn,h_ww,h_hw,h_earnu,w_earn,w_ww,w_hw,w_earnu)
+
+
+
+D01 <- select(D01,c("MID","FID","year","earn","earnu","wage","hw","ww"))
+D03 <- select(D03,c("MID","FID","year","earn","earnu","hw","ww"))
+D05 <- select(D05,c("MID","FID","year","earn","earnu","hw","ww"))
+
+d01 <- read.csv("../../../data-main/identifiers/identifiers-panel.csv") %>% 
+  filter(year==2003) %>% 
+  mutate(X = NULL,MID = intnum68*1000 + pernum) %>%
+  merge(Dt01) %>%
+  mutate(year = 2001)
+
+d03 <- read.csv("../../../data-main/identifiers/identifiers-panel.csv") %>% 
+  filter(year==2005) %>% 
+  mutate(X = NULL,MID = intnum68*1000 + pernum) %>%
+  merge(Dt03) %>%
+  mutate(year = 2003)
+
+d05 <- read.csv("../../../data-main/identifiers/identifiers-panel.csv") %>% 
+  filter(year==2007) %>% 
+  mutate(X = NULL,MID = intnum68*1000 + pernum) %>%
+  merge(Dt05) %>%
+  mutate(year = 2005)
+
+
+D01 <- merge(D01,d01)
+Ih = D01$sn==1
+D01[Ih,c("earn","hw","ww")] = D01[Ih,c("h_earn","h_hw","h_ww")]
+Iw = D01$sn==2
+D01[Iw,c("earn","hw","ww")] = D01[Iw,c("w_earn","w_hw","w_ww")]
+D01 <- select(D01,c("MID","FID","year","earn","earnu","wage","hw","ww"))
+
+D03 <- merge(D03,d03)
+Ih = D03$sn==1
+D03[Ih,c("earn","hw","ww")] = D03[Ih,c("h_earn","h_hw","h_ww")]
+Iw = D03$sn==2
+D03[Iw,c("earn","hw","ww")] = D03[Iw,c("w_earn","w_hw","w_ww")]
+D03 <- D03%>% 
+mutate(wage=NA_real_) #hourly wage is not calculated after 2001, will be imputed from earnings and hours
+D03 <- select(D03,c("MID","FID","year","earn","earnu","wage","hw","ww"))
+
+D05 <- merge(D05,d05)
+Ih = D05$sn==1
+D05[Ih,c("earn","hw","ww")] = D05[Ih,c("h_earn","h_hw","h_ww")]
+Iw = D05$sn==2
+D05[Iw,c("earn","hw","ww")] = D05[Iw,c("w_earn","w_hw","w_ww")]
+D05 <- D05%>% 
+mutate(wage=NA_real_) #hourly wage is not calculated after 2001, will be imputed from earnings and hours
+D05 <- select(D05,c("MID","FID","year","earn","earnu","wage","hw","ww"))
+
+
+#labor market outcomes 2 years ago are not reported in the individual file for 2007, so I use family file and generate MID and FID by merging with the identifiers file by family interview number
+D07 <- read.csv("../../../data-main/identifiers/identifiers-panel.csv") %>% 
+  filter(year==2009) %>% 
+  mutate(X = NULL,MID = intnum68*1000 + pernum,FID=MID) %>%
+  merge(Dt07) %>%
+  mutate(year = 2007)
+
+
+Ih = D07$sn==1
+D07[Ih,c("earn","hw","ww","earnu")] = D07[Ih,c("h_earn","h_hw","h_ww","h_earnu")]
+Iw = D07$sn==2
+D07[Iw,c("earn","hw","ww","earnu")] = D07[Iw,c("w_earn","w_hw","w_ww","w_earnu")]
+D07 <- D07%>% 
+mutate(wage=NA_real_) #hourly wage is not calculated after 2001, will be imputed from earnings and hours
+D07 <- select(D07,c("MID","FID","year","earn","earnu","wage","hw","ww"))
+
+
+
+T2 <- rbind(D97,D99,D01,D03,D05,D07) %>%
+  mutate(earn = na_if(na_if(na_if(na_if(earn,-9999999),-999999),99999999),9999999)) %>%
+  mutate(earn = na_if(na_if(na_if(earn,-999998),9999998),99999998))%>%
+  #mutate(earn = case_when(earnu==1 ~ earn*hw*ww,earnu==2 ~ earn*365,earnu==3 ~ earn*ww, earnu==4 ~ earn*ww/2,earnu==5 ~ earn*12, earnu==6 ~ earn, TRUE ~ NA_real_)) %>%
+  mutate(ww = na_if(na_if(ww,99),98),hw=na_if(na_if(hw,999),998)) %>%
+  mutate(hrs = ww*hw) %>%
+  #mutate(wage2 = case_when(earn>0 & hrs>0 ~ earn/hrs,TRUE ~ NA_real_),0) %>%
+  mutate(wage = case_when(wage<=0 ~ NA_real_,wage==999 ~ NA_real_,TRUE ~ wage)) %>%
+  #calculate hourly wage rate if earnings and hours are positive and earnings were reported on the annual basis
+  mutate(wage = case_when(earn>0 & hrs>0 & earnu==6 & is.na(wage) ~ earn/hrs, TRUE ~ wage))
+
+write.csv(T2,"../../../data-main/labor-market/T2clean.csv")
+
+T2%>%
+  group_by(year) %>%
+summarise(
+mean_wage = mean(wage, na.rm = TRUE),
+mean_earn= mean(earn, na.rm = TRUE),
+mean_hrs= mean(hrs, na.rm = TRUE),
+mean_hh= mean(hw, na.rm = TRUE),
+mean_ww= mean(ww, na.rm = TRUE),
+median_wage = median(wage, na.rm = TRUE),
+median_earn= median(earn, na.rm = TRUE),
+median_hrs= median(hrs, na.rm = TRUE))
+```
