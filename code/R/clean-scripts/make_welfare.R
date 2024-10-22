@@ -75,7 +75,7 @@ for (i in 1:length(years)) {
                       ifelse(d_skipped$afdc_hh == 5, 0, NA))
     
     # Append to the main data frame
-    d <- rbind(d, d_skipped)
+    d <- rbind(d, na.omit(d_skipped))
   }
 
 }

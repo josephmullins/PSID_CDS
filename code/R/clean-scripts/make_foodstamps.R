@@ -66,7 +66,7 @@ for (i in 1:length(years)) {
     d_skipped$fs_used[d_skipped$fs == 5] <- 0  # Set values equal to 5
     
     # Append to the main data frame
-    d <- rbind(d, d_skipped)
+    d <- rbind(d, na.omit(d_skipped))
   }
 }
 
