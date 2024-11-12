@@ -1,6 +1,6 @@
 # This script loads the data on household childcare expenditures from the main interview and arranges it into a panel.
 # To merge the data with individuals, you need to use the identifiers panel.
-
+library(tidyverse)
 D <- readxl::read_excel("data-main/afdc/afdc.xlsx")
 years <- c(seq(1986,1997),seq(1999,2021,2))
 d <- data.frame(year = integer(), intnum = integer(), afdc_hd = integer(), afdc_sp = integer(), afdc_hh = integer())
@@ -75,21 +75,22 @@ for (i in 1:length(years)) {
                       ifelse(d_skipped$afdc_hh == 5, 0, NA))
     
     # Append to the main data frame
-    d <- rbind(d, na.omit(d_skipped))
+    d <- rbind(d, filter(d_skipped, !is.na(intnum)))
   }
 
 }
 
-
-
 welfare_use <- d %>%
   group_by(year) %>%
   summarize(
-    afdc_hh = sum(afdc_hh == 1, na.rm = TRUE) / sum(!is.na(afdc_hh))
-  )
+    afdc_hh = mean(afdc_hh,na.rm = TRUE),
+    afdc_hd = mean(afdc_hd,na.rm = TRUE)
+  ) %>%
+  pivot_longer(cols=c("afdc_hd","afdc_hh")) %>%
+  filter(!is.nan(value))
 
-ggplot(welfare_use, aes(x = year, y = afdc_hh)) +
-  geom_line() +
+ggplot(welfare_use, aes(x = year, y = value, color=name)) +
+  geom_line(size=2) +
   labs(title = "AFDC Household Participation Over Time",
        x = "Year",
        y = "Proportion of AFDC Households") +
