@@ -313,11 +313,12 @@ C97 <- rename(C97,chcare = chcareExp97,Arrange = Arrange97, Price = Price97,
               chcare_second=chcareExpSecond97, ArrangeSecond = ArrangeSecond97, PriceSecond = PriceSecond97)
 # now load preK data and merge, replacing the child care value with this value when available
 C97 <- ch_hist %>%
-  select(KID,Exp97Tot) %>%
+  select(KID,Exp97Tot,Arrange97) %>%
   mutate(Exp97Tot = na_if(Exp97Tot,9998)) %>%
   merge(C97) %>%
-  mutate(chcare = case_when(Exp97Tot>0 ~ Exp97Tot,TRUE ~ chcare)) %>%
-  select(-Exp97Tot)
+  mutate(chcare = case_when(Exp97Tot>0 ~ Exp97Tot,TRUE ~ chcare),
+        Arrange = case_when(is.na(Arrange) ~ Arrange97,TRUE ~ Arrange)) %>%
+  select(-Exp97Tot,-Arrange97)
 
 summary(C97$chcare_second)
 summary(Ch07$chcareExpSecond07)
@@ -336,9 +337,6 @@ C07 <- rename(C07,chcare = chcareExp07,Arrange = Arrange07, Price = Price07,
 
 
 Cpanel <- rbind(C97,C02,C07) 
-
-
-
 
 write.csv(Cpanel,"../../../data-cds/childcare/ChildCarePanel.csv")
 
