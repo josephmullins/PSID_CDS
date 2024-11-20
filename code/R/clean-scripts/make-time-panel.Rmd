@@ -27,7 +27,7 @@ COLG_K        Other non-relative participating in activity
 COLH_I        Grandparent or great-grandparent around but not participating
 COLH_J        Other relative around but not participating
 COLH_K        Other non-relative around but not participating
-COLF          Where was Child? (40 = babysitter,home-based care,neighbors, 89 = center based care)
+COLF          Where was Child? (40 = babysitter,home-based care,neighbors, 84 = center based care)
 WDAYWEND      Indicates weekday or weekend
 
 The chunk below imports the data, appends both waves into one dataset (after renaming), and fills in some missing values.
@@ -90,6 +90,8 @@ TD <- TD %>%
                    COLA == 597 | COLA == 598 | COLA == 899,1,0),
         no_parent = (COLG_B == 0) & (COLG_C == 0) & (COLH_B == 0) & 
             (COLH_C == 0),
+        no_mother = (COLG_B == 0) & (COLH_B == 0),
+        mother = !no_mother,
         either_parent = COLG_B + (1-COLG_B)*COLG_C,
         formal = no_parent & (COLF == 84),
         relative = no_parent & (COLG_I == 1 | COLG_J == 1 | 
@@ -140,7 +142,13 @@ TD_agg <- TD %>%
             relative_invest = sum(DURATION*wght*investment*relative,na.rm = TRUE)/3600,
             formal = sum(DURATION*wght*formal,na.rm = TRUE)/3600,
             relative = sum(DURATION*wght*relative,na.rm = TRUE)/3600,
-            informal = sum(DURATION*wght*informal,na.rm = TRUE)/3600
+            informal = sum(DURATION*wght*informal,na.rm = TRUE)/3600,
+            mother_tot = sum(DURATION*wght*mother,na.rm = TRUE)/3600,
+            no_mother_tot = sum(DURATION*wght*no_mother,na.rm = TRUE)/3600,
+            mother_invest = sum(DURATION*wght*mother*investment,na.rm = TRUE)/3600,
+            no_mother_invest = sum(DURATION*wght*no_mother*investment,na.rm = TRUE)/3600,
+            q_mother = case_when(mother_tot>0 ~ mother_invest / mother_tot,TRUE ~ NA),
+            q_other = case_when(no_mother_tot>0 ~ no_mother_invest / no_mother_tot,TRUE ~ NA),
             )
 
 
@@ -185,3 +193,13 @@ TD_agg %>%
   q_formal = mean(formal_invest / formal, na.rm = TRUE)
   )
 ```
+
+Next let's look at the relationship between mother's quality of time and all other forms of care
+```{r}
+TD_agg %>%
+  ungroup() %>%
+  mutate(q_mother= mother_invest / mother_tot,q_other = no_mother_invest / no_mother_tot) %>%
+  summarize(mean(q_mother,na.rm = TRUE),mean(q_other,na.rm = TRUE),mean(q_mother>0,na.rm = TRUE),mean(q_other>0,na.rm = TRUE))
+  #ggplot(aes(x=q_mother,y=q_other)) + geom_point() + geom_smooth()
+```
+
